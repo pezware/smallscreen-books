@@ -31,8 +31,17 @@ docs/            device constraints and the build plan
 
 ## Status
 
-Early. The data contract and the definition checks exist. The generator does
-not yet.
+Early. Stage 1 of `docs/plan.md` has landed: `src/frequency.py` builds
+`data/es/frequency.txt`, the 3,000 words the Spanish book will hold and the
+vocabulary every generated definition is checked against. Definitions,
+examples and the renderer do not exist yet.
+
+```sh
+curl -O https://downloads.wortschatz-leipzig.de/corpora/spa_news_2011_1M.tar.gz
+tar xzf spa_news_2011_1M.tar.gz -C data/es/raw/       # gitignored, 266 MB
+python3 src/frequency.py                              # writes data/es/frequency.txt
+python3 -m unittest discover -s tests -t tests        # stdlib only, no venv
+```
 
 `src/validate.py:accept_definition` is unimplemented on purpose. It decides how
 strict the vocabulary rule is, and Andy owns that call. See `docs/plan.md`.
@@ -43,7 +52,10 @@ The book data comes from sources that need attribution. Record the source of
 every definition and every sentence in the data file, and carry the attribution
 into each built book:
 
-- Frequency lists — Leipzig Corpora (CC BY 4.0) or OpenSubtitles (CC BY-SA 4.0)
+- Frequency lists — Leipzig Corpora (CC BY 4.0), recorded per language in
+  `data/<lang>/frequency.source.json`. Spanish uses `spa_news_2011_1M`.
+  OpenSubtitles (CC BY-SA 4.0) was not used: share-alike would decide the
+  outgoing licence before Andy does
 - Example sentences — [Tatoeba](https://tatoeba.org), CC BY 2.0 FR
 - Definitions checked against [Wiktionary](https://kaikki.org) (CC BY-SA)
 
