@@ -43,6 +43,11 @@ python3 src/frequency.py                              # writes data/es/frequency
 python3 -m unittest discover -s tests -t tests        # stdlib only, no venv
 ```
 
+`mise run build | test | lint | fmt` are the same commands with the pinned
+toolchain. CI runs lint and test on every change; a separate scheduled job
+rebuilds `frequency.txt` from the real corpus and fails if the committed
+artifact has drifted from what the generator produces.
+
 `src/validate.py:accept_definition` is unimplemented on purpose. It decides how
 strict the vocabulary rule is, and Andy owns that call. See `docs/plan.md`.
 

@@ -1,0 +1,32 @@
+# Lint and test on every change. Deliberately does not touch the corpus: this
+# job must stay fast enough that nobody is tempted to skip it, and the corpus
+# is 266 MB. The rebuild lives in frequency-list.yml.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Installs exactly what mise.toml pins, so CI and a laptop run the same
+      # python and the same uv.
+      - uses: jdx/mise-action@v2
+
+      - name: Lint
+        run: mise run lint
+
+      - name: Test
+        run: mise run test

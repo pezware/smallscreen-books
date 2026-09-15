@@ -1,0 +1,68 @@
+# Proves the committed frequency list is what the generator actually produces.
+#
+# data/es/frequency.txt is a build output that is committed, because the corpus
+# it comes from is 266 MB and gitignored. That is a convenience with a failure
+# mode: the generator changes, nobody re-runs it, and the artifact quietly stops
+# matching the code that claims to produce it. This job rebuilds from the real
+# corpus and fails if a single byte differs.
+name: frequency list is reproducible
+
+on:
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+  # Any change to the generator or its output has to prove the two still agree.
+  pull_request:
+    paths:
+      - "src/frequency.py"
+      - "data/es/frequency.txt"
+      - "data/es/frequency.excluded.txt"
+      - "data/es/frequency.source.json"
+      - ".github/workflows/frequency-list.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    env:
+      CORPUS: spa_news_2011_1M
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+
+      # Leipzig is a university mirror, not a CDN. Cache it and be a good
+      # citizen: a cold run costs one 266 MB download, every later run costs
+      # nothing.
+      - name: Restore the corpus
+        id: corpus
+        uses: actions/cache@v4
+        with:
+          path: data/es/raw
+          key: corpus-${{ env.CORPUS }}-v1
+
+      - name: Fetch the corpus
+        if: steps.corpus.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/$CORPUS.tar.gz"
+          curl -fsSL --retry 3 -o "$archive" \
+            "https://downloads.wortschatz-leipzig.de/corpora/$CORPUS.tar.gz"
+          mkdir -p data/es/raw
+          # Only the two files the generator reads; the package holds six more.
+          tar xzf "$archive" -C data/es/raw \
+            "$CORPUS-words.txt" "$CORPUS-sentences.txt"
+
+      - name: Rebuild the list
+        run: mise run build
+
+      - name: The committed list must match the rebuild
+        run: git diff --exit-code -- data/es/
+
+      - name: Show what drifted
+        if: failure()
+        run: |
+          echo "The committed artifact is not what src/frequency.py produces."
+          echo "Run 'mise run build' and commit the result."
+          git diff --stat -- data/es/
