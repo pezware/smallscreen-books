@@ -1,0 +1,24 @@
+# Local working contracts — never committed
+IMPLEMENTATION_PLAN.md
+IMPLEMENTATION_PLAN-*.md
+
+# Build output
+build/
+dist/
+*.epub
+
+# Downloaded corpora and generation caches — large, and rebuildable
+data/**/raw/
+data/**/cache/
+*.jsonl.gz
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# macOS
+.DS_Store
