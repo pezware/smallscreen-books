@@ -23,7 +23,7 @@ jobs:
 
       # Installs exactly what mise.toml pins, so CI and a laptop run the same
       # python and the same uv.
-      - uses: jdx/mise-action@v2
+      - uses: ./.github/actions/setup-mise
 
       - name: Lint
         run: mise run lint

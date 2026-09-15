@@ -30,7 +30,7 @@ jobs:
       CORPUS: spa_news_2011_1M
     steps:
       - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
+      - uses: ./.github/actions/setup-mise
 
       # Leipzig is a university mirror, not a CDN. Cache it and be a good
       # citizen: a cold run costs one 266 MB download, every later run costs

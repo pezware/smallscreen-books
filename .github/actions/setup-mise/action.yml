@@ -1,0 +1,67 @@
+name: Setup mise
+description: >
+  Install a pinned mise, verify its checksum, and install the tools that
+  mise.toml pins.
+
+# Why a local composite action rather than jdx/mise-action: this repository
+# only permits actions owned by pezware or created by GitHub, so a third-party
+# action fails before any job starts. A local action satisfies that policy and
+# keeps the install in one place for both workflows.
+
+inputs:
+  mise-version:
+    description: mise release version, without the leading v
+    default: "2026.8.3"
+  mise-checksum:
+    description: SHA256 of mise-v{version}-linux-x64.tar.gz
+    default: "8aaf21cc4b36681e90a96e9cdf13e5d7511e9773733f741b1a5f7756ba53b5fc"
+
+runs:
+  using: composite
+  steps:
+    - name: Cache mise and the tools it installs
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.local/bin/mise
+          ~/.local/share/mise
+        key: mise-${{ runner.os }}-${{ runner.arch }}-${{ inputs.mise-version }}-${{ hashFiles('mise.toml') }}
+        restore-keys: |
+          mise-${{ runner.os }}-${{ runner.arch }}-${{ inputs.mise-version }}-
+
+    - name: Install mise
+      shell: bash
+      env:
+        VERSION: ${{ inputs.mise-version }}
+        CHECKSUM: ${{ inputs.mise-checksum }}
+      run: |
+        set -euo pipefail
+        mkdir -p "$HOME/.local/bin"
+
+        if [[ -x "$HOME/.local/bin/mise" ]] \
+          && "$HOME/.local/bin/mise" --version | grep -q "$VERSION"; then
+          echo "mise $VERSION restored from cache"
+          exit 0
+        fi
+
+        archive="$RUNNER_TEMP/mise.tar.gz"
+        curl -fsSL --retry 3 -o "$archive" \
+          "https://github.com/jdx/mise/releases/download/v${VERSION}/mise-v${VERSION}-linux-x64.tar.gz"
+
+        # Verify before unpacking, not after. A checksum checked later is a
+        # checksum that already ran the code it was meant to gate.
+        echo "${CHECKSUM}  ${archive}" | sha256sum --check --strict -
+
+        tar xzf "$archive" -C "$RUNNER_TEMP"
+        install -m 0755 "$RUNNER_TEMP/mise/bin/mise" "$HOME/.local/bin/mise"
+
+    - name: Install the pinned toolchain
+      shell: bash
+      run: |
+        set -euo pipefail
+        export PATH="$HOME/.local/bin:$PATH"
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+        # mise refuses a config it has not been told to trust.
+        mise trust --yes
+        mise install --yes
+        echo "$HOME/.local/share/mise/shims" >> "$GITHUB_PATH"
