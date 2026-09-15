@@ -47,6 +47,10 @@ _TOKEN = re.compile(r"[^\W\d_]+", re.UNICODE)
 
 DEFAULT_LIMIT = 3000
 
+# Spanish's only one-letter words. Every other single letter in a news corpus
+# is an initial, a list marker or a unit, and costs a slot in the book.
+ONE_LETTER_WORDS = frozenset("aeouy")
+
 # Below this share of lowercase use, a form is a name rather than a word.
 # See the module docstring for why the cut sits this low.
 PROPER_NOUN_RATIO = 0.08
@@ -80,7 +84,11 @@ class Form:
 
 
 def count_words(words_file: Path) -> collections.Counter[str]:
-    """Total the corpus token counts per case-folded form, words only."""
+    """Total the corpus token counts per case-folded form, words only.
+
+    Single letters other than ONE_LETTER_WORDS are dropped here rather than
+    later, so they never reach the ranking and never spend a slot.
+    """
     counts: collections.Counter[str] = collections.Counter()
     with words_file.open(encoding="utf-8") as handle:
         for line in handle:
@@ -88,19 +96,27 @@ def count_words(words_file: Path) -> collections.Counter[str]:
             if len(fields) != 3:
                 continue
             _, form, count = fields
-            if _WORD_ONLY.match(form):
-                counts[form.casefold()] += int(count)
+            if not _WORD_ONLY.match(form):
+                continue
+            folded = form.casefold()
+            if len(folded) == 1 and folded not in ONE_LETTER_WORDS:
+                continue
+            counts[folded] += int(count)
     return counts
 
 
 def count_case_uses(
     sentences_file: Path, candidates: set[str]
 ) -> tuple[collections.Counter[str], collections.Counter[str]]:
-    """Count lowercase uses, and capitalised uses away from a sentence start.
+    """Count lowercase uses, and non-lowercase uses away from a sentence start.
 
-    The first token of a sentence is skipped when capitalised, because every
-    word is capitalised there and the position carries no information about
-    whether the form is a name.
+    The first token of a sentence is skipped unless it is plain lowercase,
+    because every word is capitalised there and the position carries no
+    information about whether the form is a name.
+
+    "Non-lowercase" rather than "initial capital": `iPhone` and `iPad` are
+    neither, and counting only initial capitals left them with no evidence at
+    all, which `Form.lowercase_share` then reads as a perfectly ordinary word.
     """
     lowercase: collections.Counter[str] = collections.Counter()
     capitalised: collections.Counter[str] = collections.Counter()
@@ -114,7 +130,10 @@ def count_case_uses(
                     continue
                 if token.islower():
                     lowercase[folded] += 1
-                elif position > 0 and token[0].isupper():
+                elif position > 0:
+                    # Any token away from a sentence start that is not plain
+                    # lowercase is evidence of a name: Espana, ONU, and the
+                    # mixed case of iPhone and YouTube alike.
                     capitalised[folded] += 1
     return lowercase, capitalised
 

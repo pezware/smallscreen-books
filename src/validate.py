@@ -48,7 +48,8 @@ def unknown_words(definition: str, known_forms: set[str]) -> set[str]:
     appears in the list. The check therefore over-reports on inflected Spanish.
     """
     return {
-        w for w in (normalise(m.group()) for m in _WORD.finditer(definition))
+        w
+        for w in (normalise(m.group()) for m in _WORD.finditer(definition))
         if w not in known_forms
     }
 

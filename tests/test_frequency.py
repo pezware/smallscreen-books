@@ -28,6 +28,10 @@ class CountWords(unittest.TestCase):
         words = write(self.tmp, "w.txt", ["1\t,\t900", "2\t2011\t80", "3\tcasa\t10"])
         self.assertEqual(list(frequency.count_words(words)), ["casa"])
 
+    def test_drops_single_letters_that_are_not_spanish_words(self):
+        words = write(self.tmp, "w.txt", ["1\tp\t900", "2\ty\t800"])
+        self.assertEqual(list(frequency.count_words(words)), ["y"])
+
     def test_keeps_accents(self):
         words = write(self.tmp, "w.txt", ["1\tmás\t5"])
         self.assertIn("más", frequency.count_words(words))
@@ -41,6 +45,11 @@ class CountCaseUses(unittest.TestCase):
         sentences = write(self.tmp, "s.txt", ["1\tAdemás vino."])
         lowercase, capitalised = frequency.count_case_uses(sentences, {"además"})
         self.assertEqual((lowercase["además"], capitalised["además"]), (0, 0))
+
+    def test_counts_a_mixed_case_brand_inside_a_sentence(self):
+        sentences = write(self.tmp, "s.txt", ["1\tCompro un iPhone hoy."])
+        _, capitalised = frequency.count_case_uses(sentences, {"iphone"})
+        self.assertEqual(capitalised["iphone"], 1)
 
     def test_counts_a_capital_inside_a_sentence(self):
         sentences = write(self.tmp, "s.txt", ["1\tVivo en España hoy."])
@@ -101,6 +110,20 @@ class ShippedList(unittest.TestCase):
     def test_every_line_is_a_single_lowercase_word(self):
         odd = [f for f in self.forms() if not f.islower() or not f.isalpha()]
         self.assertEqual(odd, [])
+
+    def test_holds_no_mixed_case_brand_names(self):
+        """iPhone and iPad were invisible to the classifier until it counted
+        every non-lowercase token, not just initial capitals.
+
+        Windows and YouTube are deliberately not asserted here: they are
+        counted correctly and simply sit above the cut, at a lowercase share
+        of 0.12, alongside words like dios and navidad.
+        """
+        self.assertEqual(set(self.forms()) & {"iphone", "ipad"}, set())
+
+    def test_holds_no_stray_single_letters(self):
+        strays = [f for f in self.forms() if len(f) == 1]
+        self.assertEqual(set(strays) - set(frequency.ONE_LETTER_WORDS), set())
 
     def test_holds_no_duplicates(self):
         forms = self.forms()

@@ -11,6 +11,6 @@
     "spa_news_2011_1M-sentences.txt": "e001b1556c20fdb39c81b9ab72b0ff0f83438a68ab4eb9a6bdd72407ee1c250f"
   },
   "entries": 3000,
-  "excluded_proper_nouns": 245,
+  "excluded_proper_nouns": 247,
   "proper_noun_ratio": 0.08
 }
