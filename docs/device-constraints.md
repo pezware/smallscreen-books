@@ -112,7 +112,31 @@ So page counting is a wiring job against an existing pattern, and a true
 writing its framebuffer out as an image. The font layer, which is the part that
 looks hardest, is already proven to build.
 
-I have not built either tool, so I cannot report what they cost.
+**Measured, 2026-09-18.** The line measurer now exists: `tools/fit`, built
+against firmware `6c83edd`. It links the real `ParsedText` line breaker, the
+real Spanish hyphenation patterns and the real NotoSerif metrics, and supplies
+its own `GfxRenderer` that answers from `EpdFontFamily` instead of the
+firmware's test double, which invents 8 pixels per character.
+
+| NotoSerif | line height | lines per 800px screen |
+|---|---|---|
+| 12 | 34px | 23 |
+| 14 | 40px | 20 |
+| 16 | 45px | 17 |
+| 18 | 51px | 15 |
+
+A 90-character definition takes 3 lines at size 12, 4 at 14 and 16, and 5 at 18.
+
+So `MAX_DEFINITION_CHARS = 90` is **not** the boundary its comment claims. A
+screen holds 15 to 23 lines; a headword, a 90-character definition and two
+examples come to roughly 10 to 14. The first screen does not spill at 90
+characters at any built-in size. Whatever 90 is good for, it is not the fit
+limit, and stage 2 should not be generated against it as though it were.
+
+The screenshot is still unbuilt. It needs `GfxRenderer.cpp` compiled for the
+host and its framebuffer written out; `FontDecompressor` becomes necessary
+there, and it wants Arduino's `millis`/`micros`, which the metrics path does
+not.
 
 ## Related device features worth using
 

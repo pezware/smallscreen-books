@@ -7,6 +7,9 @@
 [tools]
 python = "3.12"
 uv = "0.12"
+# For tools/fit, the host-side line measurer. The firmware's own test suite
+# builds with CMake; this matches it rather than inventing a second build.
+cmake = "4.2"
 
 [tasks.build]
 description = "Build the Spanish frequency list from the corpus in data/es/raw"
@@ -23,3 +26,11 @@ run = ["uv run ruff format --check .", "uv run ruff check ."]
 [tasks.fmt]
 description = "Apply formatting"
 run = "uv run ruff format ."
+
+[tasks.fit]
+description = "Measure how many lines Spanish prose takes, using the device's own line breaker"
+run = """
+cmake -S tools/fit -B build/fit -DCROSSPOINT_ROOT="${CROSSPOINT_ROOT:?set CROSSPOINT_ROOT to a crosspoint-reader checkout}"
+cmake --build build/fit -j
+echo "built: build/fit/fit  (reads passages on stdin, one per line)"
+"""
