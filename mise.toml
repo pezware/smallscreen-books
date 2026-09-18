@@ -1,0 +1,25 @@
+# Toolchain for this repo. `mise install` reproduces it on any machine.
+#
+# The generator is stdlib-only on purpose — a book build should not depend on
+# a package index. uv is here for the dev tools and the lockfile, not for
+# runtime dependencies.
+
+[tools]
+python = "3.12"
+uv = "0.12"
+
+[tasks.build]
+description = "Build the Spanish frequency list from the corpus in data/es/raw"
+run = "uv run python src/frequency.py"
+
+[tasks.test]
+description = "Run the test suite"
+run = "uv run python -m unittest discover -s tests -t tests"
+
+[tasks.lint]
+description = "Check formatting and lint"
+run = ["uv run ruff format --check .", "uv run ruff check ."]
+
+[tasks.fmt]
+description = "Apply formatting"
+run = "uv run ruff format ."

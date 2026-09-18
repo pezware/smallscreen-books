@@ -88,16 +88,31 @@ chapter without a 3,000-item navigation list.
 ## Measuring fit without the device
 
 The firmware's host test suite builds with CMake (`test/README`), and
-`test/chapter_html_slim_parser/` already links the real layout engine on the
-host: `ChapterHtmlSlimParser`, `ParsedText`, `Page`, `GfxRenderer` and
-`EpdFont`.
+`test/chapter_html_slim_parser/` links the real **layout** classes on the host:
+`ChapterHtmlSlimParser`, `ParsedText`, `Page`, `TextBlock` and `CssParser`.
 
 A small host tool can therefore feed one entry's XHTML through the true engine
 and report its page count. That turns fit into a measurement.
 
-I have not built this tool, so I cannot report what it costs. The parser test
-stubs out `ImageBlock::render`, which suggests a text-only harness links
-cleanly.
+**Correction, read from the firmware at `6c83edd` on 2026-09-15.** An earlier
+version of this file listed `GfxRenderer` and `EpdFont` among what that harness
+links. Neither is true, and the difference decides whether a screenshot is
+possible:
+
+- **No host target compiles `GfxRenderer.cpp`.** The parser test includes
+  `GfxRenderer.h` and stubs `ImageBlock::render` in `ParserLinkStubs.cpp`, which
+  is enough to link a layout test and not enough to paint a pixel.
+- **`crosspoint_test_common` carries no sources.** It is an INTERFACE library
+  holding include directories and warning flags, so it pulls nothing in.
+- **`EpdFont.cpp` does build on the host**, in `test/differential_rounding/` and
+  `test/ligature_guard/`.
+
+So page counting is a wiring job against an existing pattern, and a true
+480x800 screenshot is new work: compiling `GfxRenderer` for the host and
+writing its framebuffer out as an image. The font layer, which is the part that
+looks hardest, is already proven to build.
+
+I have not built either tool, so I cannot report what they cost.
 
 ## Related device features worth using
 

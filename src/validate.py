@@ -14,6 +14,7 @@ from __future__ import annotations
 import re
 import unicodedata
 from dataclasses import dataclass
+from pathlib import Path
 
 # A definition longer than this spills the first screen on a 480x800 panel at
 # the target font size, pushing the first example onto a continuation page.
@@ -28,6 +29,17 @@ def normalise(word: str) -> str:
     return "".join(c for c in folded if unicodedata.category(c) != "Mn")
 
 
+def load_known_forms(path: Path | str) -> set[str]:
+    """Read a frequency list into the vocabulary the checks compare against.
+
+    One surface form per line, most frequent first, as written by
+    `frequency.py`. The forms are normalised on the way in so that callers
+    never have to remember to do it.
+    """
+    with open(path, encoding="utf-8") as handle:
+        return {normalise(line.strip()) for line in handle if line.strip()}
+
+
 def unknown_words(definition: str, known_forms: set[str]) -> set[str]:
     """Return the definition's words that fall outside the learner's vocabulary.
 
@@ -36,7 +48,8 @@ def unknown_words(definition: str, known_forms: set[str]) -> set[str]:
     appears in the list. The check therefore over-reports on inflected Spanish.
     """
     return {
-        w for w in (normalise(m.group()) for m in _WORD.finditer(definition))
+        w
+        for w in (normalise(m.group()) for m in _WORD.finditer(definition))
         if w not in known_forms
     }
 

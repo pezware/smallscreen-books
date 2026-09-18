@@ -1,0 +1,16 @@
+{
+  "corpus": "spa_news_2011_1M",
+  "source": {
+    "name": "Leipzig Corpora Collection",
+    "url": "https://downloads.wortschatz-leipzig.de/corpora/",
+    "licence": "CC BY 4.0",
+    "attribution": "D. Goldhahn, T. Eckart, U. Quasthoff: Building Large Monolingual Dictionaries at the Leipzig Corpora Collection, LREC 2012."
+  },
+  "inputs": {
+    "spa_news_2011_1M-words.txt": "127aedf9a713208540f3ad7c1b23ffd345a57ba4208846681ec794b939e8a7e2",
+    "spa_news_2011_1M-sentences.txt": "e001b1556c20fdb39c81b9ab72b0ff0f83438a68ab4eb9a6bdd72407ee1c250f"
+  },
+  "entries": 3000,
+  "excluded_proper_nouns": 247,
+  "proper_noun_ratio": 0.08
+}
