@@ -10,6 +10,7 @@
 // argument, never a default assumption.
 
 #include <Epub/ParsedText.h>
+#include <Epub/hyphenation/Hyphenator.h>
 #include <GfxRenderer.h>
 #include <builtinFonts/notoserif_12_regular.h>
 #include <builtinFonts/notoserif_14_regular.h>
@@ -49,16 +50,20 @@ int main(int argc, char** argv) {
   int size = 16;
   int viewportWidth = 480;
   bool hyphenate = true;
+  std::string language = "es";
 
   for (int i = 1; i < argc; ++i) {
     if (std::strcmp(argv[i], "--size") == 0 && i + 1 < argc) {
       size = std::atoi(argv[++i]);
     } else if (std::strcmp(argv[i], "--width") == 0 && i + 1 < argc) {
       viewportWidth = std::atoi(argv[++i]);
+    } else if (std::strcmp(argv[i], "--language") == 0 && i + 1 < argc) {
+      language = argv[++i];
     } else if (std::strcmp(argv[i], "--no-hyphenation") == 0) {
       hyphenate = false;
     } else {
-      std::cerr << "usage: fit [--size 12|14|16|18] [--width px] [--no-hyphenation]\n"
+      std::cerr << "usage: fit [--size 12|14|16|18] [--width px] [--language es]"
+                   " [--no-hyphenation]\n"
                 << "reads the text to measure on stdin, one passage per line\n";
       return 2;
     }
@@ -69,6 +74,12 @@ int main(int argc, char** argv) {
     std::cerr << "no built-in NotoSerif at size " << size << "\n";
     return 2;
   }
+
+  // Hyphenation rules are selected by a static language hint, and nothing
+  // sets it for you. Leaving it unset does not disable hyphenation -- it
+  // hyphenates with whatever rule set happens to be cached, which is a
+  // different set of line breaks from the Spanish one and no error anywhere.
+  Hyphenator::setPreferredLanguage(language);
 
   const EpdFont regular(data);
   const EpdFontFamily family(&regular);
@@ -81,7 +92,8 @@ int main(int argc, char** argv) {
   std::cerr << "# NotoSerif " << size << "  viewport " << viewportWidth << "x"
             << renderer.getScreenHeight() << "  line height " << lineHeight
             << "px  -> " << linesPerScreen << " lines per screen"
-            << (hyphenate ? "  (hyphenation on)" : "  (hyphenation OFF)") << "\n";
+            << (hyphenate ? "  hyphenation " + language : std::string("  hyphenation OFF"))
+            << "\n";
   std::cout << "lines\twidth_px\ttext\n";
   std::string line;
   while (std::getline(std::cin, line)) {
@@ -101,9 +113,9 @@ int main(int argc, char** argv) {
         renderer, 0, static_cast<uint16_t>(viewportWidth),
         [&](std::unique_ptr<TextBlock>, auto) { ++lines; }, true);
 
-    int width = 0;
-    int height = 0;
-    family.getTextDimensions(line.c_str(), &width, &height, EpdFontFamily::REGULAR);
+    // Advance width, the same measure layout breaks on -- not ink width, so
+    // that "width_px > viewport but lines == 1" stays a usable sanity check.
+    const int width = renderer.getTextAdvanceX(0, line.c_str(), EpdFontFamily::REGULAR);
     std::cout << lines << "\t" << width << "\t" << line << "\n";
   }
   return 0;

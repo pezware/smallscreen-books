@@ -125,7 +125,14 @@ firmware's test double, which invents 8 pixels per character.
 | 16 | 45px | 17 |
 | 18 | 51px | 15 |
 
-A 90-character definition takes 3 lines at size 12, 4 at 14 and 16, and 5 at 18.
+A 90-character definition takes 3 lines at size 12 and 4 at sizes 14, 16 and
+18, measured with Spanish hyphenation and advance-width metrics.
+
+Both qualifiers are load-bearing. Over 1,080 generated passages at size 16:
+Spanish hyphenation gives 4,256 lines, English patterns on the same Spanish
+text give 4,343, and no hyphenation gives 4,429. Measuring with the wrong
+language inflates the count by 2%, and with none by 4% -- silently, since
+nothing reports which rule set was used.
 
 So `MAX_DEFINITION_CHARS = 90` is **not** the boundary its comment claims. A
 screen holds 15 to 23 lines; a headword, a 90-character definition and two

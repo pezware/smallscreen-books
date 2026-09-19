@@ -27,6 +27,9 @@
 //     fonts only.
 
 #include <EpdFontFamily.h>
+#include <Utf8.h>
+
+#include <BidiUtils.h>
 
 #include <cstdint>
 #include <deque>
@@ -44,11 +47,48 @@ class GfxRenderer {
   int getScreenWidth() const { return screenWidth_; }
   int getScreenHeight() const { return screenHeight_; }
 
+  // Mirrors GfxRenderer::getTextAdvanceX (lib/GfxRenderer/GfxRenderer.cpp),
+  // deliberately line for line.
+  //
+  // The tempting one-liner here is EpdFontFamily::getTextDimensions, and it is
+  // wrong for this purpose. That measures INK: its maxX is
+  // `glyphBaseX + glyph->left + glyph->width`, so it stops at the last glyph's
+  // painted edge and drops that glyph's right side bearing. The renderer
+  // instead ends with `widthPx += fp4::toPixel(prevAdvanceFP)` -- the full
+  // final advance. Measuring ink makes every word a little narrower than it
+  // really is, fits one more word per line than the device would, and reports
+  // a line count that is too low. Like the includeLastLine bug before it, the
+  // error flatters.
+  //
+  // The differential rounding matters too: the renderer snaps
+  // (previous advance + current kern) to a pixel together rather than
+  // separately, so that measurement and drawText agree exactly. Rounding them
+  // apart drifts by a pixel per glyph pair.
   int getTextAdvanceX(int, const char* text, EpdFontFamily::Style style) const {
-    int w = 0;
-    int h = 0;
-    family_->getTextDimensions(text, &w, &h, style);
-    return w;
+    uint32_t cp = 0;
+    uint32_t prevCp = 0;
+    int widthPx = 0;
+    int32_t prevAdvanceFP = 0;  // 12.4 fixed-point
+    const bool isSupSub = (style & (EpdFontFamily::SUP | EpdFontFamily::SUB)) != 0;
+
+    while ((cp = utf8NextCodepoint(reinterpret_cast<const uint8_t**>(&text)))) {
+      if (BidiUtils::isTransparentMark(cp)) continue;
+      if (utf8IsCombiningMark(cp)) continue;
+
+      cp = family_->applyLigatures(cp, text, style);
+
+      if (prevCp != 0) {
+        const int32_t kernFP = family_->getKerning(prevCp, cp, style);
+        widthPx += fp4::toPixel(prevAdvanceFP + kernFP);
+      }
+
+      const EpdGlyph* glyph = family_->getGlyph(cp, style);
+      prevAdvanceFP = glyph ? glyph->advanceX : 0;
+      if (isSupSub) prevAdvanceFP = (prevAdvanceFP + 1) / 2;
+      prevCp = cp;
+    }
+    widthPx += fp4::toPixel(prevAdvanceFP);  // final glyph's advance
+    return widthPx;
   }
 
   int getTextWidth(int fontId, const char* text, EpdFontFamily::Style style,
