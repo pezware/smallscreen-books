@@ -112,33 +112,52 @@ So page counting is a wiring job against an existing pattern, and a true
 writing its framebuffer out as an image. The font layer, which is the part that
 looks hardest, is already proven to build.
 
-**Measured, 2026-09-18.** The line measurer now exists: `tools/fit`, built
-against firmware `6c83edd`. It links the real `ParsedText` line breaker, the
-real Spanish hyphenation patterns and the real NotoSerif metrics, and supplies
-its own `GfxRenderer` that answers from `EpdFontFamily` instead of the
-firmware's test double, which invents 8 pixels per character.
+**Measured, 2026-09-19.** The line measurer exists: `tools/fit`, built against
+firmware `6c83edd`. It links the real `ParsedText` line breaker, the real
+hyphenation patterns and the real NotoSerif metrics, and supplies its own
+`GfxRenderer` answering from `EpdFontFamily` instead of the firmware's test
+double, which invents 8 pixels per character.
 
-| NotoSerif | line height | lines per 800px screen |
-|---|---|---|
-| 12 | 34px | 23 |
-| 14 | 40px | 20 |
-| 16 | 45px | 17 |
-| 18 | 51px | 15 |
+The panel is 480x800. **The text viewport is not.** The reader subtracts the
+hardware safe area, then `screenMargin` on every side, then a status lane at
+the bottom (`EpubReaderActivity.cpp:1138`). At the firmware's own defaults --
+`screenMargin` 5, status bar 19 -- that is 470x776, and `screenMargin` goes up
+to 40, which takes it to 400x720.
 
-A 90-character definition takes 3 lines at size 12 and 4 at sizes 14, 16 and
-18, measured with Spanish hyphenation and advance-width metrics.
+| NotoSerif | line height | lines in 776px | lines at margin 40 |
+|---|---|---|---|
+| 12 | 34px | 22 | 21 |
+| 14 | 40px | 19 | 18 |
+| 16 | 45px | 17 | 16 |
+| 18 | 51px | 15 | 14 |
 
-Both qualifiers are load-bearing. Over 1,080 generated passages at size 16:
-Spanish hyphenation gives 4,256 lines, English patterns on the same Spanish
-text give 4,343, and no hyphenation gives 4,429. Measuring with the wrong
-language inflates the count by 2%, and with none by 4% -- silently, since
-nothing reports which rule set was used.
+Measured at the firmware's defaults, which are hyphenation **off**
+(`hyphenationEnabled = 0`) and paragraph spacing **on**
+(`extraParagraphSpacing = 1`), a 90-character definition takes 3 lines at size
+12, 4 at 14 and 16, and 5 at 18. Reproduce with `python3 tools/fit/probe.py |
+./build/fit/fit --size N`.
 
-So `MAX_DEFINITION_CHARS = 90` is **not** the boundary its comment claims. A
-screen holds 15 to 23 lines; a headword, a 90-character definition and two
-examples come to roughly 10 to 14. The first screen does not spill at 90
-characters at any built-in size. Whatever 90 is good for, it is not the fit
-limit, and stage 2 should not be generated against it as though it were.
+**What this does and does not settle about `MAX_DEFINITION_CHARS`.**
+
+An earlier version of this file claimed the first screen "does not spill at 90
+characters at any built-in size". That claim was wrong twice over, and both
+errors flattered the result: it measured against the full 480x800 panel rather
+than the text viewport, and it ran with hyphenation on and paragraph spacing
+off, which is the opposite of the device's defaults on both counts.
+
+Corrected, the arithmetic is close rather than comfortable. An entry is four
+blocks -- headword, definition, two examples -- and `extraParagraphSpacing`
+adds roughly half a line after each. At size 16 that is about 13 line
+equivalents against 17: it fits. At size 18 it is about 16 against 15: **it
+spills**, and raising the margin makes every size worse.
+
+So 90 characters is not obviously wrong as a budget, and the original comment
+may well be right at the largest size. What it is not is *measured*, and a
+bare-paragraph measurement plus arithmetic cannot settle it either: the real
+entry carries CSS margins, heading weight and `text-indent` that none of this
+counts, and measuring one 90-character passage cannot falsify a claim about
+definitions *longer* than 90. Settling it needs the whole entry driven through
+`ChapterHtmlSlimParser`.
 
 The screenshot is still unbuilt. It needs `GfxRenderer.cpp` compiled for the
 host and its framebuffer written out; `FontDecompressor` becomes necessary

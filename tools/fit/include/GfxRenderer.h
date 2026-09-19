@@ -101,12 +101,25 @@ class GfxRenderer {
     return space ? fp4::toPixel(space->advanceX) : 0;
   }
 
-  int getSpaceAdvance(int fontId, uint32_t, uint32_t, EpdFontFamily::Style style) const {
-    return getSpaceWidth(fontId, style);
+  // The renderer snaps the space advance together with the kerns on BOTH
+  // sides of it, so a word boundary is not simply the width of a space.
+  int getSpaceAdvance(int, uint32_t leftCp, uint32_t rightCp, EpdFontFamily::Style style) const {
+    const EpdGlyph* space = family_->getGlyph(' ', style);
+    const int32_t advanceFP = space ? space->advanceX : 0;
+    const int32_t leftKernFP = leftCp ? family_->getKerning(leftCp, ' ', style) : 0;
+    const int32_t rightKernFP = rightCp ? family_->getKerning(' ', rightCp, style) : 0;
+    return fp4::toPixel(advanceFP + leftKernFP + rightKernFP);
   }
 
+  // getKerning returns 4.4 fixed-point, and the renderer converts it to
+  // pixels. Handing the raw value back reports a kern of -43 as -43px rather
+  // than about -3px. It happens to be harmless for the fonts and the plain
+  // paragraphs measured today, because Noto Serif regular has no kern class
+  // for U+0020 and nothing here builds attached token boundaries -- which is
+  // exactly the kind of accident that stops being harmless the moment this
+  // shim is driven through ChapterHtmlSlimParser.
   int getKerning(int, uint32_t leftCp, uint32_t rightCp, EpdFontFamily::Style style) const {
-    return family_->getKerning(leftCp, rightCp, style);
+    return fp4::toPixel(family_->getKerning(leftCp, rightCp, style));
   }
 
   int getLineHeight(int, float compression = 1.0f) const {

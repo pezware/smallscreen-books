@@ -11,6 +11,7 @@
 
 #include <Epub/ParsedText.h>
 #include <Epub/hyphenation/Hyphenator.h>
+#include <Epub/hyphenation/LanguageRegistry.h>
 #include <GfxRenderer.h>
 #include <builtinFonts/notoserif_12_regular.h>
 #include <builtinFonts/notoserif_14_regular.h>
@@ -48,22 +49,36 @@ std::vector<std::string> splitWords(const std::string& text) {
 
 int main(int argc, char** argv) {
   int size = 16;
-  int viewportWidth = 480;
-  bool hyphenate = true;
+  // The panel is 480x800; the text viewport is not. The reader subtracts the
+  // hardware safe area, then screenMargin on every side, then a status lane at
+  // the bottom (EpubReaderActivity.cpp:1138). Defaults here are the firmware's
+  // own: screenMargin = SCREEN_MARGIN_MIN = 5, status bar 19. Measuring
+  // against the full panel overstates capacity by a line at most sizes, and by
+  // much more once the reader raises the margin, which it allows up to 40.
+  int screenMargin = 5;
+  int statusBarHeight = 19;
+  // Firmware defaults: hyphenationEnabled = 0, extraParagraphSpacing = 1
+  // (CrossPointSettings.h). The harness follows the device rather than what
+  // flatters the measurement.
+  bool hyphenate = false;
+  bool extraParagraphSpacing = true;
   std::string language = "es";
 
   for (int i = 1; i < argc; ++i) {
     if (std::strcmp(argv[i], "--size") == 0 && i + 1 < argc) {
       size = std::atoi(argv[++i]);
-    } else if (std::strcmp(argv[i], "--width") == 0 && i + 1 < argc) {
-      viewportWidth = std::atoi(argv[++i]);
-    } else if (std::strcmp(argv[i], "--language") == 0 && i + 1 < argc) {
+    } else if (std::strcmp(argv[i], "--margin") == 0 && i + 1 < argc) {
+      screenMargin = std::atoi(argv[++i]);
+    } else if (std::strcmp(argv[i], "--status-bar") == 0 && i + 1 < argc) {
+      statusBarHeight = std::atoi(argv[++i]);
+    } else if (std::strcmp(argv[i], "--no-paragraph-spacing") == 0) {
+      extraParagraphSpacing = false;
+    } else if (std::strcmp(argv[i], "--hyphenate") == 0 && i + 1 < argc) {
+      hyphenate = true;
       language = argv[++i];
-    } else if (std::strcmp(argv[i], "--no-hyphenation") == 0) {
-      hyphenate = false;
     } else {
-      std::cerr << "usage: fit [--size 12|14|16|18] [--width px] [--language es]"
-                   " [--no-hyphenation]\n"
+      std::cerr << "usage: fit [--size 12|14|16|18] [--margin px] [--status-bar px]"
+                   " [--hyphenate LANG] [--no-paragraph-spacing]\n"
                 << "reads the text to measure on stdin, one passage per line\n";
       return 2;
     }
@@ -79,27 +94,45 @@ int main(int argc, char** argv) {
   // sets it for you. Leaving it unset does not disable hyphenation -- it
   // hyphenates with whatever rule set happens to be cached, which is a
   // different set of line breaks from the Spanish one and no error anywhere.
-  Hyphenator::setPreferredLanguage(language);
+  if (hyphenate) {
+    // An unsupported tag maps to nullptr and hyphenates with nothing, while
+    // the banner still names the language. Refuse instead of reporting a
+    // measurement under a label it did not use.
+    if (getLanguageHyphenatorForPrimaryTag(language) == nullptr) {
+      std::cerr << "unsupported hyphenation language: " << language << "\nsupported:";
+      for (const LanguageEntry& entry : getLanguageEntries()) {
+        std::cerr << " " << entry.primaryTag;
+      }
+      std::cerr << "\n";
+      return 2;
+    }
+    Hyphenator::setPreferredLanguage(language);
+  }
 
   const EpdFont regular(data);
   const EpdFontFamily family(&regular);
-  const GfxRenderer renderer(&family, viewportWidth, 800);
+  const int viewportWidth = 480 - 2 * screenMargin;
+  const int viewportHeight = 800 - screenMargin - statusBarHeight;
+  const GfxRenderer renderer(&family, viewportWidth, viewportHeight);
 
   // State the measurement's frame. "Fits" is meaningless without it, and a
   // reader who changes font size changes the answer.
   const int lineHeight = renderer.getLineHeight(0);
   const int linesPerScreen = lineHeight > 0 ? renderer.getScreenHeight() / lineHeight : 0;
-  std::cerr << "# NotoSerif " << size << "  viewport " << viewportWidth << "x"
-            << renderer.getScreenHeight() << "  line height " << lineHeight
-            << "px  -> " << linesPerScreen << " lines per screen"
-            << (hyphenate ? "  hyphenation " + language : std::string("  hyphenation OFF"))
+  std::cerr << "# NotoSerif " << size << "  text viewport " << viewportWidth << "x"
+            << viewportHeight << " (panel 480x800 less margin " << screenMargin
+            << " and status " << statusBarHeight << ")"
+            << "  line height " << lineHeight << "px  -> at most " << linesPerScreen
+            << " lines"
+            << (hyphenate ? "  hyphenation " + language : std::string("  hyphenation off"))
+            << (extraParagraphSpacing ? "  paragraph spacing on" : "  paragraph spacing off")
             << "\n";
   std::cout << "lines\twidth_px\ttext\n";
   std::string line;
   while (std::getline(std::cin, line)) {
     if (line.empty()) continue;
 
-    ParsedText text(false, hyphenate);
+    ParsedText text(extraParagraphSpacing, hyphenate);
     for (const std::string& word : splitWords(line)) {
       text.addWord(word, EpdFontFamily::REGULAR);
     }

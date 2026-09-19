@@ -32,5 +32,6 @@ description = "Measure how many lines Spanish prose takes, using the device's ow
 run = """
 cmake -S tools/fit -B build/fit -DCROSSPOINT_ROOT="${CROSSPOINT_ROOT:?set CROSSPOINT_ROOT to a crosspoint-reader checkout}"
 cmake --build build/fit -j
-echo "built: build/fit/fit  (reads passages on stdin, one per line)"
+echo "built: build/fit/fit"
+echo "measure: python3 tools/fit/probe.py | ./build/fit/fit --size 16"
 """
