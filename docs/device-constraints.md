@@ -112,7 +112,57 @@ So page counting is a wiring job against an existing pattern, and a true
 writing its framebuffer out as an image. The font layer, which is the part that
 looks hardest, is already proven to build.
 
-I have not built either tool, so I cannot report what they cost.
+**Measured, 2026-09-19.** The line measurer exists: `tools/fit`, built against
+firmware `6c83edd`. It links the real `ParsedText` line breaker, the real
+hyphenation patterns and the real NotoSerif metrics, and supplies its own
+`GfxRenderer` answering from `EpdFontFamily` instead of the firmware's test
+double, which invents 8 pixels per character.
+
+The panel is 480x800. **The text viewport is not.** The reader subtracts the
+hardware safe area, then `screenMargin` on every side, then a status lane at
+the bottom (`EpubReaderActivity.cpp:1138`). At the firmware's own defaults --
+`screenMargin` 5, status bar 19 -- that is 470x776, and `screenMargin` goes up
+to 40, which takes it to 400x720.
+
+| NotoSerif | line height | lines in 776px | lines at margin 40 |
+|---|---|---|---|
+| 12 | 34px | 22 | 21 |
+| 14 | 40px | 19 | 18 |
+| 16 | 45px | 17 | 16 |
+| 18 | 51px | 15 | 14 |
+
+Measured at the firmware's defaults, which are hyphenation **off**
+(`hyphenationEnabled = 0`) and paragraph spacing **on**
+(`extraParagraphSpacing = 1`), a 90-character definition takes 3 lines at size
+12, 4 at 14 and 16, and 5 at 18. Reproduce with `python3 tools/fit/probe.py |
+./build/fit/fit --size N`.
+
+**What this does and does not settle about `MAX_DEFINITION_CHARS`.**
+
+An earlier version of this file claimed the first screen "does not spill at 90
+characters at any built-in size". That claim was wrong twice over, and both
+errors flattered the result: it measured against the full 480x800 panel rather
+than the text viewport, and it ran with hyphenation on and paragraph spacing
+off, which is the opposite of the device's defaults on both counts.
+
+Corrected, the arithmetic is close rather than comfortable. An entry is four
+blocks -- headword, definition, two examples -- and `extraParagraphSpacing`
+adds roughly half a line after each. At size 16 that is about 13 line
+equivalents against 17: it fits. At size 18 it is about 16 against 15: **it
+spills**, and raising the margin makes every size worse.
+
+So 90 characters is not obviously wrong as a budget, and the original comment
+may well be right at the largest size. What it is not is *measured*, and a
+bare-paragraph measurement plus arithmetic cannot settle it either: the real
+entry carries CSS margins, heading weight and `text-indent` that none of this
+counts, and measuring one 90-character passage cannot falsify a claim about
+definitions *longer* than 90. Settling it needs the whole entry driven through
+`ChapterHtmlSlimParser`.
+
+The screenshot is still unbuilt. It needs `GfxRenderer.cpp` compiled for the
+host and its framebuffer written out; `FontDecompressor` becomes necessary
+there, and it wants Arduino's `millis`/`micros`, which the metrics path does
+not.
 
 ## Related device features worth using
 

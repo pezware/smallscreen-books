@@ -22,3 +22,6 @@ venv/
 
 # macOS
 .DS_Store
+
+# Host build of the fit harness
+build/
