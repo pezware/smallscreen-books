@@ -50,6 +50,42 @@ foreach(dir ${CROSSPOINT_LIB_DIRS})
   endif()
 endforeach()
 
+# Second target: the whole entry, through the device's real parser.
+#
+# Needs expat, which the firmware vendors at lib/expat -- so this stays a
+# dependency on a firmware checkout rather than a new third-party fetch.
+add_executable(fit-entry
+  entry_main.cpp
+  LinkStubs.cpp
+  ${CROSSPOINT_ROOT}/lib/Epub/Epub/parsers/ChapterHtmlSlimParser.cpp
+  ${CROSSPOINT_ROOT}/lib/Epub/Epub/css/CssParser.cpp
+  ${CROSSPOINT_ROOT}/lib/Epub/Epub/Page.cpp
+  ${CROSSPOINT_ROOT}/lib/Epub/Epub/ParsedText.cpp
+  ${CROSSPOINT_ROOT}/lib/Epub/Epub/blocks/TextBlock.cpp
+  ${CROSSPOINT_ROOT}/lib/Epub/Epub/converters/ImageDimsProbe.cpp
+  # Real entity table and real hyphenator: both move line breaks, so stubbing
+  # them would measure a layout the device never renders.
+  ${CROSSPOINT_ROOT}/lib/Epub/Epub/htmlEntities.cpp
+  ${CROSSPOINT_ROOT}/lib/Epub/Epub/hyphenation/Hyphenator.cpp
+  ${CROSSPOINT_ROOT}/lib/Epub/Epub/hyphenation/LanguageRegistry.cpp
+  ${CROSSPOINT_ROOT}/lib/Epub/Epub/hyphenation/LiangHyphenation.cpp
+  ${CROSSPOINT_ROOT}/lib/Epub/Epub/hyphenation/HyphenationCommon.cpp
+  ${CROSSPOINT_ROOT}/lib/EpdFont/EpdFont.cpp
+  ${CROSSPOINT_ROOT}/lib/EpdFont/EpdFontFamily.cpp
+  ${CROSSPOINT_ROOT}/lib/Utf8/Utf8.cpp
+  ${CROSSPOINT_ROOT}/lib/MiniBidi/BidiUtils.cpp
+  ${CROSSPOINT_ROOT}/lib/MiniBidi/minibidi.c
+  ${CROSSPOINT_ROOT}/lib/expat/xmlparse.c
+  ${CROSSPOINT_ROOT}/lib/expat/xmltok.c
+  ${CROSSPOINT_ROOT}/lib/expat/xmlrole.c
+)
+
+# Exactly the flags the firmware builds expat with (platformio.ini:44-46).
+# XML_GE=0 disables general entity expansion, which changes what the parser
+# accepts -- matching it is the difference between measuring the device's
+# parser and measuring a more permissive one.
+target_compile_definitions(fit-entry PRIVATE XML_GE=0 XML_CONTEXT_BYTES=1024 XML_STATIC)
+
 target_include_directories(fit PRIVATE
   # Ours first: this directory supplies the GfxRenderer the layout code
   # includes, and it must win over the firmware's fake-metrics test double
@@ -59,5 +95,15 @@ target_include_directories(fit PRIVATE
   ${CROSSPOINT_ROOT}/lib
   ${CROSSPOINT_ROOT}/lib/Epub
   ${CROSSPOINT_ROOT}/lib/Epub/Epub
+  ${CROSSPOINT_INCLUDES}
+)
+
+target_include_directories(fit-entry PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+  ${CROSSPOINT_ROOT}/test/chapter_html_slim_parser/stubs
+  ${CROSSPOINT_ROOT}/lib
+  ${CROSSPOINT_ROOT}/lib/Epub
+  ${CROSSPOINT_ROOT}/lib/Epub/Epub
+  ${CROSSPOINT_ROOT}/lib/expat
   ${CROSSPOINT_INCLUDES}
 )

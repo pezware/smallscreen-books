@@ -19,6 +19,14 @@ run = "uv run python src/frequency.py"
 description = "Build the Spanish wordbook EPUB into build/"
 run = "uv run python src/render.py"
 
+[tasks.fit-entry]
+description = "Pages per whole entry, through the device's real parser"
+run = """
+cmake -S tools/fit -B build/fit -DCROSSPOINT_ROOT="${CROSSPOINT_ROOT:?set CROSSPOINT_ROOT to a crosspoint-reader checkout}"
+cmake --build build/fit -j --target fit-entry
+echo "built: build/fit/fit-entry  (give it XHTML files; prints pages and a spill rate)"
+"""
+
 [tasks.test]
 description = "Run the test suite"
 run = "uv run python -m unittest discover -s tests -t tests"

@@ -159,27 +159,40 @@ Measured at the firmware's defaults, which are hyphenation **off**
 12, 4 at 14 and 16, and 5 at 18. Reproduce with `python3 tools/fit/probe.py |
 ./build/fit/fit --size N`.
 
-**What this does and does not settle about `MAX_DEFINITION_CHARS`.**
+**Settled, 2026-09-20: `MAX_DEFINITION_CHARS = 90` is a sound budget.**
 
-An earlier version of this file claimed the first screen "does not spill at 90
-characters at any built-in size". That claim was wrong twice over, and both
-errors flattered the result: it measured against the full 480x800 panel rather
-than the text viewport, and it ran with hyphenation on and paragraph spacing
-off, which is the opposite of the device's defaults on both counts.
+`tools/fit/fit-entry` drives a whole entry's XHTML through the device's real
+`ChapterHtmlSlimParser` and counts the pages it emits, so this is a page count
+rather than a line count plus arithmetic. It uses the firmware's own expat
+flags (`XML_GE=0`, `XML_CONTEXT_BYTES=1024`) and the firmware's own defaults:
+hyphenation off, paragraph spacing on, text viewport 470x776.
 
-Corrected, the arithmetic is close rather than comfortable. An entry is four
-blocks -- headword, definition, two examples -- and `extraParagraphSpacing`
-adds roughly half a line after each. At size 16 that is about 13 line
-equivalents against 17: it fits. At size 18 it is about 16 against 15: **it
-spills**, and raising the margin makes every size worse.
+Pages for a complete entry -- headword, part of speech, definition, and two
+60-character examples -- by definition length:
 
-So 90 characters is not obviously wrong as a budget, and the original comment
-may well be right at the largest size. What it is not is *measured*, and a
-bare-paragraph measurement plus arithmetic cannot settle it either: the real
-entry carries CSS margins, heading weight and `text-indent` that none of this
-counts, and measuring one 90-character passage cannot falsify a claim about
-definitions *longer* than 90. Settling it needs the whole entry driven through
-`ChapterHtmlSlimParser`.
+| definition | 12 | 14 | 16 | 18 | 18 at margin 40 |
+|---|---|---|---|---|---|
+| 60 chars | 1 | 1 | 1 | 1 | 1 |
+| 80 | 1 | 1 | 1 | 1 | 2 |
+| 100 | 1 | 1 | 1 | 1 | 2 |
+| 120 | 1 | 1 | 1 | 2 | 2 |
+| 180 | 1 | 1 | 1 | 2 | 2 |
+| 200 | 1 | 1 | 2 | 2 | 2 |
+
+At 90 characters an entry is one page at **every** built-in font size with the
+default margin. The first spill at default margins arrives around 120
+characters at size 18. Only the maximum margin of 40, or line compression
+above 1.0, pushes a 90-character entry onto a continuation page -- and
+continuation pages are an accepted design decision, so that is tuning rather
+than failure.
+
+**Two earlier claims in this file were wrong, in opposite directions.** The
+first said the screen "does not spill at 90 characters at any built-in size" --
+right by accident, from the wrong viewport and the wrong settings. The second
+estimated roughly 16 line equivalents against 15 at size 18 and concluded it
+spills -- wrong, because "half a line per block" over-counted what paragraph
+spacing actually costs. The measurement above replaces both, and the lesson is
+that arithmetic over a line count is not a substitute for running the paginator.
 
 The screenshot is still unbuilt. It needs `GfxRenderer.cpp` compiled for the
 host and its framebuffer written out; `FontDecompressor` becomes necessary
