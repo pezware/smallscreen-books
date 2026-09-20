@@ -30,3 +30,25 @@ jobs:
 
       - name: Test
         run: mise run test
+
+  # The 3,000-section spine is the design's largest untested assumption, and it
+  # cannot be tested here -- only on the device. So CI's job is to put a
+  # current book within reach: download the artifact, upload it over the
+  # reader's web page or WebDAV, and open it.
+  book:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-mise
+
+      - name: Build the book
+        run: mise run book
+
+      - name: Check the archive is a well-formed EPUB
+        run: uv run python tools/check_epub.py build/es-wordbook.epub
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: es-wordbook-epub
+          path: build/*.epub
+          if-no-files-found: error

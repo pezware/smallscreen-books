@@ -31,15 +31,21 @@ docs/            device constraints and the build plan
 
 ## Status
 
-Early. Stage 1 of `docs/plan.md` has landed: `src/frequency.py` builds
-`data/es/frequency.txt`, the 3,000 words the Spanish book will hold and the
-vocabulary every generated definition is checked against. Definitions,
-examples and the renderer do not exist yet.
+Early. Stage 1 has landed (`src/frequency.py` builds `data/es/frequency.txt`,
+the 3,000 words the book holds and the vocabulary definitions are checked
+against), and the renderer now produces a real EPUB (`src/render.py`) with one
+XHTML file per word and a letter-level table of contents.
+
+Definitions and examples do not exist yet, so every entry currently reads
+`(sin definicion)`. That is deliberate: the 3,000-item spine is the design's
+largest untested assumption, and it can be tested on the hardware before any
+content is generated.
 
 ```sh
 curl -O https://downloads.wortschatz-leipzig.de/corpora/spa_news_2011_1M.tar.gz
 tar xzf spa_news_2011_1M.tar.gz -C data/es/raw/       # gitignored, 266 MB
 python3 src/frequency.py                              # writes data/es/frequency.txt
+mise run book                                         # writes build/es-wordbook.epub
 python3 -m unittest discover -s tests -t tests        # stdlib only, no venv
 ```
 
