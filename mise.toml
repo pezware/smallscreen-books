@@ -15,6 +15,10 @@ cmake = "4.2"
 description = "Build the Spanish frequency list from the corpus in data/es/raw"
 run = "uv run python src/frequency.py"
 
+[tasks.book]
+description = "Build the Spanish wordbook EPUB into build/"
+run = "uv run python src/render.py"
+
 [tasks.test]
 description = "Run the test suite"
 run = "uv run python -m unittest discover -s tests -t tests"

@@ -78,6 +78,28 @@ engine switches to an indexed href lookup and batched size reads, so a
 Nobody has measured 3,000 sections on this device yet. Expect 3,000 cache files
 under `/.crosspoint/epub_<hash>/sections/` and measure the first open.
 
+**A book to measure it with now exists**, before any content does. `mise run
+book` builds `build/es-wordbook.epub`: 3,000 real headwords, one XHTML file
+each, every definition a placeholder. CI builds the same file on every change
+and attaches it as the `es-wordbook-epub` artifact, so the version under test
+is always current.
+
+To settle it (the one step that cannot be automated from here):
+
+1. Download the `es-wordbook-epub` artifact, or run `mise run book`.
+2. Upload it to the device over the reader's web upload page, WebDAV, OPDS or
+   Calibre wireless.
+3. Time the **first** open, which is when the 3,000 section caches are built,
+   and a later open, which should read them back.
+4. Check `/.crosspoint/epub_<hash>/sections/` holds roughly 3,000 files and
+   what they cost in storage.
+5. Page through a letter boundary and use the table of contents, which has one
+   entry per letter rather than per word.
+
+If first open is unusable at this spine count, one-XHTML-per-word is not
+viable, and that invalidates the design -- which is exactly why this is worth
+knowing before stage 2 generates 3,000 definitions.
+
 ### Keep the table of contents small
 
 Give the TOC one entry per letter, not one per word. `docs/file-formats.md` in
