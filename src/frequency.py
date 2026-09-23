@@ -51,6 +51,14 @@ DEFAULT_LIMIT = 3000
 # is an initial, a list marker or a unit, and costs a slot in the book.
 ONE_LETTER_WORDS = frozenset("aeouy")
 
+# Misspellings the corpus carries as separate forms, mapped to the word they
+# spell. News drops the accent in all-caps headlines, and `asi` is not a word.
+VARIANTS = {"asi": "así"}
+
+# English words and name fragments (`bin` of bin Laden) that rank as tokens.
+# A language-identification rule would replace this list; see issue #6.
+NOT_SPANISH = frozenset({"the", "of", "in", "bin"})
+
 # Below this share of lowercase use, a form is a name rather than a word.
 # See the module docstring for why the cut sits this low.
 PROPER_NOUN_RATIO = 0.08
@@ -86,8 +94,9 @@ class Form:
 def count_words(words_file: Path) -> collections.Counter[str]:
     """Total the corpus token counts per case-folded form, words only.
 
-    Single letters other than ONE_LETTER_WORDS are dropped here rather than
-    later, so they never reach the ranking and never spend a slot.
+    Single letters other than ONE_LETTER_WORDS, and NOT_SPANISH, are dropped
+    here rather than later, so they never reach the ranking and never spend a
+    slot. A VARIANTS misspelling adds its count to the word it spells.
     """
     counts: collections.Counter[str] = collections.Counter()
     with words_file.open(encoding="utf-8") as handle:
@@ -99,7 +108,10 @@ def count_words(words_file: Path) -> collections.Counter[str]:
             if not _WORD_ONLY.match(form):
                 continue
             folded = form.casefold()
+            folded = VARIANTS.get(folded, folded)
             if len(folded) == 1 and folded not in ONE_LETTER_WORDS:
+                continue
+            if folded in NOT_SPANISH:
                 continue
             counts[folded] += int(count)
     return counts
@@ -126,6 +138,7 @@ def count_case_uses(
             for position, match in enumerate(_TOKEN.finditer(sentence)):
                 token = match.group()
                 folded = token.casefold()
+                folded = VARIANTS.get(folded, folded)
                 if folded not in candidates:
                     continue
                 if token.islower():

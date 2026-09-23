@@ -36,6 +36,18 @@ class CountWords(unittest.TestCase):
         words = write(self.tmp, "w.txt", ["1\tmás\t5"])
         self.assertIn("más", frequency.count_words(words))
 
+    def test_adds_an_unaccented_variant_to_its_accented_form(self):
+        words = write(self.tmp, "w.txt", ["1\tasí\t70", "2\tasi\t30"])
+        self.assertEqual(frequency.count_words(words)["así"], 100)
+
+    def test_drops_the_unaccented_variant_itself(self):
+        words = write(self.tmp, "w.txt", ["1\tasí\t70", "2\tasi\t30"])
+        self.assertNotIn("asi", frequency.count_words(words))
+
+    def test_drops_english_tokens(self):
+        words = write(self.tmp, "w.txt", ["1\tthe\t90", "2\tof\t80", "3\tcasa\t10"])
+        self.assertEqual(list(frequency.count_words(words)), ["casa"])
+
 
 class CountCaseUses(unittest.TestCase):
     def setUp(self):
@@ -55,6 +67,11 @@ class CountCaseUses(unittest.TestCase):
         sentences = write(self.tmp, "s.txt", ["1\tVivo en España hoy."])
         _, capitalised = frequency.count_case_uses(sentences, {"españa"})
         self.assertEqual(capitalised["españa"], 1)
+
+    def test_credits_a_variant_to_its_accented_form(self):
+        sentences = write(self.tmp, "s.txt", ["1\tLo hizo asi."])
+        lowercase, _ = frequency.count_case_uses(sentences, {"así"})
+        self.assertEqual(lowercase["así"], 1)
 
 
 class ProperNouns(unittest.TestCase):
@@ -128,6 +145,10 @@ class ShippedList(unittest.TestCase):
     def test_holds_no_duplicates(self):
         forms = self.forms()
         self.assertEqual(len(set(forms)), len(forms))
+
+    def test_holds_no_known_noise(self):
+        """The forms issue #6 found: English, a name fragment, a misspelling."""
+        self.assertEqual(set(self.forms()) & {"the", "of", "in", "bin", "asi"}, set())
 
     def test_the_definition_checks_can_load_it(self):
         import validate

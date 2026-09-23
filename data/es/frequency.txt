@@ -47,11 +47,11 @@ entre
 está
 muy
 esta
+así
 todo
 hace
 según
 porque
-así
 gobierno
 tiene
 año
@@ -437,7 +437,6 @@ nuevos
 nuevas
 sabe
 actual
-the
 ninguna
 liga
 primeros
@@ -1479,7 +1478,6 @@ produjo
 voluntad
 consiguió
 personaje
-bin
 cientos
 niña
 máxima
@@ -1571,7 +1569,6 @@ tienes
 recorrido
 operativo
 texto
-of
 caer
 dolor
 líneas
@@ -2079,7 +2076,6 @@ socios
 dirigido
 ofensiva
 manifestación
-asi
 vacaciones
 residencia
 agente
@@ -2945,7 +2941,6 @@ dispone
 filme
 marcar
 dirigida
-in
 solicitud
 campañas
 termina
@@ -2998,3 +2993,8 @@ señalan
 quinta
 éstos
 habrían
+terminado
+formado
+paseo
+pelo
+ciencias
