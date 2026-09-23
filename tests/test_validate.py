@@ -32,6 +32,24 @@ class LoadKnownForms(unittest.TestCase):
     def test_ignores_blank_lines(self):
         self.assertEqual(validate.load_known_forms(self.written("de\n\n")), {"de"})
 
+    def test_knowing_año_does_not_make_ano_known(self):
+        known = validate.load_known_forms(self.written("año\n"))
+        self.assertEqual(validate.unknown_words("ano", known), {"ano"})
+
+
+class Normalise(unittest.TestCase):
+    def test_enye_is_a_letter_not_an_accented_n(self):
+        self.assertNotEqual(validate.normalise("año"), validate.normalise("ano"))
+
+    def test_enye_survives_case_folding(self):
+        self.assertEqual(validate.normalise("AÑO"), "año")
+
+    def test_decomposed_enye_equals_precomposed(self):
+        self.assertEqual(validate.normalise("año"), "año")
+
+    def test_stress_accents_still_fold(self):
+        self.assertEqual(validate.normalise("Rápido"), "rapido")
+
 
 if __name__ == "__main__":
     unittest.main()

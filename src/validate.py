@@ -23,10 +23,22 @@ MAX_DEFINITION_CHARS = 90
 _WORD = re.compile(r"[^\W\d_]+", re.UNICODE)
 
 
+_COMBINING_TILDE = "̃"
+
+
 def normalise(word: str) -> str:
-    """Lowercase and strip accents, so 'Rápido' and 'rapido' compare equal."""
+    """Lowercase and strip accents, so 'Rápido' and 'rapido' compare equal.
+
+    N-tilde is kept. It is a separate letter in Spanish, not an accented n, and
+    folding it would make 'año' and 'ano' the same word.
+    """
     folded = unicodedata.normalize("NFD", word.casefold())
-    return "".join(c for c in folded if unicodedata.category(c) != "Mn")
+    out: list[str] = []
+    for char in folded:
+        is_enye = char == _COMBINING_TILDE and out and out[-1] == "n"
+        if is_enye or unicodedata.category(char) != "Mn":
+            out.append(char)
+    return unicodedata.normalize("NFC", "".join(out))
 
 
 def load_known_forms(path: Path | str) -> set[str]:
