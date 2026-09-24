@@ -32,8 +32,7 @@ docs/            device constraints and the build plan
 ## Status
 
 Early. Stage 1 has landed (`src/frequency.py` builds `data/es/frequency.txt`,
-the 3,000 words the book holds and the vocabulary definitions are checked
-against), and the renderer now produces a real EPUB (`src/render.py`) with one
+the ranked word forms the book's 3,000 headwords are chosen from), and the renderer now produces a real EPUB (`src/render.py`) with one
 XHTML file per word and a letter-level table of contents.
 
 Definitions and examples do not exist yet, so every entry currently reads
