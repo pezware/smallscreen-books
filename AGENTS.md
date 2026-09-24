@@ -36,7 +36,7 @@ Both need `CROSSPOINT_ROOT` set to a crosspoint-reader checkout.
 ```
 src/frequency.py   corpus -> data/es/frequency.txt (+ .excluded.txt, .source.json)
 src/render.py      entries -> EPUB, one XHTML file per word
-src/validate.py    checks a generated definition against the frequency list
+src/validate.py    checks a generated definition against the book's headwords
 tools/check_epub.py  structural EPUB checks (no JVM here, so no epubcheck)
 tools/fit/         host build of the firmware's line breaker and parser
 data/<lang>/       source of truth for book content

@@ -30,11 +30,20 @@ still holds 3,000 distinct lemmas. Homographs are not split: a form with two
 analyses, such as `vino` (noun) and `vino` (from `venir`), belongs to the entry
 of its more common analysis, and only that entry lists it.
 
-Consequence: `data/es/frequency.txt` stays a list of surface forms, because
-the vocabulary check compares surface forms. Merging means 3,000 forms yield
+Consequence: `data/es/frequency.txt` stays a ranked list of surface forms,
+and becomes the input to the ranking only. Merging means 3,000 forms yield
 fewer than 3,000 lemmas, so stage 1b reads a longer ranked list and stops at
-the 3,000th lemma. Whether the vocabulary check then trusts the top 3,000 forms
-or every form of the 3,000 headwords is still open, and is decided in 1b.
+the 3,000th lemma.
+
+Andy took one more on 2026-09-24.
+
+**The vocabulary is the book's own headwords.** A definition may use a word
+when the book has an entry for it: any headword, or any form an entry lists
+(`validate.load_headword_forms`). The rule a reader can act on is "every word
+in a definition can be looked up in this book". It is wider than the top 3,000
+forms, which would reject a headword such as `decir` whose infinitive ranks
+below its conjugations, and it makes a strict `accept_definition` workable.
+A form no entry lists, such as a rare conjugation, is still unknown.
 
 **Every entry carries two examples.** The second example may push an entry
 onto a continuation page, which the first decision already accepts. Examples
@@ -87,8 +96,8 @@ once-valid definition fail. A failure is reported, never silently kept.
 `src/validate.py:accept_definition` raises `NotImplementedError`. It decides
 whether a generated definition may enter the book.
 
-The trade-off: `unknown_words()` compares surface forms, so it flags `dice`
-when only `decir` sits in the frequency list. A rule that rejects every
+The trade-off: `unknown_words()` compares surface forms, so it flags any form
+no entry lists, even of a verb the book defines. A rule that rejects every
 out-of-vocabulary word sends good definitions back to the generator in a loop.
 A tolerant rule lets a few unknown words through and trusts the sentence around
 them.
