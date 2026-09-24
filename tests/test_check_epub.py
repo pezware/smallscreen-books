@@ -25,7 +25,16 @@ class Checker(unittest.TestCase):
             [render.Entry("casa"), render.Entry("zona")],
             self.tmp / "good.epub",
             "T",
-            "test",
+            [
+                {
+                    "name": "Corpus",
+                    "licence": "CC BY 4.0",
+                    "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+                    "attribution": "A citation.",
+                    "changes": "Modified.",
+                    "material": "https://example.org/corpus.tar.gz",
+                }
+            ],
         )
 
     def test_accepts_a_book_the_renderer_produced(self):
@@ -66,6 +75,17 @@ class Checker(unittest.TestCase):
                     continue
                 dst.writestr(info, src.read(info.filename))
         self.assertTrue(any("container" in p for p in check_epub.problems(out)))
+
+    def test_rejects_a_book_without_its_attribution_page(self):
+        out = self.tmp / "noattribution.epub"
+        with zipfile.ZipFile(self.good) as src, zipfile.ZipFile(out, "w") as dst:
+            for info in src.infolist():
+                data = src.read(info.filename)
+                if info.filename == "OEBPS/content.opf":
+                    data = data.replace(b'<itemref idref="sources"/>', b"")
+                dst.writestr(info, data)
+        found = check_epub.problems(out)
+        self.assertTrue(any("attribution" in p for p in found), found)
 
 
 if __name__ == "__main__":

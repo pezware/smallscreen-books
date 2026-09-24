@@ -213,8 +213,8 @@ def pool_is_deep_enough(pool: list[Form], kept: list[Form]) -> bool:
 CORPUS_DOWNLOADS = "https://downloads.wortschatz-leipzig.de/corpora/"
 
 # CC BY 4.0 asks for the licence, a link to the material and a note of any
-# changes, not only a citation (issue #7). The renderer does not read it yet,
-# so the built book does not carry it (issue #21).
+# changes, not only a citation (issue #7). render.py prints it on the book's
+# attribution page, and check_epub.py fails a book without that page (#21).
 CORPUS_LICENCE = {
     "name": "Leipzig Corpora Collection",
     "url": CORPUS_DOWNLOADS,

@@ -53,6 +53,12 @@ def problems(path: Path) -> list[str]:
         for idref in re.findall(r'<itemref idref="([^"]+)"', opf):
             if idref not in ids:
                 found.append(f"spine references unknown manifest id {idref}")
+        spine = re.findall(r'<itemref idref="([^"]+)"', opf)
+        attribution = [i for i, href in ids.items() if href == "sources.xhtml"]
+        if not attribution or attribution[0] not in spine:
+            # The corpus is CC BY: a book that lost this page may not be
+            # redistributed, and nothing else would notice.
+            found.append("the attribution page is not in the spine")
         if not re.search(r'properties="nav"', opf):
             found.append("no navigation document declared")
     return found

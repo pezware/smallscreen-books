@@ -132,6 +132,45 @@ def entry_xhtml(entry: Entry) -> str:
     )
 
 
+SOURCES_FILE = "sources.xhtml"
+
+
+def sources_xhtml(sources: list[dict]) -> str:
+    """The attribution page: what the book is built from, and on what terms.
+
+    CC BY asks for the work, its licence, a link to the material and a note
+    of changes (issue #21), and each `*.source.json` records exactly those
+    fields. Plain headings, paragraphs and links, so it reads with the
+    stylesheet off. It names no licence for the book itself: that is still
+    Andy's to choose (README, "Licences").
+    """
+    parts = ["    <h1>Fuentes</h1>"]
+    for source in sources:
+        licence = escape(source["licence"])
+        parts += [
+            f"    <h2>{escape(source['name'])}</h2>",
+            f"    <p>{escape(source['attribution'])}</p>",
+            f'    <p>Licencia: <a href="{escape(source["licence_url"])}">'
+            f"{licence}</a></p>",
+            f'    <p>Obra original: <a href="{escape(source["material"])}">'
+            f"{escape(source['material'])}</a></p>",
+            f"    <p>{escape(source['changes'])}</p>",
+        ]
+    body = "\n".join(parts)
+    return (
+        '<?xml version="1.0" encoding="utf-8"?>\n'
+        '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">\n'
+        "  <head>\n"
+        "    <title>Fuentes</title>\n"
+        '    <link rel="stylesheet" type="text/css" href="style.css"/>\n'
+        "  </head>\n"
+        "  <body>\n"
+        f"{body}\n"
+        "  </body>\n"
+        "</html>\n"
+    )
+
+
 def nav_xhtml(entries: list[Entry]) -> str:
     """A table of contents with one entry per letter, not per word.
 
@@ -146,6 +185,7 @@ def nav_xhtml(entries: list[Entry]) -> str:
         f'        <li><a href="{entry.filename}">{escape(letter)}</a></li>'
         for letter, entry in seen.items()
     )
+    links += f'\n        <li><a href="{SOURCES_FILE}">Fuentes</a></li>'
     return (
         '<?xml version="1.0" encoding="utf-8"?>\n'
         '<html xmlns="http://www.w3.org/1999/xhtml"'
@@ -163,7 +203,9 @@ def nav_xhtml(entries: list[Entry]) -> str:
     )
 
 
-def content_opf(entries: list[Entry], title: str, identifier: str, source: str) -> str:
+def content_opf(
+    entries: list[Entry], title: str, identifier: str, sources: list[dict]
+) -> str:
     """The package document: every entry in the manifest and in the spine.
 
     The spine order is the reading order, and for a wordbook that is
@@ -175,7 +217,16 @@ def content_opf(entries: list[Entry], title: str, identifier: str, source: str) 
         ' media-type="application/xhtml+xml"/>'
         for entry in entries
     )
+    manifest += (
+        f'\n    <item id="sources" href="{SOURCES_FILE}"'
+        ' media-type="application/xhtml+xml"/>'
+    )
     spine = "\n".join(f'    <itemref idref="e{entry.index:04d}"/>' for entry in entries)
+    spine += '\n    <itemref idref="sources"/>'
+    dc_sources = "".join(
+        f"    <dc:source>{escape(source['material'])}</dc:source>\n"
+        for source in sources
+    )
     return (
         '<?xml version="1.0" encoding="utf-8"?>\n'
         '<package xmlns="http://www.idpf.org/2007/opf" version="3.0"'
@@ -184,7 +235,7 @@ def content_opf(entries: list[Entry], title: str, identifier: str, source: str) 
         f'    <dc:identifier id="pub-id">{escape(identifier)}</dc:identifier>\n'
         f"    <dc:title>{escape(title)}</dc:title>\n"
         "    <dc:language>es</dc:language>\n"
-        f"    <dc:source>{escape(source)}</dc:source>\n"
+        f"{dc_sources}"
         '    <meta property="dcterms:modified">2026-01-01T00:00:00Z</meta>\n'
         "  </metadata>\n"
         "  <manifest>\n"
@@ -200,7 +251,9 @@ def content_opf(entries: list[Entry], title: str, identifier: str, source: str) 
     )
 
 
-def build_epub(entries: list[Entry], out_path: Path, title: str, source: str) -> Path:
+def build_epub(
+    entries: list[Entry], out_path: Path, title: str, sources: list[dict]
+) -> Path:
     """Write the EPUB. Alphabetical order, one file per word.
 
     `mimetype` must be the first entry and must be stored rather than
@@ -208,6 +261,10 @@ def build_epub(entries: list[Entry], out_path: Path, title: str, source: str) ->
     compressed one is a malformed EPUB that some readers still open, which is
     the worst kind of broken.
     """
+    if not sources:
+        # Every input so far needs attribution, so a book with no sources is a
+        # book that dropped them.
+        raise ValueError("a book must carry its attribution; no sources given")
     ordered = sorted(entries, key=lambda e: (e.sort_key, e.lemma))
     ordered = [
         Entry(e.lemma, e.pos, e.definition, e.examples, index=i)
@@ -224,10 +281,13 @@ def build_epub(entries: list[Entry], out_path: Path, title: str, source: str) ->
         zf.writestr("OEBPS/nav.xhtml", nav_xhtml(ordered))
         zf.writestr(
             "OEBPS/content.opf",
-            content_opf(ordered, title, f"urn:uuid:smallscreen-{len(ordered)}", source),
+            content_opf(
+                ordered, title, f"urn:uuid:smallscreen-{len(ordered)}", sources
+            ),
         )
         for entry in ordered:
             zf.writestr(f"OEBPS/{entry.filename}", entry_xhtml(entry))
+        zf.writestr(f"OEBPS/{SOURCES_FILE}", sources_xhtml(sources))
     return out_path
 
 
@@ -269,6 +329,7 @@ def entries_from_jsonl(path: Path, placeholder: str = "") -> list[Entry]:
 
 def main(argv: list[str] | None = None) -> int:
     import argparse
+    import json
 
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument(
@@ -283,19 +344,27 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", type=Path, default=Path("build/es-wordbook.epub"))
     parser.add_argument("--title", default="Las 3000 palabras")
     parser.add_argument("--limit", type=int, default=BOOK_SIZE)
+    parser.add_argument(
+        "--source-json",
+        type=Path,
+        action="append",
+        help="provenance file whose 'source' block the book must credit",
+    )
     args = parser.parse_args(argv)
+    source_files = args.source_json or [Path("data/es/frequency.source.json")]
 
     if args.entries.exists():
         entries = entries_from_jsonl(args.entries)
-        source = str(args.entries)
     else:
         entries = entries_from_jsonl(args.headwords, PLACEHOLDER)
-        source = f"{args.headwords} (no definitions yet; they are stage 2)"
+    sources = [
+        json.loads(path.read_text(encoding="utf-8"))["source"] for path in source_files
+    ]
 
     if args.limit is not None:
         entries = entries[: args.limit]
 
-    path = build_epub(entries, args.out, args.title, source)
+    path = build_epub(entries, args.out, args.title, sources)
     size = path.stat().st_size
     print(f"{len(entries)} entries -> {path} ({size / 1024:.0f} KiB)")
     return 0

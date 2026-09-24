@@ -3,6 +3,7 @@
 import contextlib
 import io
 import json
+import re
 import sys
 import tempfile
 import unittest
@@ -45,11 +46,21 @@ class EntryXhtml(unittest.TestCase):
         self.assertEqual(xhtml.count('class="example"'), 2)
 
 
+SOURCE = {
+    "name": "Leipzig Corpora Collection",
+    "licence": "CC BY 4.0",
+    "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "D. Goldhahn et al., LREC 2012.",
+    "changes": "Modified: filtered & ranked.",
+    "material": "https://example.org/spa_news.tar.gz",
+}
+
+
 class BuildEpub(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
         self.entries = [render.Entry(w) for w in ("casa", "árbol", "zona", "banco")]
-        self.path = render.build_epub(self.entries, self.tmp / "b.epub", "T", "test")
+        self.path = render.build_epub(self.entries, self.tmp / "b.epub", "T", [SOURCE])
         self.zf = zipfile.ZipFile(self.path)
 
     def test_mimetype_is_first_and_stored(self):
@@ -61,7 +72,20 @@ class BuildEpub(unittest.TestCase):
 
     def test_one_xhtml_file_per_word_because_that_is_the_page_break(self):
         opf = self.zf.read("OEBPS/content.opf").decode()
-        self.assertEqual(opf.count("<itemref "), len(self.entries))
+        entries = re.findall(r'<itemref idref="e\d+"', opf)
+        self.assertEqual(len(entries), len(self.entries))
+
+    def test_the_attribution_page_comes_last_in_the_spine(self):
+        opf = self.zf.read("OEBPS/content.opf").decode()
+        self.assertEqual(re.findall(r'<itemref idref="([^"]+)"', opf)[-1], "sources")
+
+    def test_the_table_of_contents_reaches_the_attribution_page(self):
+        nav = self.zf.read("OEBPS/nav.xhtml").decode()
+        self.assertIn('href="sources.xhtml"', nav)
+
+    def test_the_package_names_the_material_as_its_source(self):
+        opf = self.zf.read("OEBPS/content.opf").decode()
+        self.assertIn(f"<dc:source>{SOURCE['material']}</dc:source>", opf)
 
     def test_every_spine_item_exists_in_the_archive(self):
         names = set(self.zf.namelist())
@@ -70,15 +94,40 @@ class BuildEpub(unittest.TestCase):
 
     def test_entries_are_alphabetical_not_frequency_ordered(self):
         opf = self.zf.read("OEBPS/content.opf").decode()
-        import re
-
         order = re.findall(r'href="(entries/[^"]+)"', opf)
         self.assertEqual(order, sorted(order))
 
     def test_table_of_contents_holds_letters_not_words(self):
         nav = self.zf.read("OEBPS/nav.xhtml").decode()
         # arbol, banco, casa, zona -> A B C Z
-        self.assertEqual(nav.count("<li>"), 4)
+        self.assertEqual(nav.count('href="entries/'), 4)
+
+
+class SourcesPage(unittest.TestCase):
+    def page(self) -> str:
+        return render.sources_xhtml([SOURCE])
+
+    def test_cites_the_work(self):
+        self.assertIn("D. Goldhahn et al., LREC 2012.", self.page())
+
+    def test_links_the_licence(self):
+        self.assertIn(f'<a href="{SOURCE["licence_url"]}">CC BY 4.0</a>', self.page())
+
+    def test_links_the_material(self):
+        self.assertIn(f'href="{SOURCE["material"]}"', self.page())
+
+    def test_says_what_was_changed(self):
+        self.assertIn("Modified: filtered &amp; ranked.", self.page())
+
+    def test_uses_only_tags_the_engine_recognises(self):
+        tags = set(re.findall(r"<([a-z0-9]+)[\s>/]", self.page()))
+        allowed = {"html", "head", "title", "link", "body", "h1", "h2", "p", "a"}
+        self.assertEqual(tags - allowed, set())
+
+    def test_a_book_without_a_source_is_refused(self):
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        with self.assertRaisesRegex(ValueError, "attribution"):
+            render.build_epub([render.Entry("casa")], tmp / "b.epub", "T", [])
 
 
 class Main(unittest.TestCase):
@@ -111,7 +160,7 @@ class Main(unittest.TestCase):
     def test_the_book_stops_at_book_size(self):
         rows = [{"lemma": f"w{n}", "pos": "", "forms": []} for n in range(5)]
         book = self.build(*rows, size=3)
-        self.assertEqual(book.count("<itemref "), 3)
+        self.assertEqual(len(re.findall(r'<itemref idref="e\d+"', book)), 3)
 
 
 class StylesheetStaysInsideTheEngineSubset(unittest.TestCase):
