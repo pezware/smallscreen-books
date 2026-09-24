@@ -235,39 +235,50 @@ def build_epub(entries: list[Entry], out_path: Path, title: str, source: str) ->
 # because merging forms into lemmas consumes forms (docs/plan.md, stage 1b).
 BOOK_SIZE = 3000
 
+# Shown until stage 2 writes definitions. Entries need no definition to test
+# the spine: 3,000 sections behave the same whether or not each says anything.
+PLACEHOLDER = "(sin definición)"
 
-def entries_from_frequency(path: Path, limit: int | None = None) -> list[Entry]:
-    """Stub entries straight from the frequency list.
 
-    Definitions do not exist yet (stage 2), and the spine question does not
-    need them: 3,000 sections behave the same whether or not each one says
-    anything. This exists so the hardware can be tested before any money is
-    spent on content.
+def entries_from_jsonl(path: Path, placeholder: str = "") -> list[Entry]:
+    """Entries from a data-contract JSONL file: words.jsonl or headwords.jsonl.
+
+    headwords.jsonl is the same contract before stage 2, lemma and part of
+    speech with no definition yet, so it renders through the same path with a
+    placeholder in the definition's place.
     """
-    forms = [
-        w.strip() for w in path.read_text(encoding="utf-8").splitlines() if w.strip()
-    ]
-    if limit is not None:
-        forms = forms[:limit]
-    return [
-        Entry(lemma=form, pos="", definition="(sin definicion)", index=i)
-        for i, form in enumerate(forms)
-    ]
+    import json
+
+    entries = []
+    lines = path.read_text(encoding="utf-8").splitlines()
+    for i, line in enumerate(lines):
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        entries.append(
+            Entry(
+                lemma=row["lemma"],
+                pos=row.get("pos", ""),
+                definition=row.get("definition") or placeholder,
+                examples=tuple(row.get("examples", ())),
+                index=i,
+            )
+        )
+    return entries
 
 
 def main(argv: list[str] | None = None) -> int:
     import argparse
-    import json
 
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument(
         "--entries",
         type=Path,
         default=Path("data/es/words.jsonl"),
-        help="one JSON entry per line; falls back to the frequency list",
+        help="one JSON entry per line; falls back to the headwords",
     )
     parser.add_argument(
-        "--frequency-list", type=Path, default=Path("data/es/frequency.txt")
+        "--headwords", type=Path, default=Path("data/es/headwords.jsonl")
     )
     parser.add_argument("--out", type=Path, default=Path("build/es-wordbook.epub"))
     parser.add_argument("--title", default="Las 3000 palabras")
@@ -275,24 +286,11 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.entries.exists():
-        entries = []
-        for i, line in enumerate(args.entries.read_text(encoding="utf-8").splitlines()):
-            if not line.strip():
-                continue
-            row = json.loads(line)
-            entries.append(
-                Entry(
-                    lemma=row["lemma"],
-                    pos=row.get("pos", ""),
-                    definition=row.get("definition", ""),
-                    examples=tuple(row.get("examples", ())),
-                    index=i,
-                )
-            )
+        entries = entries_from_jsonl(args.entries)
         source = str(args.entries)
     else:
-        entries = entries_from_frequency(args.frequency_list, args.limit)
-        source = f"{args.frequency_list} (stub entries; definitions are stage 2)"
+        entries = entries_from_jsonl(args.headwords, PLACEHOLDER)
+        source = f"{args.headwords} (no definitions yet; they are stage 2)"
 
     if args.limit is not None:
         entries = entries[: args.limit]

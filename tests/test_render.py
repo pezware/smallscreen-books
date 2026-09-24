@@ -2,6 +2,7 @@
 
 import contextlib
 import io
+import json
 import sys
 import tempfile
 import unittest
@@ -81,28 +82,36 @@ class BuildEpub(unittest.TestCase):
 
 
 class Main(unittest.TestCase):
-    def test_a_longer_frequency_list_still_builds_a_book_of_book_size(self):
-        """The ranked list runs past the book, because merging forms into
-        lemmas consumes them; the stub book must not grow with it."""
+    def build(self, *rows: dict, size: int = 3000) -> str:
         tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
-        forms = tmp / "frequency.txt"
-        forms.write_text("".join(f"w{n}\n" for n in range(5)), encoding="utf-8")
+        headwords = tmp / "headwords.jsonl"
+        headwords.write_text(
+            "".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8"
+        )
         out = tmp / "book.epub"
-        self.enterContext(unittest.mock.patch.object(render, "BOOK_SIZE", 3))
+        self.enterContext(unittest.mock.patch.object(render, "BOOK_SIZE", size))
         self.enterContext(contextlib.redirect_stdout(io.StringIO()))
         render.main(
-            [
-                "--entries",
-                str(tmp / "none.jsonl"),
-                "--frequency-list",
-                str(forms),
-                "--out",
-                str(out),
-            ]
+            ["--entries", str(tmp / "none.jsonl"), "--headwords", str(headwords)]
+            + ["--out", str(out)]
         )
         with zipfile.ZipFile(out) as zf:
-            opf = zf.read("OEBPS/content.opf").decode()
-        self.assertEqual(opf.count("<itemref "), 3)
+            return "".join(
+                zf.read(name).decode() for name in zf.namelist() if name != "mimetype"
+            )
+
+    def test_without_definitions_the_book_is_built_from_the_headwords(self):
+        book = self.build({"lemma": "decir", "pos": "verbo", "forms": ["dijo"]})
+        self.assertIn("decir", book)
+
+    def test_a_headword_shows_the_placeholder_definition(self):
+        book = self.build({"lemma": "decir", "pos": "verbo", "forms": ["dijo"]})
+        self.assertIn(render.PLACEHOLDER, book)
+
+    def test_the_book_stops_at_book_size(self):
+        rows = [{"lemma": f"w{n}", "pos": "", "forms": []} for n in range(5)]
+        book = self.build(*rows, size=3)
+        self.assertEqual(book.count("<itemref "), 3)
 
 
 class StylesheetStaysInsideTheEngineSubset(unittest.TestCase):
