@@ -1,8 +1,12 @@
 """Checks the book the device will actually open."""
 
+import contextlib
+import io
+import json
 import sys
 import tempfile
 import unittest
+import unittest.mock
 import zipfile
 from pathlib import Path
 
@@ -75,6 +79,39 @@ class BuildEpub(unittest.TestCase):
         nav = self.zf.read("OEBPS/nav.xhtml").decode()
         # arbol, banco, casa, zona -> A B C Z
         self.assertEqual(nav.count("<li>"), 4)
+
+
+class Main(unittest.TestCase):
+    def build(self, *rows: dict, size: int = 3000) -> str:
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        headwords = tmp / "headwords.jsonl"
+        headwords.write_text(
+            "".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8"
+        )
+        out = tmp / "book.epub"
+        self.enterContext(unittest.mock.patch.object(render, "BOOK_SIZE", size))
+        self.enterContext(contextlib.redirect_stdout(io.StringIO()))
+        render.main(
+            ["--entries", str(tmp / "none.jsonl"), "--headwords", str(headwords)]
+            + ["--out", str(out)]
+        )
+        with zipfile.ZipFile(out) as zf:
+            return "".join(
+                zf.read(name).decode() for name in zf.namelist() if name != "mimetype"
+            )
+
+    def test_without_definitions_the_book_is_built_from_the_headwords(self):
+        book = self.build({"lemma": "decir", "pos": "verbo", "forms": ["dijo"]})
+        self.assertIn("decir", book)
+
+    def test_a_headword_shows_the_placeholder_definition(self):
+        book = self.build({"lemma": "decir", "pos": "verbo", "forms": ["dijo"]})
+        self.assertIn(render.PLACEHOLDER, book)
+
+    def test_the_book_stops_at_book_size(self):
+        rows = [{"lemma": f"w{n}", "pos": "", "forms": []} for n in range(5)]
+        book = self.build(*rows, size=3)
+        self.assertEqual(book.count("<itemref "), 3)
 
 
 class StylesheetStaysInsideTheEngineSubset(unittest.TestCase):

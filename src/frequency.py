@@ -1,13 +1,10 @@
 """Builds the frequency list that decides which words enter a wordbook.
 
-The list has two jobs, and they pull in different directions:
-
-  * it chooses the 3,000 entries the book will hold, and
-  * it is the learner's assumed vocabulary, which `validate.py` checks every
-    generated definition against.
-
-Both jobs want common words and neither wants proper nouns, so a slot spent on
-`Gadafi` is a slot lost twice over.
+The list ranks surface forms, and stage 1b turns them into the book's 3,000
+headwords (`headwords.py`). Merging forms into lemmas consumes forms -- `dijo`,
+`dice` and `decir` fill one entry -- so the list runs past 3,000: about 4,800
+forms fill 3,000 lemmas, and DEFAULT_LIMIT leaves room over that. Proper nouns
+are removed here, because a slot spent on `Gadafi` is a slot lost.
 
 Input is a Leipzig Corpora Collection package (CC BY 4.0), which ships a
 `-words.txt` of `id<TAB>form<TAB>count` and a `-sentences.txt` of
@@ -46,7 +43,7 @@ from pathlib import Path
 _WORD_ONLY = re.compile(r"^[^\W\d_]+$", re.UNICODE)
 _TOKEN = re.compile(r"[^\W\d_]+", re.UNICODE)
 
-DEFAULT_LIMIT = 3000
+DEFAULT_LIMIT = 8000
 
 # Spanish's only one-letter words. Every other single letter in a news corpus
 # is an initial, a list marker or a unit, and costs a slot in the book.

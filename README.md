@@ -31,12 +31,15 @@ docs/            device constraints and the build plan
 
 ## Status
 
-Early. Stage 1 has landed (`src/frequency.py` builds `data/es/frequency.txt`,
-the ranked word forms the book's 3,000 headwords are chosen from), and the renderer now produces a real EPUB (`src/render.py`) with one
-XHTML file per word and a letter-level table of contents.
+Early. Stages 1 and 1b have landed. `src/frequency.py` ranks 8,000 word forms
+from the corpus into `data/es/frequency.txt`, and `src/headwords.py` merges
+them into 3,000 lemmas in `data/es/headwords.jsonl`: an LLM maps each form to
+its lemma, and Wiktionary checks the mapping. The renderer (`src/render.py`)
+builds a real EPUB from those headwords, one XHTML file per word, with a
+letter-level table of contents.
 
 Definitions and examples do not exist yet, so every entry currently reads
-`(sin definicion)`. That is deliberate: the 3,000-item spine is the design's
+`(sin definición)`. That is deliberate: the 3,000-item spine is the design's
 largest untested assumption, and it can be tested on the hardware before any
 content is generated.
 
@@ -44,6 +47,7 @@ content is generated.
 curl -O https://downloads.wortschatz-leipzig.de/corpora/spa_news_2011_1M.tar.gz
 tar xzf spa_news_2011_1M.tar.gz -C data/es/raw/       # gitignored, 266 MB
 python3 src/frequency.py                              # writes data/es/frequency.txt
+mise run headwords                                    # LLM via the xAI broker; cached
 mise run book                                         # writes build/es-wordbook.epub
 python3 -m unittest discover -s tests -t tests        # stdlib only, no venv
 ```
@@ -67,7 +71,9 @@ into each built book:
   OpenSubtitles (CC BY-SA 4.0) was not used: share-alike would decide the
   outgoing licence before Andy does
 - Example sentences — [Tatoeba](https://tatoeba.org), CC BY 2.0 FR
-- Definitions checked against [Wiktionary](https://kaikki.org) (CC BY-SA)
+- Definitions, and the lemma of each headword, checked against
+  [Wiktionary](https://kaikki.org) (CC BY-SA). It is only compared against,
+  locally; no Wiktionary data is committed or put in a book
 
 CC BY-SA and CC BY combine awkwardly in one redistributed book. Decide the
 outgoing licence before the first book leaves the device.

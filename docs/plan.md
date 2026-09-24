@@ -109,16 +109,19 @@ Leave this function alone. Build around it.
 Each stage lands in the same branch and the same pull request.
 
 1. **Frequency list.** Fetch a Leipzig or OpenSubtitles Spanish list. Write the
-   top 3,000 surface forms to `data/es/frequency.txt`.
-   Done when: the file holds 3,000 lines and the checks in `src/validate.py`
+   top 8,000 surface forms to `data/es/frequency.txt`, enough to fill 3,000
+   lemmas after merging (about 4,800 are needed).
+   Done when: the file holds 8,000 lines and the checks in `src/validate.py`
    can load it.
 
 1b. **Headwords.** Map surface forms to lemmas and part of speech, merge ranks,
    and write the 3,000 headwords with their `forms`. It reads a ranked list
-   longer than 3,000 forms, because merging consumes forms. The lemma source is
-   not chosen yet, and it carries its own licence question; its provenance goes
-   in `data/<lang>/headwords.source.json`, as the corpus's does in
-   `frequency.source.json`.
+   longer than 3,000 forms, because merging consumes forms. Andy chose the
+   lemma source on 2026-09-24: an LLM maps each form (`src/headwords.py`,
+   through the xAI broker), and Wiktionary checks the result locally without
+   ever being committed, because it is CC BY-SA. The mapping is cached per form
+   in `forms.jsonl`; human corrections go in `forms.overrides.tsv`; provenance
+   goes in `data/<lang>/headwords.source.json`.
    Done when: 3,000 distinct lemmas, each listing its forms, no form is claimed
    by two entries, and the lemma source is recorded.
 

@@ -22,6 +22,8 @@ mise run lint      # ruff format --check + ruff check
 mise run fmt       # ruff format
 mise run book      # build/es-wordbook.epub
 mise run build     # rebuild data/es/frequency.txt (needs the corpus in data/es/raw/)
+mise run headwords # map new forms to lemmas via the xAI broker, rebuild headwords.jsonl
+mise run headwords-check  # compare with Wiktionary -> build/headwords-review.tsv
 uv run python tools/check_epub.py build/es-wordbook.epub   # structural EPUB check
 ```
 
@@ -34,7 +36,10 @@ Both need `CROSSPOINT_ROOT` set to a crosspoint-reader checkout.
 ## Layout
 
 ```
-src/frequency.py   corpus -> data/es/frequency.txt (+ .excluded.txt, .source.json)
+src/frequency.py   corpus -> data/es/frequency.txt, 8,000 ranked forms (+ siblings)
+src/headwords.py   forms -> lemmas (LLM) -> data/es/headwords.jsonl, the 3,000 entries
+src/llm.py         the only way to call the LLM: the xAI broker's unix socket
+src/wiktionary.py  Wiktionary lemma pairs, for checking only -> data/es/raw/ (local)
 src/render.py      entries -> EPUB, one XHTML file per word
 src/validate.py    checks a generated definition against the book's headwords
 tools/check_epub.py  structural EPUB checks (no JVM here, so no epubcheck)
@@ -74,6 +79,20 @@ running `src/frequency.py` against the real corpus, and commit its
 `.excluded.txt` and `.source.json` siblings with it. The
 `frequency-list.yml` workflow rebuilds it from scratch and fails on any byte of
 drift. Never hand-edit it.
+
+**`forms.jsonl` is the LLM cache, and `headwords.jsonl` is derived from it.**
+Each mapping carries the hash of its form, model and prompt, so `mise run
+headwords` only pays for what changed. Never hand-edit either file: a wrong
+lemma is fixed in `data/es/forms.overrides.tsv`, and a test fails if
+`headwords.jsonl` is not exactly what its inputs build. After any change to
+the headwords, run `mise run headwords-check`: it stamps
+`headwords.source.json` with the hash of the list it checked, and a test fails
+until the stamp matches.
+
+**Wiktionary data never enters the repository.** It is CC BY-SA, and
+share-alike would decide the book's licence. `wiktionary.py` writes it to the
+gitignored `data/**/raw/`, and the review report goes to `build/`. Only a
+reviewed decision, written as an override, is committed.
 
 **`validate.accept_definition` stays unimplemented.** It raises
 `NotImplementedError` on purpose, because Andy owns the strictness rule. Build
