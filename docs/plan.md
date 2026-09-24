@@ -158,7 +158,8 @@ Each stage lands in the same branch and the same pull request.
    headword would otherwise regenerate every definition, and `check`
    re-validates every entry against the current list anyway.
    Done when: every entry has a definition that `accept_definition` admits, and
-   a second run regenerates nothing.
+   a second run regenerates nothing. `definitions.py check --strict` exits 1
+   until then; without `--strict` a rejection is review work, not a failure.
 
 3. **Examples.** Mine Tatoeba. Prefer short sentences whose other words all sit
    inside the top 3,000.

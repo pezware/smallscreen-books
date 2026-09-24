@@ -288,20 +288,32 @@ class Review(unittest.TestCase):
 
 
 class Main(unittest.TestCase):
-    def test_check_writes_the_review_and_fails_on_a_rejection(self):
+    def run_check(self, *flags: str, first: dict | None = None) -> tuple[int, Path]:
         tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
         (tmp / "headwords.jsonl").write_text(
             "".join(json.dumps(h, ensure_ascii=False) + "\n" for h in HEADWORDS),
             encoding="utf-8",
         )
-        entries, _, _ = generate(chat=Script({**GOOD, "casa": "Hogar."}, {}), rounds=0)
+        table = first if first is not None else {**GOOD, "casa": "Hogar."}
+        entries, _, _ = generate(chat=Script(table, {}), rounds=0)
         definitions.write_jsonl(tmp / "words.jsonl", entries)
         review = tmp / "review.tsv"
-        argv = ["check", "--data", str(tmp), "--review", str(review)]
+        argv = ["check", "--data", str(tmp), "--review", str(review), *flags]
         with contextlib.redirect_stdout(io.StringIO()):
-            code = definitions.main(argv)
-        self.assertEqual(code, 1)
+            return definitions.main(argv), review
+
+    def test_check_puts_a_rejection_first_in_the_review(self):
+        _, review = self.run_check()
         self.assertIn("casa", review.read_text(encoding="utf-8").splitlines()[1])
+
+    def test_a_rejection_is_review_work_not_a_failed_run(self):
+        self.assertEqual(self.run_check()[0], 0)
+
+    def test_strict_fails_while_a_definition_is_rejected(self):
+        self.assertEqual(self.run_check("--strict")[0], 1)
+
+    def test_strict_passes_when_every_definition_is_accepted(self):
+        self.assertEqual(self.run_check("--strict", first=GOOD)[0], 0)
 
 
 if __name__ == "__main__":

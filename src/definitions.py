@@ -408,6 +408,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--review", type=Path, default=Path("build/definitions-review.tsv")
     )
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="exit 1 while any definition is rejected or missing (stage 2's gate)",
+    )
     args = parser.parse_args(argv)
 
     headwords = read_jsonl(args.data / "headwords.jsonl")
@@ -453,7 +458,9 @@ def main(argv: list[str] | None = None) -> int:
         f"{defined}/{len(entries)} defined, {checked} checked, {rejected} rejected, "
         f"{len(rows)} to review -> {args.review}"
     )
-    return 1 if rejected else 0
+    # A rejection is review work, not a failed run, so only --strict fails on
+    # it: that is the "done when" of stage 2, for CI once review is finished.
+    return 1 if args.strict and (rejected or defined < len(entries)) else 0
 
 
 if __name__ == "__main__":
