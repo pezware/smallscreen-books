@@ -20,8 +20,9 @@ such as Claude Code, writes each answer file the request names, and the same
 command resumes from there.
 
 About 5 calls for the first round and a few more per repair round, at a batch
-of 10. Writes build/pilot-definitions.jsonl (every attempt) and
-build/pilot-unknown.tsv (every unknown word, classified), and prints a summary.
+of 10. Writes build/pilot-definitions-<provider>-<vocab>.jsonl (every attempt) and
+build/pilot-unknown-<provider>-<vocab>.tsv (every unknown word, classified),
+and prints a summary.
 
 If data/es/raw/wiktionary-lemmas.tsv exists, each unknown word is classified:
 an inflection of a headword (the validator over-reports these, since it
@@ -80,14 +81,20 @@ def sample(entries: list[dict], n: int = SAMPLE) -> list[dict]:
     return [entries[i * step + step // 2] for i in range(n)]
 
 
-def system_prompt(vocab: str, known_forms: set[str], lemmas: list[str]) -> str:
+def book_words(book: list[dict]) -> list[str]:
+    """Every headword and listed form, spelled as the book spells them.
+
+    Not the validator's normalised set: the model is told to copy these forms,
+    and a list without accents would teach it to drop them.
+    """
+    return sorted({w for e in book for w in (e["lemma"], *e["forms"])})
+
+
+def system_prompt(vocab: str, words: list[str]) -> str:
     if vocab == "none":
         return PROMPT.format(vocab=VOCAB_NONE)
-    words = sorted(known_forms | {validate.normalise(w) for w in lemmas})
     return (
-        PROMPT.format(vocab=VOCAB_LIST)
-        + "\n\nPalabras permitidas (sin tildes):\n"
-        + " ".join(words)
+        PROMPT.format(vocab=VOCAB_LIST) + "\n\nPalabras permitidas:\n" + " ".join(words)
     )
 
 
@@ -190,13 +197,18 @@ def repair_round(
 def run(
     chat: Chat,
     entries: list[dict],
-    known: set[str],
+    book: list[dict],
     vocab: str,
     rounds: int,
     batch: int = BATCH,
 ) -> list[list[dict]]:
-    """Every entry's attempt at each round. A passing entry carries forward."""
-    system = system_prompt(vocab, known, [e["lemma"] for e in entries])
+    """Every entry's attempt at each round. A passing entry carries forward.
+
+    `entries` are the headwords to define; `book` is every headword, which
+    sets the vocabulary.
+    """
+    known = {validate.normalise(w) for e in book for w in (e["lemma"], *e["forms"])}
+    system = system_prompt(vocab, book_words(book))
     defs = first_round(chat, system, entries, batch)
     history = [[_row(e, defs[e["lemma"]], known, 0) for e in entries]]
     for number in range(1, rounds + 1):
@@ -312,7 +324,6 @@ def main(argv: list[str] | None = None) -> int:
 
     headwords_path = args.data / "headwords.jsonl"
     entries = [json.loads(line) for line in headwords_path.open(encoding="utf-8")]
-    known = validate.load_headword_forms(headwords_path)
     chosen = sample(entries)
     provider = llm.provider_name(args.provider)
     model = args.model or llm.default_model(provider)
@@ -325,7 +336,7 @@ def main(argv: list[str] | None = None) -> int:
         return llm.chat_json(system, user, model=model, provider=provider)
 
     try:
-        history = run(chat, chosen, known, args.vocab, args.rounds, args.batch)
+        history = run(chat, chosen, entries, args.vocab, args.rounds, args.batch)
     except Pending as pending:
         print(f"{pending}; answer these, then run the same command again:")
         for waiting in pending.requests:
