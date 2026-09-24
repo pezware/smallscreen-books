@@ -1,0 +1,11 @@
+# Human corrections to the LLM's form-to-lemma mapping, applied by
+# src/headwords.py build. One per line, tab-separated:
+#   form<TAB>lemma<TAB>pos     map the form to this lemma and part of speech
+#   form<TAB>-                 drop the form: it makes no entry
+# Review candidates come from `mise run headwords-check`.
+verse	ver	verbo
+operadora	operador	sustantivo
+poquito	poco	adjetivo
+perdida	perder	verbo
+muchísimo	mucho	adjetivo
+km	-

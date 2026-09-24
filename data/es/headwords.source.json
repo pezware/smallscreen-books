@@ -1,0 +1,14 @@
+{
+  "lemmas": {
+    "source": "llm:grok-4.20-0309-non-reasoning",
+    "prompt_sha256": "2471738634bf46423ddacadc25cc5591a84ef563a56b806c7decc485a6757f7f",
+    "forms_mapped": 8000
+  },
+  "overrides": 6,
+  "checked_against": {
+    "name": "English Wiktionary, Spanish entries, via kaikki.org",
+    "licence": "CC BY-SA 4.0",
+    "use": "local comparison only; no Wiktionary data is redistributed"
+  },
+  "entries": 3000
+}

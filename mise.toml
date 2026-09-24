@@ -27,6 +27,14 @@ cmake --build build/fit -j --target fit-entry
 echo "built: build/fit/fit-entry  (give it XHTML files; prints pages and a spill rate)"
 """
 
+[tasks.headwords]
+description = "Map new or changed forms to lemmas through the xAI broker, then rebuild the headwords"
+run = ["uv run python src/headwords.py map", "uv run python src/headwords.py build"]
+
+[tasks.headwords-check]
+description = "Compare the headwords with Wiktionary; writes build/headwords-review.tsv"
+run = "uv run python src/headwords.py check"
+
 [tasks.test]
 description = "Run the test suite"
 run = "uv run python -m unittest discover -s tests -t tests"
