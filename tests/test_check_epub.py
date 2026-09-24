@@ -76,6 +76,32 @@ class Checker(unittest.TestCase):
                 dst.writestr(info, src.read(info.filename))
         self.assertTrue(any("container" in p for p in check_epub.problems(out)))
 
+    def rewritten(self, name: str, change) -> Path:
+        out = self.tmp / "rewritten.epub"
+        with zipfile.ZipFile(self.good) as src, zipfile.ZipFile(out, "w") as dst:
+            for info in src.infolist():
+                data = src.read(info.filename)
+                dst.writestr(info, change(data) if info.filename == name else data)
+        return out
+
+    def test_rejects_a_spine_entry_that_is_only_commented_out(self):
+        out = self.rewritten(
+            "OEBPS/content.opf",
+            lambda d: d.replace(
+                b'<itemref idref="sources"/>', b'<!-- <itemref idref="sources"/> -->'
+            ),
+        )
+        found = check_epub.problems(out)
+        self.assertTrue(any("attribution" in p for p in found), found)
+
+    def test_rejects_an_attribution_page_with_no_licence_link(self):
+        out = self.rewritten(
+            "OEBPS/sources.xhtml",
+            lambda d: d.replace(b"creativecommons.org", b"example.org"),
+        )
+        found = check_epub.problems(out)
+        self.assertTrue(any("licence" in p for p in found), found)
+
     def test_rejects_a_book_without_its_attribution_page(self):
         out = self.tmp / "noattribution.epub"
         with zipfile.ZipFile(self.good) as src, zipfile.ZipFile(out, "w") as dst:

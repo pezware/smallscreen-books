@@ -124,6 +124,11 @@ class SourcesPage(unittest.TestCase):
         allowed = {"html", "head", "title", "link", "body", "h1", "h2", "p", "a"}
         self.assertEqual(tags - allowed, set())
 
+    def test_a_quote_in_a_link_cannot_break_the_attribute(self):
+        source = dict(SOURCE, material='https://example.org/a"b')
+        page = render.sources_xhtml([source])
+        self.assertIn('href="https://example.org/a&quot;b"', page)
+
     def test_a_book_without_a_source_is_refused(self):
         tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
         with self.assertRaisesRegex(ValueError, "attribution"):
@@ -131,7 +136,7 @@ class SourcesPage(unittest.TestCase):
 
 
 class Main(unittest.TestCase):
-    def build(self, *rows: dict, size: int = 3000) -> str:
+    def build(self, *rows: dict, size: int = 3000, extra_args: list[str] = ()) -> str:
         tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
         headwords = tmp / "headwords.jsonl"
         headwords.write_text(
@@ -143,6 +148,7 @@ class Main(unittest.TestCase):
         render.main(
             ["--entries", str(tmp / "none.jsonl"), "--headwords", str(headwords)]
             + ["--out", str(out)]
+            + list(extra_args)
         )
         with zipfile.ZipFile(out) as zf:
             return "".join(
@@ -156,6 +162,20 @@ class Main(unittest.TestCase):
     def test_a_headword_shows_the_placeholder_definition(self):
         book = self.build({"lemma": "decir", "pos": "verbo", "forms": ["dijo"]})
         self.assertIn(render.PLACEHOLDER, book)
+
+    def test_an_extra_source_is_credited_alongside_the_corpus(self):
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        extra = tmp / "tatoeba.source.json"
+        extra.write_text(
+            json.dumps({"source": dict(SOURCE, name="Tatoeba")}), encoding="utf-8"
+        )
+        book = self.build(
+            {"lemma": "decir", "pos": "verbo", "forms": []},
+            extra_args=["--source-json", str(extra)],
+        )
+        self.assertEqual(
+            ("Leipzig Corpora Collection" in book, "Tatoeba" in book), (True, True)
+        )
 
     def test_the_book_stops_at_book_size(self):
         rows = [{"lemma": f"w{n}", "pos": "", "forms": []} for n in range(5)]

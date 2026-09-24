@@ -135,6 +135,11 @@ def entry_xhtml(entry: Entry) -> str:
 SOURCES_FILE = "sources.xhtml"
 
 
+def _attr(value: str) -> str:
+    """Escape for a double-quoted attribute; escape() alone leaves `"` bare."""
+    return escape(value, {'"': "&quot;"})
+
+
 def sources_xhtml(sources: list[dict]) -> str:
     """The attribution page: what the book is built from, and on what terms.
 
@@ -150,9 +155,9 @@ def sources_xhtml(sources: list[dict]) -> str:
         parts += [
             f"    <h2>{escape(source['name'])}</h2>",
             f"    <p>{escape(source['attribution'])}</p>",
-            f'    <p>Licencia: <a href="{escape(source["licence_url"])}">'
+            f'    <p>Licencia: <a href="{_attr(source["licence_url"])}">'
             f"{licence}</a></p>",
-            f'    <p>Obra original: <a href="{escape(source["material"])}">'
+            f'    <p>Obra original: <a href="{_attr(source["material"])}">'
             f"{escape(source['material'])}</a></p>",
             f"    <p>{escape(source['changes'])}</p>",
         ]
@@ -348,10 +353,13 @@ def main(argv: list[str] | None = None) -> int:
         "--source-json",
         type=Path,
         action="append",
-        help="provenance file whose 'source' block the book must credit",
+        help="another provenance file to credit, besides the corpus",
     )
     args = parser.parse_args(argv)
-    source_files = args.source_json or [Path("data/es/frequency.source.json")]
+    # Added to the corpus, never instead of it: every book's vocabulary comes
+    # from Leipzig, so a caller who forgets to repeat it must not drop it.
+    source_files = [Path("data/es/frequency.source.json")]
+    source_files += [p for p in args.source_json or [] if p not in source_files]
 
     if args.entries.exists():
         entries = entries_from_jsonl(args.entries)
