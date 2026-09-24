@@ -112,6 +112,81 @@ class Select(unittest.TestCase):
         kept, _ = frequency.select(self.ranked(), limit=3, ratio=0.0)
         self.assertEqual(len(kept), 3)
 
+    def test_name_uses_do_not_lift_a_word_above_common_vocabulary(self):
+        """Issue #5: china is a word, but two thirds of its uses are the
+        country, and those must not rank it above casa."""
+        forms = [
+            frequency.Form("de", 100, 100, 0),
+            frequency.Form("china", 90, 30, 60),
+            frequency.Form("casa", 80, 80, 0),
+        ]
+        kept, _ = frequency.select(forms, limit=3)
+        self.assertEqual([form.form for form in kept], ["de", "casa", "china"])
+
+    def test_a_name_that_would_not_reach_the_cut_is_not_reported(self):
+        forms = [
+            frequency.Form("de", 100, 100, 0),
+            frequency.Form("casa", 80, 80, 0),
+            frequency.Form("madrid", 50, 1, 49),
+        ]
+        _, excluded = frequency.select(forms, limit=2)
+        self.assertEqual(excluded, [])
+
+
+class RankingCount(unittest.TestCase):
+    def test_counts_only_the_lowercase_share_of_the_total(self):
+        china = frequency.Form("china", 900, lowercase_uses=300, capitalised_uses=600)
+        self.assertEqual(china.ranking_count, 300)
+
+    def test_a_form_never_seen_mid_sentence_keeps_its_whole_count(self):
+        unseen = frequency.Form("asimismo", 6133, lowercase_uses=0, capitalised_uses=0)
+        self.assertEqual(unseen.ranking_count, 6133)
+
+
+class PoolDepth(unittest.TestCase):
+    """Candidates are chosen by total count, then re-ranked by a smaller one."""
+
+    def test_deep_enough_when_the_cut_sits_above_every_uncounted_form(self):
+        pool = [frequency.Form("de", 100, 100, 0), frequency.Form("casa", 40, 40, 0)]
+        self.assertTrue(frequency.pool_is_deep_enough(pool, kept=pool[:1]))
+
+    def test_too_shallow_when_an_outside_form_could_tie_the_cut(self):
+        """A tie is decided by spelling, so a form outside the pool with the
+        same count could still win it."""
+        pool = [frequency.Form("zeta", 10, 10, 0)]
+        self.assertFalse(frequency.pool_is_deep_enough(pool, kept=pool))
+
+    def test_too_shallow_when_a_form_outside_the_pool_could_outrank_the_cut(self):
+        pool = [frequency.Form("de", 100, 100, 0), frequency.Form("china", 90, 30, 60)]
+        self.assertFalse(frequency.pool_is_deep_enough(pool, kept=pool))
+
+
+class Attribution(unittest.TestCase):
+    """CC BY 4.0 wants the licence, the material, and a note of changes (#7)."""
+
+    def setUp(self):
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        corpus_file = write(tmp, "c-words.txt", ["1\tde\t1"])
+        out = tmp / "frequency.source.json"
+        frequency.write_source(out, "spa_news_2011_1M", [corpus_file], 3000, 1, 0.08)
+        import json
+
+        self.source = json.loads(out.read_text(encoding="utf-8"))["source"]
+
+    def test_links_the_licence(self):
+        self.assertEqual(
+            self.source["licence_url"], "https://creativecommons.org/licenses/by/4.0/"
+        )
+
+    def test_links_the_corpus_that_was_used_not_the_collection(self):
+        self.assertEqual(
+            self.source["material"],
+            "https://downloads.wortschatz-leipzig.de/corpora/spa_news_2011_1M.tar.gz",
+        )
+
+    def test_says_the_material_was_modified(self):
+        self.assertIn("modified", self.source["changes"].lower())
+
 
 class ShippedList(unittest.TestCase):
     """The artifact in data/es, which every later stage reads."""

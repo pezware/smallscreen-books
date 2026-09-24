@@ -19,8 +19,9 @@ Input is a Leipzig Corpora Collection package (CC BY 4.0), which ships a
 The word file is a token list, not a word list: it holds punctuation, digits
 and every capitalisation separately, so `el` and sentence-initial `El` arrive
 as two entries. This module folds case, drops non-words, removes proper nouns
-and writes the survivors in frequency order — one form per line, so the line
-number is the `rank` of the data contract in docs/plan.md.
+and writes the survivors in order of their ordinary-word use (see
+`Form.ranking_count`) — one form per line, so the line number is the `rank` of
+the data contract in docs/plan.md.
 
 Why capitalisation cannot decide a proper noun on its own: Spanish news writes
 `Gobierno`, `Universidad` and `Congreso` inside institution names, so a form's
@@ -90,6 +91,20 @@ class Form:
     def is_proper_noun(self, ratio: float = PROPER_NOUN_RATIO) -> bool:
         return self.lowercase_share < ratio
 
+    @property
+    def ranking_count(self) -> int:
+        """The part of the corpus count that is ordinary-word use.
+
+        A form that survives the proper-noun cut can still be mostly a name:
+        `china` is a word, but most of its uses are the country. Ranking on the
+        whole count let those uses lift it above real vocabulary (issue #5).
+
+        Scaled from the total rather than taken from `lowercase_uses` directly,
+        because the case counts skip sentence-initial tokens, and a word that
+        often opens a sentence would otherwise be demoted for it.
+        """
+        return round(self.count * self.lowercase_share)
+
 
 def count_words(words_file: Path) -> collections.Counter[str]:
     """Total the corpus token counts per case-folded form, words only.
@@ -152,7 +167,12 @@ def count_case_uses(
 
 
 def rank_forms(words_file: Path, sentences_file: Path, limit: int) -> list[Form]:
-    """Return candidate forms in frequency order, each carrying its case counts."""
+    """Return candidate forms in total-count order, each carrying its case counts.
+
+    The pool is chosen by total count because case is too slow to measure for
+    every form. `select` re-ranks it, and `pool_is_deep_enough` proves nothing
+    outside the pool could have made the cut.
+    """
     counts = count_words(words_file)
     candidates = [form for form, _ in counts.most_common(limit * CANDIDATE_MULTIPLE)]
     lowercase, capitalised = count_case_uses(sentences_file, set(candidates))
@@ -165,23 +185,52 @@ def rank_forms(words_file: Path, sentences_file: Path, limit: int) -> list[Form]
 def select(
     forms: list[Form], limit: int, ratio: float = PROPER_NOUN_RATIO
 ) -> tuple[list[Form], list[Form]]:
-    """Split ranked forms into the book's vocabulary and the names it drops."""
-    kept: list[Form] = []
-    excluded: list[Form] = []
-    for form in forms:
-        if len(kept) == limit:
-            break
-        (excluded if form.is_proper_noun(ratio) else kept).append(form)
+    """Split candidates into the book's vocabulary and the names it drops.
+
+    Words are ordered by `ranking_count`, ties broken by total count and then
+    spelling, so a rebuild is byte-identical. A name is reported only when its
+    total count would have reached the cut, which is the case where the rule
+    actually cost it a slot.
+    """
+    words = [form for form in forms if not form.is_proper_noun(ratio)]
+    words.sort(key=lambda form: (-form.ranking_count, -form.count, form.form))
+    kept = words[:limit]
+    cut = kept[-1].ranking_count if kept else 0
+    excluded = [
+        form for form in forms if form.is_proper_noun(ratio) and form.count >= cut
+    ]
     return kept, excluded
 
 
+def pool_is_deep_enough(pool: list[Form], kept: list[Form]) -> bool:
+    """True when no form left out of the candidate pool could outrank the cut.
+
+    A form outside the pool has a total count no larger than the pool's
+    smallest, and its ranking count is no larger than its total. So the
+    selection is complete when the last kept word ranks strictly above it: a
+    tie is broken by spelling, which a form outside the pool could win.
+    """
+    return bool(kept) and kept[-1].ranking_count > min(form.count for form in pool)
+
+
+CORPUS_DOWNLOADS = "https://downloads.wortschatz-leipzig.de/corpora/"
+
+# CC BY 4.0 asks for the licence, a link to the material and a note of any
+# changes, not only a citation (issue #7). The renderer does not read it yet,
+# so the built book does not carry it (issue #21).
 CORPUS_LICENCE = {
     "name": "Leipzig Corpora Collection",
-    "url": "https://downloads.wortschatz-leipzig.de/corpora/",
+    "url": CORPUS_DOWNLOADS,
     "licence": "CC BY 4.0",
+    "licence_url": "https://creativecommons.org/licenses/by/4.0/",
     "attribution": (
         "D. Goldhahn, T. Eckart, U. Quasthoff: Building Large Monolingual "
         "Dictionaries at the Leipzig Corpora Collection, LREC 2012."
+    ),
+    "changes": (
+        "Modified: word counts were case-folded, non-words, proper nouns and "
+        "English tokens removed, ranked by lowercase use, and cut to the top "
+        "entries. Only the word list is redistributed, not the sentences."
     ),
 }
 
@@ -218,7 +267,10 @@ def write_source(
         json.dumps(
             {
                 "corpus": corpus,
-                "source": CORPUS_LICENCE,
+                "source": {
+                    **CORPUS_LICENCE,
+                    "material": f"{CORPUS_DOWNLOADS}{corpus}.tar.gz",
+                },
                 "inputs": {p.name: _digest(p) for p in inputs},
                 "entries": kept,
                 "excluded_proper_nouns": excluded,
@@ -266,6 +318,11 @@ def main(argv: list[str] | None = None) -> int:
     if len(kept) < args.limit:
         parser.error(
             f"corpus yielded {len(kept)} words, fewer than the {args.limit} asked for"
+        )
+    if not pool_is_deep_enough(forms, kept):
+        parser.error(
+            f"the {len(forms)} candidates may miss a word that belongs in the list; "
+            "raise CANDIDATE_MULTIPLE"
         )
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
