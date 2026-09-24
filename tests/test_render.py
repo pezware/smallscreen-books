@@ -1,8 +1,11 @@
 """Checks the book the device will actually open."""
 
+import contextlib
+import io
 import sys
 import tempfile
 import unittest
+import unittest.mock
 import zipfile
 from pathlib import Path
 
@@ -75,6 +78,31 @@ class BuildEpub(unittest.TestCase):
         nav = self.zf.read("OEBPS/nav.xhtml").decode()
         # arbol, banco, casa, zona -> A B C Z
         self.assertEqual(nav.count("<li>"), 4)
+
+
+class Main(unittest.TestCase):
+    def test_a_longer_frequency_list_still_builds_a_book_of_book_size(self):
+        """The ranked list runs past the book, because merging forms into
+        lemmas consumes them; the stub book must not grow with it."""
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        forms = tmp / "frequency.txt"
+        forms.write_text("".join(f"w{n}\n" for n in range(5)), encoding="utf-8")
+        out = tmp / "book.epub"
+        self.enterContext(unittest.mock.patch.object(render, "BOOK_SIZE", 3))
+        self.enterContext(contextlib.redirect_stdout(io.StringIO()))
+        render.main(
+            [
+                "--entries",
+                str(tmp / "none.jsonl"),
+                "--frequency-list",
+                str(forms),
+                "--out",
+                str(out),
+            ]
+        )
+        with zipfile.ZipFile(out) as zf:
+            opf = zf.read("OEBPS/content.opf").decode()
+        self.assertEqual(opf.count("<itemref "), 3)
 
 
 class StylesheetStaysInsideTheEngineSubset(unittest.TestCase):

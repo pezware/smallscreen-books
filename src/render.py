@@ -231,6 +231,11 @@ def build_epub(entries: list[Entry], out_path: Path, title: str, source: str) ->
     return out_path
 
 
+# How many entries the book holds. The frequency list is longer than this,
+# because merging forms into lemmas consumes forms (docs/plan.md, stage 1b).
+BOOK_SIZE = 3000
+
+
 def entries_from_frequency(path: Path, limit: int | None = None) -> list[Entry]:
     """Stub entries straight from the frequency list.
 
@@ -266,7 +271,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--out", type=Path, default=Path("build/es-wordbook.epub"))
     parser.add_argument("--title", default="Las 3000 palabras")
-    parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--limit", type=int, default=BOOK_SIZE)
     args = parser.parse_args(argv)
 
     if args.entries.exists():
