@@ -125,6 +125,16 @@ definition in eight needed a human edit. `mise run definitions-check` writes
 `build/definitions-review.tsv`, most urgent first: rejected, same word family
 as the headword, repaired, then the rest.
 
+**An agent review counts, and says so.** Andy asked on 2026-09-24 for review
+agents to read the definitions, because checking 3,000 Spanish definitions by
+hand is beyond his Spanish. Seven agents read all 3,000 and rewrote 455; a
+rewrite was applied only if it passes `accept_definition` and the prompt's
+style rules. Every entry they approved carries `reviewed_by: agent`; a
+person's approval carries `reviewed_by: human`. Nationality and place words
+whose country the book lacks are left for Andy, defined as "De X o de sus
+habitantes": the agents' workarounds described countries instead of naming
+them, and some did so badly (`sirio` by a war).
+
 **`través` leaves the headword list.** It lives only inside *a través de*, and
 every definition the pilot drew for it was wrong. It goes as an override
 (`través` → `-` in `forms.overrides.tsv`), so the next lemma takes its slot;

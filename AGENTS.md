@@ -110,7 +110,9 @@ what changed. The only hand edits are a reviewer's: correct `definition`, and
 set `checked` to `true`. Suggestions for a reviewer go in a sheet under
 `data/es/review/` (`definitions.write_sheet`); the reviewer marks `ok` with `y`
 on the rows they approve, and `definitions.py apply <sheet>` applies only
-those. Never mark `ok` yourself. A checked entry is never regenerated. Change the
+those. Never mark `ok` yourself unless Andy asks for an agent review; then
+apply with `--reviewer agent`, so every entry records who approved it
+(`reviewed_by`) and an agent's approval can be re-read later. A checked entry is never regenerated. Change the
 prompt in `src/definitions.py` only with a pilot run to show it helps
 (`tools/pilot_definitions.py` sends the same prompt), because every changed
 character regenerates all 3,000 unchecked definitions.
