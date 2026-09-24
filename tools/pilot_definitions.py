@@ -55,9 +55,12 @@ Reglas para cada definición:
 - Una sola frase en español, completa y gramatical, con punto final. Revisa la \
 concordancia y los verbos pronominales: una ventana "se abre", no "abre".
 - Como máximo {MAX_WORDS} palabras y {validate.MAX_DEFINITION_CHARS} caracteres, \
-espacios incluidos. Más corta es mejor, si queda clara.
+espacios incluidos.
+- Di qué distingue a esta palabra de otras cercanas. Una definición vaga, que \
+serviría también para otra palabra, no sirve.
 - Usa solo palabras que el estudiante puede buscar en este libro. {{vocab}}
-- No uses la palabra definida ni ninguna de sus formas.
+- No uses la palabra definida ni ninguna de sus formas, ni palabras de su misma \
+familia: para "libertad", no "libre".
 - Define el sentido básico que un estudiante aprende primero, con la categoría \
 gramatical dada, aunque otro sentido sea más frecuente en la prensa: "partido" es \
 primero un juego entre dos equipos, no un grupo político.
@@ -74,7 +77,10 @@ VOCAB_LIST = (
 VOCAB_NONE = "Prefiere las palabras más frecuentes y sencillas."
 
 REPAIR = """Estas definiciones no cumplen las reglas. Para cada una se indica \
-el problema. Escribe una definición nueva que las cumpla todas."""
+el problema. Escribe una definición nueva que las cumpla todas.
+Cambia solo lo necesario: explica con palabras sencillas lo que decía cada \
+palabra que falta, y conserva todo el significado. No acortes la definición \
+quitando información."""
 
 Chat = Callable[[str, str], dict]
 
@@ -102,6 +108,21 @@ def system_prompt(vocab: str, words: list[str]) -> str:
     )
 
 
+# A shared prefix this long suggests the same word family (legítimo for
+# legitimidad). It only flags a definition for review; it rejects nothing.
+FAMILY_PREFIX = 6
+
+
+def related(entry: dict, words: list[str], own: set[str]) -> list[str]:
+    lemma = validate.normalise(entry["lemma"])
+    if len(lemma) <= FAMILY_PREFIX:
+        return []
+    stem = lemma[:FAMILY_PREFIX]
+    return sorted(
+        {w for w in map(validate.normalise, words) if w.startswith(stem)} - own
+    )
+
+
 def measure(entry: dict, definition: str, known: set[str]) -> dict:
     words = validate._WORD.findall(validate._composed(definition))
     own = {validate.normalise(f) for f in [entry["lemma"], *entry["forms"]]}
@@ -115,6 +136,7 @@ def measure(entry: dict, definition: str, known: set[str]) -> dict:
         "circular": validate.is_circular(definition, entry["lemma"]),
         "self_form": any(validate.normalise(w) in own for w in words),
         "unknown": unknown,
+        "related": related(entry, words, own),
     }
 
 
@@ -295,11 +317,15 @@ def summary(history: list[list[dict]], classify_word) -> str:
             f"  over {validate.MAX_DEFINITION_CHARS} chars: "
             f"{sum(r['too_long'] for r in rows)}   "
             f"chars median {chars[n // 2]} max {chars[-1]}   "
-            f"words median {words[n // 2]} max {words[-1]}"
+            f"words median {words[n // 2]} max {words[-1]}   "
+            f"over {MAX_WORDS} words: {sum(r['words'] > MAX_WORDS for r in rows)}"
         )
+        circular = sum(r["circular"] for r in rows)
+        self_form = sum(r["self_form"] for r in rows)
+        family = sum(bool(r["related"]) for r in rows)
         lines.append(
-            f"  uses the lemma: {sum(r['circular'] for r in rows)}   "
-            f"uses the lemma or one of its forms: {sum(r['self_form'] for r in rows)}"
+            f"  uses the lemma: {circular}   uses the lemma or one of its forms: "
+            f"{self_form}   same family (review): {family}"
         )
         for name, rule in RULES.items():
             ok = sum(
@@ -315,13 +341,14 @@ def summary(history: list[list[dict]], classify_word) -> str:
             f"  {r['lemma']}: «{r['definition']}» — {problems(r)}" for r in failing
         ]
     first = {r["lemma"]: r["definition"] for r in history[0]}
-    changed = [r for r in last if r["definition"] != first[r["lemma"]]]
-    if changed:
-        lines.append("repaired:")
-        lines += [
-            f"  {r['lemma']}: «{first[r['lemma']]}» -> «{r['definition']}»"
-            for r in changed
-        ]
+    lines.append("final definitions (* repaired, ~ same family as the headword):")
+    for r in last:
+        mark = ("*" if r["definition"] != first[r["lemma"]] else " ") + (
+            "~" if r["related"] else " "
+        )
+        lines.append(f" {mark} {r['lemma']} ({r['pos']}): {r['definition']}")
+        if mark[0] == "*":
+            lines.append(f"      was: {first[r['lemma']]}")
     return "\n".join(lines)
 
 
