@@ -47,10 +47,15 @@ content is generated.
 curl -O https://downloads.wortschatz-leipzig.de/corpora/spa_news_2011_1M.tar.gz
 tar xzf spa_news_2011_1M.tar.gz -C data/es/raw/       # gitignored, 266 MB
 python3 src/frequency.py                              # writes data/es/frequency.txt
-mise run headwords                                    # LLM via the xAI broker; cached
+mise run headwords                                    # LLM, cached; see below
 mise run book                                         # writes build/es-wordbook.epub
 python3 -m unittest discover -s tests -t tests        # stdlib only, no venv
 ```
+
+The LLM defaults to Grok through the devbox's xAI broker. Set
+`SMALLSCREEN_LLM=anthropic` (with `ANTHROPIC_API_KEY` in your shell) to use
+Claude instead, or `SMALLSCREEN_LLM=agent` to let a coding agent answer request
+files with no network at all. AGENTS.md, "Choosing the LLM", has the details.
 
 `mise run build | test | lint | fmt` are the same commands with the pinned
 toolchain. CI runs lint and test on every change; a separate scheduled job

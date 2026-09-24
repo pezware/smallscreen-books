@@ -28,7 +28,7 @@ echo "built: build/fit/fit-entry  (give it XHTML files; prints pages and a spill
 """
 
 [tasks.headwords]
-description = "Map new or changed forms to lemmas through the xAI broker, then rebuild the headwords"
+description = "Map new or changed forms to lemmas through the LLM ($SMALLSCREEN_LLM, default xai), then rebuild the headwords"
 run = ["uv run python src/headwords.py map", "uv run python src/headwords.py build"]
 
 [tasks.headwords-check]

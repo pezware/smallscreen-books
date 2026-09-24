@@ -398,7 +398,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("step", choices=["map", "build", "check"])
     parser.add_argument("--data", type=Path, default=Path("data/es"))
-    parser.add_argument("--model", default=llm.DEFAULT_MODEL)
+    parser.add_argument(
+        "--provider", choices=llm.PROVIDERS, help="default: $SMALLSCREEN_LLM or xai"
+    )
+    parser.add_argument("--model", help="default: the provider's default model")
     parser.add_argument(
         "--wiktionary", type=Path, default=Path("data/es/raw/wiktionary-lemmas.tsv")
     )
@@ -410,15 +413,20 @@ def main(argv: list[str] | None = None) -> int:
     overrides = load_overrides(args.data / "forms.overrides.tsv")
 
     if args.step == "map":
+        model = args.model or llm.default_model(args.provider)
 
         def chat(system: str, user: str, model: str) -> dict:
-            return llm.chat_json(system, user, model=model)
+            return llm.chat_json(system, user, model=model, provider=args.provider)
 
         def save(result: dict[str, Mapping]) -> None:
             save_mappings(mappings_path, forms, result)
             print(f"{len(result)}/{len(forms)} forms mapped", file=sys.stderr)
 
-        mappings = map_forms(forms, mappings, chat, args.model, save=save)
+        try:
+            mappings = map_forms(forms, mappings, chat, model, save=save)
+        except llm.PendingAnswer as pending:
+            print(f"{pending}; then run `map` again", file=sys.stderr)
+            return 3
         save_mappings(mappings_path, forms, mappings)
         return 0
 

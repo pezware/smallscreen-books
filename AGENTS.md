@@ -22,7 +22,7 @@ mise run lint      # ruff format --check + ruff check
 mise run fmt       # ruff format
 mise run book      # build/es-wordbook.epub
 mise run build     # rebuild data/es/frequency.txt (needs the corpus in data/es/raw/)
-mise run headwords # map new forms to lemmas via the xAI broker, rebuild headwords.jsonl
+mise run headwords # map new forms to lemmas via the LLM, rebuild headwords.jsonl
 mise run headwords-check  # compare with Wiktionary -> build/headwords-review.tsv
 uv run python tools/check_epub.py build/es-wordbook.epub   # structural EPUB check
 ```
@@ -38,7 +38,7 @@ Both need `CROSSPOINT_ROOT` set to a crosspoint-reader checkout.
 ```
 src/frequency.py   corpus -> data/es/frequency.txt, 8,000 ranked forms (+ siblings)
 src/headwords.py   forms -> lemmas (LLM) -> data/es/headwords.jsonl, the 3,000 entries
-src/llm.py         the only way to call the LLM: the xAI broker's unix socket
+src/llm.py         the only way to call an LLM: xAI broker, Anthropic API or agent files
 src/wiktionary.py  Wiktionary lemma pairs, for checking only -> data/es/raw/ (local)
 src/render.py      entries -> EPUB, one XHTML file per word
 src/validate.py    checks a generated definition against the book's headwords
@@ -109,7 +109,24 @@ OpenSubtitles) without asking, because it would decide the book's licence.
 `n`. Accents do not change a word's alphabetical position. Use
 `render.sort_key` and `render.initial`, not an ad-hoc sort.
 
-## The LLM key
+## Choosing the LLM
+
+`src/llm.py` has three providers. `SMALLSCREEN_LLM` picks one, and the
+`--provider` flag of `headwords.py` and `tools/pilot_definitions.py` overrides
+it. `SMALLSCREEN_LLM_MODEL` overrides the provider's default model.
+
+| Provider | Default model | Needs |
+|---|---|---|
+| `xai` (default) | `grok-4.20-0309-non-reasoning` | the broker socket |
+| `anthropic` | `claude-opus-5` | `ANTHROPIC_API_KEY` in the shell |
+| `agent` | `agent` (a label) | someone to answer the request files |
+
+The model is part of every cache hash (`generation.input_hash`, and each
+mapping's hash in `forms.jsonl`). Switching provider or model therefore
+regenerates everything that command touches: `mise run headwords` with a new
+model re-maps all 8,000 forms. Pick one per stage and keep it.
+
+### xai: the broker
 
 There is no xAI key on the devbox, and there must never be one in this repo,
 in a `.env` file, or in the environment. The devbox runs a broker that holds
@@ -118,27 +135,29 @@ the key and proxies `api.x.ai`. Send requests to the unix socket
 `Authorization` header; the broker replaces the header and journals the call.
 `GET /healthz` answers without calling upstream.
 
-The runtime is stdlib only, so no `requests` or SDK:
-
-```python
-import http.client
-import socket
-
-
-class BrokerConnection(http.client.HTTPConnection):
-    def __init__(self, path, **kwargs):
-        super().__init__("xai", **kwargs)
-        self._path = path
-
-    def connect(self):
-        self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        self.sock.connect(self._path)
-```
-
-Read the socket path from `XAI_BROKER_SOCKET`, defaulting to the path above,
+The socket path comes from `XAI_BROKER_SOCKET`, defaulting to the path above,
 so a Mac can use an ssh-forwarded socket. The broker allows 60 requests a
 minute, which is one more reason generation is cached and versioned
 (`docs/plan.md`). Do not work around the limit by adding a second key.
+
+### anthropic: the Claude API
+
+`llm.py` calls `https://api.anthropic.com/v1/messages` over the standard
+library, with the key read from `ANTHROPIC_API_KEY`. Export it in your shell
+only. It never goes in this repo, a `.env` file, or `mise.toml`. A refusal or a
+truncated answer fails the call instead of falling back to another model,
+because the cache records which model wrote each entry.
+
+### agent: a coding agent plays the model
+
+No network and no key. Each call writes `build/llm-exchange/requests/<key>.json`
+(the user message, the path of the system prompt under `systems/`, and the
+answer path) and raises `llm.PendingAnswer`. Whoever plays the model, such as
+Claude Code in a cloud session, writes the JSON answer to
+`build/llm-exchange/answers/<key>.json`, and the same command resumes. The
+answer file is the reply exactly as a model would give it: one JSON object.
+Answer the request as written, without running the validator on your own
+answer first, or the pilot measures the validator instead of the writer.
 
 ## Conventions
 
