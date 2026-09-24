@@ -84,7 +84,10 @@ drift. Never hand-edit it.
 Each mapping carries the hash of its form, model and prompt, so `mise run
 headwords` only pays for what changed. Never hand-edit either file: a wrong
 lemma is fixed in `data/es/forms.overrides.tsv`, and a test fails if
-`headwords.jsonl` is not exactly what its inputs build.
+`headwords.jsonl` is not exactly what its inputs build. After any change to
+the headwords, run `mise run headwords-check`: it stamps
+`headwords.source.json` with the hash of the list it checked, and a test fails
+until the stamp matches.
 
 **Wiktionary data never enters the repository.** It is CC BY-SA, and
 share-alike would decide the book's licence. `wiktionary.py` writes it to the

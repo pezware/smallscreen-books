@@ -51,6 +51,13 @@ class ParseAnswer(unittest.TestCase):
         (row,) = headwords.parse_answer(answer, ["uu"])
         self.assertTrue(row["skip"])
 
+    def test_a_skip_that_is_not_a_boolean_fails(self):
+        answer = self.answer(
+            {"form": "de", "lemma": "de", "pos": "preposición", "skip": "false"}
+        )
+        with self.assertRaisesRegex(headwords.MappingError, "skip"):
+            headwords.parse_answer(answer, ["de"])
+
     def test_the_lemma_is_lowercased(self):
         answer = self.answer({"form": "dijo", "lemma": "Decir", "pos": "verbo"})
         self.assertEqual(headwords.parse_answer(answer, ["dijo"])[0]["lemma"], "decir")
@@ -102,6 +109,11 @@ class MapForms(unittest.TestCase):
         calls.clear()
         headwords.map_forms(["a"], first, chat, "n", batch=2)
         self.assertEqual(calls, [["a"]])
+
+    def test_a_form_no_longer_in_the_list_is_dropped(self):
+        chat, _ = self.fake()
+        first = headwords.map_forms(["a", "b"], {}, chat, "m", batch=2)
+        self.assertEqual(set(headwords.map_forms(["a"], first, chat, "m")), {"a"})
 
     def test_saves_after_every_batch(self):
         chat, _ = self.fake()
@@ -190,6 +202,81 @@ class Build(unittest.TestCase):
             headwords.build(["a", "b"], {"a": mapped("a", "a")}, {}, size=1)
 
 
+class Stale(unittest.TestCase):
+    def test_a_mapping_from_another_prompt_is_stale(self):
+        old = headwords.Mapping("de", "de", "preposición", False, "sha256:old", "m")
+        self.assertEqual(headwords.stale_forms(["de"], {"de": old}), ["de"])
+
+    def test_a_current_mapping_is_not_stale(self):
+        current = headwords.Mapping(
+            "de",
+            "de",
+            "preposición",
+            False,
+            headwords.form_hash("de", "m", headwords.PROMPT),
+            "m",
+        )
+        self.assertEqual(headwords.stale_forms(["de"], {"de": current}), [])
+
+
+class Provenance(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        self.entries = self.tmp / "headwords.jsonl"
+        self.entries.write_text('{"lemma": "de"}\n', encoding="utf-8")
+        self.source = self.tmp / "headwords.source.json"
+
+    def check(self):
+        return json.loads(self.source.read_text(encoding="utf-8"))["check"]
+
+    def test_a_build_records_no_check_until_one_runs(self):
+        headwords.write_source(self.source, "m", 1, 0, self.entries)
+        self.assertIsNone(self.check())
+
+    def test_a_check_is_stamped_with_the_headwords_it_saw(self):
+        headwords.write_source(self.source, "m", 1, 0, self.entries)
+        headwords.stamp_check(self.source, self.entries, {"agree": 1})
+        self.assertEqual(
+            self.check()["headwords_sha256"], headwords.file_sha256(self.entries)
+        )
+
+    def test_rebuilding_the_same_headwords_keeps_the_check(self):
+        headwords.write_source(self.source, "m", 1, 0, self.entries)
+        headwords.stamp_check(self.source, self.entries, {"agree": 1})
+        headwords.write_source(self.source, "m", 1, 0, self.entries)
+        self.assertIsNotNone(self.check())
+
+    def test_changed_headwords_drop_the_check(self):
+        headwords.write_source(self.source, "m", 1, 0, self.entries)
+        headwords.stamp_check(self.source, self.entries, {"agree": 1})
+        self.entries.write_text('{"lemma": "la"}\n', encoding="utf-8")
+        headwords.write_source(self.source, "m", 1, 0, self.entries)
+        self.assertIsNone(self.check())
+
+
+class Review(unittest.TestCase):
+    def test_a_row_shows_the_form_s_own_rank_and_part_of_speech(self):
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        wiktionary = tmp / "w.tsv"
+        wiktionary.write_text("bajo\tbajo\tprep\nbaja\tbajar\tverb\n", encoding="utf-8")
+        report = tmp / "review.tsv"
+        entry = {
+            "lemma": "bajo",
+            "pos": "preposición",
+            "rank": 1,
+            "forms": ["bajo", "baja"],
+        }
+        mappings = {
+            "bajo": mapped("bajo", "bajo", "preposición"),
+            "baja": mapped("baja", "bajo", "adjetivo"),
+        }
+        headwords.write_review(
+            report, [entry], mappings, {}, ["bajo", "baja"], wiktionary
+        )
+        row = report.read_text(encoding="utf-8").splitlines()[1].split("\t")
+        self.assertEqual((row[0], row[1], row[3]), ("2", "baja", "adjetivo"))
+
+
 class Overrides(unittest.TestCase):
     def test_reads_lemma_pos_and_skip_lines(self):
         tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
@@ -251,6 +338,18 @@ class ShippedHeadwords(unittest.TestCase):
             headwords.load_overrides(DATA / "forms.overrides.tsv"),
         )
         self.assertEqual(rebuilt, self.entries())
+
+    def test_every_mapping_is_current(self):
+        forms = headwords.read_frequency(DATA / "frequency.txt")
+        mappings = headwords.load_mappings(DATA / "forms.jsonl")
+        self.assertEqual(headwords.stale_forms(forms, mappings), [])
+
+    def test_the_recorded_check_saw_these_headwords(self):
+        source = json.loads((DATA / "headwords.source.json").read_text("utf-8"))
+        self.assertEqual(
+            source["check"]["headwords_sha256"],
+            headwords.file_sha256(DATA / "headwords.jsonl"),
+        )
 
     def test_holds_the_book_size(self):
         self.assertEqual(len(self.entries()), headwords.BOOK_SIZE)

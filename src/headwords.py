@@ -125,7 +125,11 @@ def parse_answer(answer: dict, forms: list[str]) -> list[dict]:
     for form, item in zip(forms, items, strict=True):
         if _nfc(str(item.get("form", ""))).casefold() != form:
             raise MappingError(f"expected {form!r}, got {item.get('form')!r}")
-        skip = bool(item.get("skip", False))
+        skip = item.get("skip", False)
+        if not isinstance(skip, bool):
+            # "false" as a string is truthy; guessing would cache a real word
+            # as skipped for good.
+            raise MappingError(f"{form!r}: skip is {skip!r}, not a boolean")
         lemma = _nfc(str(item.get("lemma", ""))).strip().casefold()
         pos = str(item.get("pos", "")).strip()
         if not skip:
@@ -150,7 +154,9 @@ def map_forms(
     Saves after each batch, so an interrupted run resumes where it stopped
     instead of paying for the same batches again.
     """
-    result = dict(known)
+    # Only forms still in the list survive, so a dropped form cannot pin an
+    # old model in the cache after everything else moved on.
+    result = {f: known[f] for f in forms if f in known}
     todo = [
         f
         for f in forms
@@ -165,6 +171,16 @@ def map_forms(
             )
         save(result)
     return result
+
+
+def stale_forms(forms: list[str], mappings: dict[str, Mapping]) -> list[str]:
+    """Forms whose mapping is missing or was made with a different prompt."""
+    return [
+        f
+        for f in forms
+        if f not in mappings
+        or mappings[f].input_hash != form_hash(f, mappings[f].model, PROMPT)
+    ]
 
 
 def build(
@@ -279,15 +295,32 @@ def load_overrides(path: Path) -> dict[str, tuple[str, str] | None]:
     return overrides
 
 
+def write_headwords_text(entries: list[dict]) -> str:
+    return "".join(json.dumps(e, ensure_ascii=False) + "\n" for e in entries)
+
+
 def write_headwords(path: Path, entries: list[dict]) -> None:
-    path.write_text(
-        "".join(json.dumps(e, ensure_ascii=False) + "\n" for e in entries),
-        encoding="utf-8",
-    )
+    path.write_text(write_headwords_text(entries), encoding="utf-8")
 
 
-def write_source(path: Path, model: str, mapped: int, overrides: int) -> None:
-    """Provenance for the headword list, as frequency.source.json is for forms."""
+def file_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write_source(
+    path: Path, model: str, mapped: int, overrides: int, entries: Path
+) -> None:
+    """Provenance for the headword list, as frequency.source.json is for forms.
+
+    `check` is null until `check` runs, and is stamped with the hash of the
+    headwords it compared. A rebuild keeps the stamp only while the headwords
+    are byte-identical, so the file never claims a check of a list that
+    changed after it.
+    """
+    previous = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    check = previous.get("check")
+    if check and check.get("headwords_sha256") != file_sha256(entries):
+        check = None
     source = {
         "lemmas": {
             "source": f"llm:{model}",
@@ -295,41 +328,69 @@ def write_source(path: Path, model: str, mapped: int, overrides: int) -> None:
             "forms_mapped": mapped,
         },
         "overrides": overrides,
-        "checked_against": {
-            "name": "English Wiktionary, Spanish entries, via kaikki.org",
-            "licence": "CC BY-SA 4.0",
-            "use": "local comparison only; no Wiktionary data is redistributed",
-        },
         "entries": BOOK_SIZE,
+        "check": check,
     }
-    path.write_text(
-        json.dumps(source, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+    _write_json(path, source)
+
+
+def stamp_check(path: Path, entries: Path, counts: dict[str, int]) -> None:
+    """Record that the Wiktionary check ran against exactly these headwords."""
+    source = json.loads(path.read_text(encoding="utf-8"))
+    source["check"] = {
+        "against": "English Wiktionary, Spanish entries, via kaikki.org",
+        "licence": "CC BY-SA 4.0",
+        "use": "local comparison only; no Wiktionary data is redistributed",
+        "headwords_sha256": file_sha256(entries),
+        "counts": dict(sorted(counts.items())),
+    }
+    _write_json(path, source)
+
+
+def _write_json(path: Path, data: dict) -> None:
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", "utf-8")
 
 
 def write_review(
-    path: Path, entries: list[dict], mappings: dict, wiktionary_tsv: Path
+    path: Path,
+    entries: list[dict],
+    mappings: dict[str, Mapping],
+    overrides: dict[str, tuple[str, str] | None],
+    forms: list[str],
+    wiktionary_tsv: Path,
 ) -> collections.Counter[str]:
-    """Every headword form that Wiktionary does not simply confirm, by rank."""
+    """Every headword form that Wiktionary does not simply confirm.
+
+    Each row carries the form's own rank and part of speech, not its entry's:
+    in a merged entry such as `bajo`, the reviewer needs to see that `baja` was
+    read as an adjective.
+    """
     theirs: dict[str, list[str]] = collections.defaultdict(list)
     with wiktionary_tsv.open(encoding="utf-8") as handle:
         for line in handle:
             form, lemma, _ = line.rstrip("\n").split("\t")
             if lemma not in theirs[form]:
                 theirs[form].append(lemma)
+    rank = {form: i for i, form in enumerate(forms, start=1)}
     counts: collections.Counter[str] = collections.Counter()
-    lines = ["# rank\tform\tlemma\tpos\tstatus\twiktionary\n"]
+    rows = []
     for entry in entries:
         for form in entry["forms"]:
             status = check_status(entry["lemma"], theirs.get(form, []), theirs)
             counts[status] += 1
             if status != "agree":
-                lines.append(
-                    f"{entry['rank']}\t{form}\t{entry['lemma']}\t{entry['pos']}\t"
-                    f"{status}\t{','.join(theirs.get(form, []))}\n"
+                override = overrides.get(form)
+                pos = override[1] if override else mappings[form].pos
+                rows.append(
+                    (
+                        rank[form],
+                        f"{rank[form]}\t{form}\t{entry['lemma']}\t{pos}\t"
+                        f"{status}\t{','.join(theirs.get(form, []))}\n",
+                    )
                 )
+    header = "# rank\tform\tlemma\tpos\tstatus\twiktionary\n"
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("".join(lines), encoding="utf-8")
+    path.write_text(header + "".join(row for _, row in sorted(rows)), "utf-8")
     return counts
 
 
@@ -361,25 +422,33 @@ def main(argv: list[str] | None = None) -> int:
         save_mappings(mappings_path, forms, mappings)
         return 0
 
+    stale = stale_forms(forms, mappings)
+    if stale:
+        parser.error(
+            f"{len(stale)} forms have no current mapping (first: {stale[0]!r}); "
+            "run `map` first"
+        )
     entries = build(forms, mappings, overrides)
+    headwords_path = args.data / "headwords.jsonl"
+    source_path = args.data / "headwords.source.json"
     if args.step == "build":
-        write_headwords(args.data / "headwords.jsonl", entries)
-        models = {m.model for m in mappings.values()}
+        write_headwords(headwords_path, entries)
+        models = {mappings[f].model for f in forms}
         if len(models) != 1:
             parser.error(f"forms.jsonl mixes models {sorted(models)}; rerun `map`")
         write_source(
-            args.data / "headwords.source.json",
-            models.pop(),
-            len(mappings),
-            len(overrides),
+            source_path, models.pop(), len(forms), len(overrides), headwords_path
         )
         print(f"{len(entries)} headwords from {len(forms)} forms", file=sys.stderr)
         return 0
 
     if not args.wiktionary.exists():
         parser.error(f"missing {args.wiktionary}; run src/wiktionary.py first")
+    if write_headwords_text(entries) != headwords_path.read_text(encoding="utf-8"):
+        parser.error("headwords.jsonl is not what its inputs build; run `build`")
     report = Path("build/headwords-review.tsv")
-    counts = write_review(report, entries, mappings, args.wiktionary)
+    counts = write_review(report, entries, mappings, overrides, forms, args.wiktionary)
+    stamp_check(source_path, headwords_path, counts)
     print(f"{dict(counts)} -> {report}", file=sys.stderr)
     return 0
 

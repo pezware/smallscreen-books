@@ -5,10 +5,17 @@
     "forms_mapped": 8000
   },
   "overrides": 6,
-  "checked_against": {
-    "name": "English Wiktionary, Spanish entries, via kaikki.org",
+  "entries": 3000,
+  "check": {
+    "against": "English Wiktionary, Spanish entries, via kaikki.org",
     "licence": "CC BY-SA 4.0",
-    "use": "local comparison only; no Wiktionary data is redistributed"
-  },
-  "entries": 3000
+    "use": "local comparison only; no Wiktionary data is redistributed",
+    "headwords_sha256": "3b12faf1b3708f0fbff3fb99878d0974fc7a4b28d6fb92f2d5faf928e4424f61",
+    "counts": {
+      "agree": 4992,
+      "ambiguous": 1551,
+      "disagree": 32,
+      "no evidence": 8
+    }
+  }
 }
