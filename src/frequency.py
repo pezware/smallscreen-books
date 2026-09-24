@@ -207,15 +207,17 @@ def pool_is_deep_enough(pool: list[Form], kept: list[Form]) -> bool:
 
     A form outside the pool has a total count no larger than the pool's
     smallest, and its ranking count is no larger than its total. So the
-    selection is complete when the last kept word ranks at least that high.
+    selection is complete when the last kept word ranks strictly above it: a
+    tie is broken by spelling, which a form outside the pool could win.
     """
-    return bool(kept) and kept[-1].ranking_count >= min(form.count for form in pool)
+    return bool(kept) and kept[-1].ranking_count > min(form.count for form in pool)
 
 
 CORPUS_DOWNLOADS = "https://downloads.wortschatz-leipzig.de/corpora/"
 
 # CC BY 4.0 asks for the licence, a link to the material and a note of any
-# changes, not only a citation (issue #7). Each built book carries this block.
+# changes, not only a citation (issue #7). The renderer does not read it yet,
+# so the built book does not carry it (issue #21).
 CORPUS_LICENCE = {
     "name": "Leipzig Corpora Collection",
     "url": CORPUS_DOWNLOADS,

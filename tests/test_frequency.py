@@ -150,6 +150,12 @@ class PoolDepth(unittest.TestCase):
         pool = [frequency.Form("de", 100, 100, 0), frequency.Form("casa", 40, 40, 0)]
         self.assertTrue(frequency.pool_is_deep_enough(pool, kept=pool[:1]))
 
+    def test_too_shallow_when_an_outside_form_could_tie_the_cut(self):
+        """A tie is decided by spelling, so a form outside the pool with the
+        same count could still win it."""
+        pool = [frequency.Form("zeta", 10, 10, 0)]
+        self.assertFalse(frequency.pool_is_deep_enough(pool, kept=pool))
+
     def test_too_shallow_when_a_form_outside_the_pool_could_outrank_the_cut(self):
         pool = [frequency.Form("de", 100, 100, 0), frequency.Form("china", 90, 30, 60)]
         self.assertFalse(frequency.pool_is_deep_enough(pool, kept=pool))
