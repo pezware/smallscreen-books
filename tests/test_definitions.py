@@ -340,6 +340,12 @@ class ApplySheet(unittest.TestCase):
         self.assertEqual(out[0]["definition"], "Lugar donde vive una persona.")
         self.assertIs(out[0]["checked"], True)
         self.assertEqual(out[0]["source"]["definition"], "review")
+        self.assertEqual(out[0]["reviewed_by"], "human")
+
+    def test_the_reviewer_is_recorded(self):
+        rows = [self.row("casa", "Hogar.", "Una casa grande.")]
+        out, _, _ = definitions.apply_sheet(self.ENTRIES, rows, reviewer="agent")
+        self.assertEqual(out[0]["reviewed_by"], "agent")
 
     def test_an_unmarked_row_is_left_alone(self):
         rows = [self.row("casa", "Hogar.", "Otra.", ok="")]

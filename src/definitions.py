@@ -410,13 +410,15 @@ def read_sheet(path: Path) -> list[dict]:
 
 
 def apply_sheet(
-    entries: list[dict], rows: list[dict]
+    entries: list[dict], rows: list[dict], reviewer: str = "human"
 ) -> tuple[list[dict], list[str], list[tuple[str, str]]]:
     """Apply the approved rows; return (entries, applied lemmas, skipped).
 
     Only a row marked `y` is applied, because marking it is the review. A row
     whose `current` no longer matches words.jsonl is skipped: the definition
     changed after the sheet was made, and the reviewer approved the old one.
+    `reviewed_by` records who approved it, so an agent's approval can always
+    be told apart from a person's, and re-read.
     """
     by_lemma = {e["lemma"]: i for i, e in enumerate(entries)}
     out = list(entries)
@@ -444,6 +446,7 @@ def apply_sheet(
             "definition": definition,
             "source": source,
             "checked": True,
+            "reviewed_by": reviewer,
         }
         applied.append(lemma)
     return out, applied, skipped
@@ -467,6 +470,11 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("step", choices=["generate", "check", "apply"])
     parser.add_argument("sheet", nargs="?", type=Path, help="apply: the sheet")
+    parser.add_argument(
+        "--reviewer",
+        default="human",
+        help="apply: who approved the sheet, recorded as reviewed_by (e.g. agent)",
+    )
     parser.add_argument("--data", type=Path, default=Path("data/es"))
     parser.add_argument(
         "--provider", choices=llm.PROVIDERS, help="default: $SMALLSCREEN_LLM or xai"
@@ -497,7 +505,9 @@ def main(argv: list[str] | None = None) -> int:
         if args.sheet is None:
             parser.error("apply needs the sheet to apply")
         every = read_jsonl(words_path)
-        every, applied, skipped = apply_sheet(every, read_sheet(args.sheet))
+        every, applied, skipped = apply_sheet(
+            every, read_sheet(args.sheet), args.reviewer
+        )
         write_jsonl(words_path, every)
         for lemma, reason in skipped:
             print(f"{lemma}: skipped, {reason}", file=sys.stderr)
