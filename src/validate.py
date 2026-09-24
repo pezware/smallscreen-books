@@ -111,24 +111,43 @@ class Verdict:
     reason: str = ""
 
 
-def accept_definition(entry: dict, known_forms: set[str]) -> Verdict:
-    """Decide whether this generated definition may enter the book.
+def uses_own_form(definition: str, entry: dict) -> bool:
+    """True when the definition uses the headword or any form its entry lists.
 
-    Unimplemented on purpose. Andy owns this rule; see docs/plan.md, "Open
-    decision". The inputs you have are:
-
-        entry["lemma"], entry["definition"], entry["checked"]
-        unknown_words(entry["definition"], known_forms)  -> set[str]
-        is_circular(entry["definition"], entry["lemma"]) -> bool
-        len(entry["definition"]) > MAX_DEFINITION_CHARS  -> bool
-
-    The trade-off is strictness against convergence. Rejecting every
-    out-of-vocabulary word is pedagogically pure, but `unknown_words` over-reports
-    on inflected forms, so a strict rule sends good definitions back to the
-    generator in a loop. Allowing a small number lets a few unknown words through
-    and trusts the surrounding sentence to carry them.
-
-    Worth deciding too: does a `checked` entry bypass these rules? You reviewed
-    it, so the generator's opinion no longer applies.
+    Wider than `is_circular`: "Persona de la especie humana" defines `humano`
+    with one of its own forms, which a learner cannot look up anywhere else.
     """
-    raise NotImplementedError
+    own = {normalise(w) for w in (entry["lemma"], *entry.get("forms", ()))}
+    words = _WORD.finditer(_composed(definition))
+    return any(normalise(m.group()) in own for m in words)
+
+
+def accept_definition(entry: dict, known_forms: set[str]) -> Verdict:
+    """Decide whether this definition may enter the book (docs/plan.md).
+
+    A reviewed entry (`checked: true`) is accepted as it stands: someone read
+    it, so these rules no longer apply. That is also how a definition that
+    needs a word the book lacks, such as a place name, gets in.
+
+    Otherwise the rule is strict: every word must be one the book defines, the
+    definition must not use its own headword or forms, and it must fit
+    MAX_DEFINITION_CHARS. `unknown_words` compares exact forms, so it also
+    rejects an unlisted form of a headword ("oye" for `oír`); a repair or a
+    review fixes that, rather than a looser rule that would need Wiktionary,
+    which never enters the repository, to tell the two cases apart.
+    """
+    if entry.get("checked"):
+        return Verdict(True, "checked")
+    definition = entry.get("definition") or ""
+    if not definition.strip():
+        return Verdict(False, "no definition")
+    if len(definition) > MAX_DEFINITION_CHARS:
+        return Verdict(
+            False, f"{len(definition)} characters, over {MAX_DEFINITION_CHARS}"
+        )
+    if uses_own_form(definition, entry):
+        return Verdict(False, "uses the headword or one of its forms")
+    unknown = sorted(unknown_words(definition, known_forms))
+    if unknown:
+        return Verdict(False, "not in the book: " + ", ".join(unknown))
+    return Verdict(True)
