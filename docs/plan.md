@@ -26,13 +26,15 @@ Andy took the next three on 2026-09-23 (issues #8, #10, #5).
 **A headword is a lemma, and its forms share one entry.** `dice`, `dijo` and
 `decir` are one entry, `decir`. The entry's `rank` is the best rank among its
 forms. Slots freed by merging go to the next words in the list, so the book
-still holds 3,000 distinct lemmas. Homographs such as `vino` (noun) and `vino`
-(from `venir`) are not split into separate entries.
+still holds 3,000 distinct lemmas. Homographs are not split: a form with two
+analyses, such as `vino` (noun) and `vino` (from `venir`), belongs to the entry
+of its more common analysis, and only that entry lists it.
 
 Consequence: `data/es/frequency.txt` stays a list of surface forms, because
-the vocabulary check compares surface forms. Filling 3,000 lemmas takes more
-than 3,000 forms, so the book's headword list is derived from it rather than
-being it.
+the vocabulary check compares surface forms. Merging means 3,000 forms yield
+fewer than 3,000 lemmas, so stage 1b reads a longer ranked list and stops at
+the 3,000th lemma. Whether the vocabulary check then trusts the top 3,000 forms
+or every form of the 3,000 headwords is still open, and is decided in 1b.
 
 **Every entry carries two examples.** The second example may push an entry
 onto a continuation page, which the first decision already accepts. Examples
@@ -40,13 +42,17 @@ come from Tatoeba only. When Tatoeba cannot supply two, the entry is reported,
 not padded with a generated sentence that has no source.
 
 **Frequency counts only lowercase uses.** A form that survives the proper-noun
-cut is ranked by its lowercase occurrences, not by its total. Place-name uses
-no longer lift `china` or `granada` above real vocabulary.
+cut is ranked by its total count scaled by its share of lowercase uses, not by
+the total alone. Place-name uses no longer lift `china` or `granada` above real
+vocabulary.
 
 ## Data contract
 
 One JSON object per line, in `data/<lang>/words.jsonl`. See
 `data/es/words.sample.jsonl`.
+
+Shortened here: a real entry's `forms` lists every form the list holds for that
+lemma.
 
 ```json
 {"lemma": "decir", "pos": "verbo", "rank": 37, "forms": ["dijo", "dice", "decir"],
@@ -71,6 +77,11 @@ its version label. The generator uses it this way:
 - different hash, `checked: true`: report it and leave it alone. A reviewed
   entry changes only when someone clears `checked`.
 
+The hash decides only whether to call the generator. Validation is not cached:
+every run re-checks every entry, cache hits included, against the current
+vocabulary and `accept_definition`, because a rebuilt frequency list can make a
+once-valid definition fail. A failure is reported, never silently kept.
+
 ## Open decision, owned by Andy
 
 `src/validate.py:accept_definition` raises `NotImplementedError`. It decides
@@ -94,10 +105,13 @@ Each stage lands in the same branch and the same pull request.
    can load it.
 
 1b. **Headwords.** Map surface forms to lemmas and part of speech, merge ranks,
-   and write the 3,000 headwords with their `forms`. The lemma source is not
-   chosen yet, and it carries its own licence question.
-   Done when: 3,000 distinct lemmas, each listing its forms, and no form is
-   claimed by two entries.
+   and write the 3,000 headwords with their `forms`. It reads a ranked list
+   longer than 3,000 forms, because merging consumes forms. The lemma source is
+   not chosen yet, and it carries its own licence question; its provenance goes
+   in `data/<lang>/headwords.source.json`, as the corpus's does in
+   `frequency.source.json`.
+   Done when: 3,000 distinct lemmas, each listing its forms, no form is claimed
+   by two entries, and the lemma source is recorded.
 
 2. **Definitions.** Generate, cache by `generation.input_hash`, validate, write
    `data/es/words.jsonl`.
