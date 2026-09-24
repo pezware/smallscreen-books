@@ -88,6 +88,37 @@ OpenSubtitles) without asking, because it would decide the book's licence.
 `n`. Accents do not change a word's alphabetical position. Use
 `render.sort_key` and `render.initial`, not an ad-hoc sort.
 
+## The LLM key
+
+There is no xAI key on the devbox, and there must never be one in this repo,
+in a `.env` file, or in the environment. The devbox runs a broker that holds
+the key and proxies `api.x.ai`. Send requests to the unix socket
+`/run/xai-broker/xai.sock` with the normal `/v1/...` path and any placeholder
+`Authorization` header; the broker replaces the header and journals the call.
+`GET /healthz` answers without calling upstream.
+
+The runtime is stdlib only, so no `requests` or SDK:
+
+```python
+import http.client
+import socket
+
+
+class BrokerConnection(http.client.HTTPConnection):
+    def __init__(self, path, **kwargs):
+        super().__init__("xai", **kwargs)
+        self._path = path
+
+    def connect(self):
+        self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        self.sock.connect(self._path)
+```
+
+Read the socket path from `XAI_BROKER_SOCKET`, defaulting to the path above,
+so a Mac can use an ssh-forwarded socket. The broker allows 60 requests a
+minute, which is one more reason generation is cached and versioned
+(`docs/plan.md`). Do not work around the limit by adding a second key.
+
 ## Conventions
 
 - Tests use `unittest` and import modules by putting `src/` on `sys.path` (see
