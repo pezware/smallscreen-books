@@ -1,0 +1,248 @@
+ok	lemma	pos	rank	current	suggested	note
+	un	determinante	11	Señala un nombre de cosa o persona.	Presenta algo por primera vez, sin decir cuál.	
+	no	adverbio	15	Indica que algo no es verdad o no pasa.	Niega lo que se dice después.	
+	ser	verbo	18	Indica cómo es algo o qué es algo.	Indica la identidad, el origen o la calidad de algo.	
+	lo	pronombre	22	Reemplaza a un nombre de cosa o persona.	Ocupa el lugar de algo o alguien del que ya se habló.	
+	o	conjunción	27	Une alternativas o distintas opciones.	Une dos ideas entre las que hay que elegir.	
+	hora	sustantivo	101	Cada una de las partes en que se divide un día.	Tiempo de sesenta minutos; el día tiene veinticuatro.	number words missing: needs your check
+	embargo	sustantivo	114	Retención legal de bienes por orden de un juez.	Orden de un juez que quita a alguien el uso de sus bienes.	sense: learners meet it mostly in "sin embargo"; consider dropping like través
+	euro	sustantivo	140	Moneda de varios países de europa.	Moneda que usan muchos países de Europa.	place name: needs your check
+	ver	verbo	144	Percibir algo con los ojos.	Recibir con los ojos la imagen de algo.	
+	casi	adverbio	170	Indica proximidad sin llegar a ser.	Indica que falta poco para llegar a algo.	
+	hacia	preposición	211	Preposición que indica el lugar al que uno va.	Indica la dirección en la que va algo o alguien.	
+	hablar	verbo	469	Expresar ideas con palabras de forma oral.	Decir palabras con la voz.	
+	libertad	sustantivo	508	Posibilidad de actuar sin nada que lo impida.	Poder de actuar y decidir por uno mismo.	
+	marcha	sustantivo	522	Acto en que muchas personas caminan juntas.	Acto en que muchas personas van juntas por la calle para pedir algo.	
+	línea	sustantivo	544	Trazo que une dos puntos.	Marca larga que va de un punto a otro.	
+	mexicano	adjetivo	570	Que es de méxico o de sus habitantes.	De México o de sus habitantes.	place name: needs your check
+	película	sustantivo	572	Historia contada con imágenes en movimiento.	Historia que se cuenta con imágenes en movimiento, en el cine o la televisión.	
+	sentido	sustantivo	593	Capacidad de notar el mundo exterior.	Capacidad del cuerpo para conocer el mundo, como la vista o el oído.	
+	tomar	verbo	631	Coge algo con la mano o lo lleva a la boca.	Poner algo en la mano; también, meter comida o agua en la boca.	
+	sur	sustantivo	646	Punto del horizonte que queda delante cuando se mira al polo donde hace más frío.	Punto contrario al norte.	
+	fuego	sustantivo	759	Llama que sale cuando algo se quema.	Llamas, luz y calor que salen de la madera u otra cosa al arder.	uses arder, missing from the book: needs your check
+	banco	sustantivo	779	Mueble largo para que varias personas se sienten.	Empresa que guarda el dinero de la gente y presta dinero.	sense: bank first, not bench
+	nuclear	adjetivo	802	Relacionado con la energía que sale del núcleo del átomo.	Relacionado con la energía que dan las centrales y ciertas bombas.	
+	hospital	sustantivo	807	Lugar donde atienden y ayudan a enfermos.	Edificio donde los médicos ayudan y tratan a los enfermos.	
+	cadena	sustantivo	869	Línea de piezas de metal unidas una con otra.	Piezas de metal que se unen una tras otra en fila.	
+	inglés	adjetivo	895	Que pertenece a un país de europa o a su idioma.	De Inglaterra o de su lengua.	place name: needs your check
+	argentino	adjetivo	909	Que es natural de un país de américa del sur.	De Argentina o de sus habitantes.	place name: needs your check
+	prisión	sustantivo	913	Lugar donde se encierra a quien hace algo ilegal.	Edificio donde deben vivir, sin poder salir, quienes cometieron un delito.	
+	sacar	verbo	978	Quitar algo de donde estaba guardado.	Poner algo fuera del lugar donde estaba.	
+	referencia	sustantivo	998	Indicación que señala algo o alguien.	Algo que se dice o se usa para señalar otra cosa.	
+	accidente	sustantivo	1002	Suceso que causa daño de forma repentina.	Hecho que ocurre sin querer y causa daño.	
+	cárcel	sustantivo	1021	Edificio donde se encierra a personas culpables de delitos.	Lugar cerrado donde la justicia tiene a las personas que hacen delitos.	
+	libio	adjetivo	1031	Que es natural de Libia o pertenece a ese país.	De Libia o de sus habitantes.	place name: needs your check
+	contrato	sustantivo	1059	Acuerdo escrito entre partes que obliga a cumplirlo.	Acuerdo escrito que obliga a las partes a cumplir lo que dice.	
+	delito	sustantivo	1090	Acción que la ley considera mala y castiga.	Acción que va contra la ley y que tiene una pena.	
+	arte	sustantivo	1174	Conjunto de técnicas para crear obras bellas.	Actividad humana que crea obras como la pintura, la música o el cine.	
+	duro	adjetivo	1198	Que no es blando al tocarlo.	Que no se rompe ni cambia de forma con facilidad.	
+	suerte	sustantivo	1206	Circunstancia que afecta a alguien de forma imprevista.	Lo que pasa sin que nadie lo decida, sea bueno o malo.	
+	sueño	sustantivo	1218	Imágenes que se ven mientras se está dormido.	Ganas de dormir; también, lo que se ve al dormir.	
+	mesa	sustantivo	1275	Mueble con superficie plana y cuatro patas.	Objeto con una superficie encima de la que se come o se escribe.	
+	hotel	sustantivo	1298	Edificio con habitaciones para que viajen y duerman en él.	Edificio donde se paga por dormir y comer cuando se viaja.	
+	oficina	sustantivo	1327	Lugar donde se realiza trabajo de oficina.	Lugar donde se hace un trabajo con papeles o con ordenador.	
+	cerrar	verbo	1328	Mover una puerta para cubrir un hueco.	Hacer que algo abierto, como una puerta, no deje pasar.	
+	generación	sustantivo	1335	Grupo de personas nacidas en fechas próximas.	Grupo de personas que tienen más o menos la misma edad.	
+	fiesta	sustantivo	1361	Reunión para celebrar algo y pasarlo bien.	Reunión de personas para celebrar algo y pasar un buen rato.	
+	británico	adjetivo	1405	Que pertenece o viene del país del Reino Unido.	Del Reino Unido o de sus habitantes.	place name: needs your check
+	tribunal	sustantivo	1517	Lugar donde se decide sobre delitos o pleitos.	Grupo de jueces que decide sobre un caso; también, su edificio.	
+	carga	sustantivo	1532	Peso o mercancía que lleva un vehículo.	Cosas que lleva un vehículo o una persona.	
+	ceremonia	sustantivo	1538	Acto formal y serio con reglas establecidas.	Acto serio que se hace siguiendo unas normas.	
+	vino	sustantivo	1540	Bebida con alcohol que se hace de la fruta de la vid.	Bebida con alcohol que se hace con el fruto de una planta.	
+	italiano	adjetivo	1550	Que tiene que ver con Italia o sus habitantes.	De Italia o de sus habitantes.	place name: needs your check
+	árabe	adjetivo	1557	Que tiene que ver con la gente o cultura de Arabia.	De los pueblos del norte de África y Oriente Medio que hablan esta lengua.	place name: needs your check
+	paciente	sustantivo	1579	Persona que recibe atención médica por estar enferma.	Persona que recibe la atención de un médico.	
+	corte	sustantivo	1707	Acción de separar algo con un objeto afilado.	Acción de separar algo en partes con un objeto que corta.	
+	colombiano	adjetivo	1715	Que pertenece a ese país de américa o es propio de él.	De Colombia o de sus habitantes.	place name: needs your check
+	sencillo	adjetivo	1737	Que no tiene problemas ni partes de adorno.	Que no es difícil ni tiene muchas partes.	
+	caja	sustantivo	1741	Objeto con tapa para guardar cosas.	Objeto con fondo y lados que sirve para guardar cosas.	
+	venezolano	adjetivo	1815	Que es de ese país de américa del sur.	De Venezuela o de sus habitantes.	place name: needs your check
+	cien	numeral	1866	Número que sigue a noventa y nueve.	Diez veces diez.	
+	boca	sustantivo	1894	Abertura en la cara para comer y hablar.	Parte de la cara por la que se come y se habla.	
+	verdadero	adjetivo	1917	Que concuerda con la realidad o con los hechos.	Que es cierto y está de acuerdo con la realidad.	
+	proponer	verbo	1918	Presentar una idea para que otros la piensen.	Ofrecer una idea a otros para que den su opinión sobre ella.	
+	estación	sustantivo	1931	Lugar donde paran trenes o autobuses.	Lugar al que llegan y del que salen los trenes o los autobuses.	
+	revelar	verbo	1972	Dar a conocer algo que estaba oculto.	Dar a conocer algo que era secreto.	
+	incendio	sustantivo	1977	Fuego grande que afecta algo y se propaga.	Fuego grande que hace mucho daño a casas o campos.	
+	resistencia	sustantivo	2021	Capacidad para soportar un esfuerzo.	Fuerza para seguir adelante ante un esfuerzo o un daño.	
+	señal	sustantivo	2030	Indicación que sirve para comunicar algo.	Marca, gesto o sonido que sirve para comunicar algo.	
+	aclarar	verbo	2031	Explicar algo para que se comprenda mejor.	Explicar algo para que se pueda entender mejor.	
+	carne	sustantivo	2034	Parte blanda del cuerpo de los animales.	Parte del cuerpo de los animales que se come.	
+	agenda	sustantivo	2036	Lista de temas o actividades preparadas.	Libro o lista donde se apuntan las cosas que hay que hacer.	
+	escritor	sustantivo	2039	Persona que crea obras de escritura.	Persona que escribe libros u otras obras.	
+	catalán	adjetivo	2067	De Cataluña o de su lengua.	De Cataluña o de su lengua.	place name: needs your check
+	alcohol	sustantivo	2085	Bebida que emborracha y se bebe en fiestas.	Sustancia de bebidas como el vino, que en exceso hace daño a la salud.	
+	celebrar	verbo	2094	Reunirse para festejar un acontecimiento feliz.	Hacer una fiesta por algo bueno que ha pasado.	
+	bajar	verbo	2105	Ir desde un lugar alto hacia uno bajo.	Ir de un lugar alto a otro que está más abajo.	
+	bomba	sustantivo	2125	Objeto que explota y causa daños grandes.	Arma que se rompe con mucha fuerza y hace daño a lo que hay cerca.	
+	universidad	sustantivo	2140	Lugar donde se estudian carreras superiores.	Centro donde se hacen estudios superiores después del colegio.	
+	discusión	sustantivo	2143	Intercambio de opiniones diferentes o contrarias.	Conversación en la que las personas defienden ideas distintas.	
+	pelota	sustantivo	2166	Objeto redondo que se usa en algunos juegos.	Bola que se usa en algunos juegos y deportes.	
+	reserva	sustantivo	2190	Cantidad de algo guardada para usarla después.	Cantidad de algo que se guarda para después.	
+	comparación	sustantivo	2194	Acción de ver semejanzas y diferencias entre cosas.	Acción de ver en qué se parecen y en qué son distintas dos cosas.	
+	combustible	sustantivo	2204	Sustancia que produce energía al quemarse.	Materia que da calor y energía, como el carbón o la gasolina.	
+	importar	verbo	2208	Traer productos de otro país para tenerlos aquí.	Tener valor o interés para alguien.	sense: "me importa" first, not trade imports
+	bombero	sustantivo	2236	Persona que apaga incendios y ayuda en emergencias.	Persona cuyo trabajo es acabar con los incendios.	
+	chino	adjetivo	2242	Que es de china o de sus habitantes.	De China o de sus habitantes.	place name, and "china" is a form of chino: needs your check
+	sonido	sustantivo	2248	Sensación que producen ruidos en el oído.	Lo que llega al oído, como la música o la voz.	
+	ciclo	sustantivo	2263	Serie de fases que se repiten.	Serie de fases que vuelven a empezar una y otra vez.	
+	colegio	sustantivo	2284	Centro donde estudian niños y jóvenes.	Centro donde los niños y los jóvenes van a aprender.	
+	israelí	adjetivo	2310	De Israel o de sus habitantes.	De Israel o de sus habitantes.	place name: needs your check
+	increíble	adjetivo	2342	Que cuesta mucho creer por su rareza.	Que es muy difícil de creer.	
+	bandera	sustantivo	2347	Trozo de tela con colores y dibujos de un país.	Pieza de colores que representa a un país o a un grupo.	
+	reto	sustantivo	2405	Dificultad que exige esfuerzo para superarla.	Algo difícil que se intenta hacer como prueba.	
+	japonés	adjetivo	2412	De Japón o de sus habitantes.	De Japón o de sus habitantes.	place name: needs your check
+	legislación	sustantivo	2422	Conjunto de leyes que ordenan un país o tema.	Conjunto de leyes de un país o sobre un tema.	
+	preparación	sustantivo	2436	Acción de organizar algo antes de usarlo.	Acción de dejar algo listo para lo que viene.	
+	chileno	adjetivo	2445	De Chile o relacionado con este país.	De Chile o de sus habitantes.	place name: needs your check
+	cubano	adjetivo	2463	De Cuba o relacionado con este país.	De Cuba o de sus habitantes.	place name: needs your check
+	analizar	verbo	2466	Examinar algo con detalle para entenderlo.	Estudiar algo con detalle para comprender cómo es.	
+	humor	sustantivo	2472	Estado de ánimo o capacidad de hacer reír.	Capacidad de ver el lado divertido de las cosas.	
+	cuadrado	sustantivo	2530	Figura de cuatro lados iguales y ángulos rectos.	Figura de cuatro lados iguales, como la de muchas ventanas.	
+	espalda	sustantivo	2559	Parte posterior del cuerpo humano entre la cabeza y la cintura.	Parte de atrás del cuerpo humano, debajo del cuello.	
+	radiación	sustantivo	2675	Energía que se mueve en forma de rayos.	Energía que viaja por el espacio, como la luz del sol.	
+	limpieza	sustantivo	2762	Acción de quitar lo que está sucio.	Acción de quitar el polvo y lo que no debe estar en un lugar.	
+	humo	sustantivo	2837	Gas visible que sale de algo que se quema.	Gas oscuro que sale del fuego.	
+	constitucional	adjetivo	2852	Que se ajusta a las normas básicas del país.	Que está de acuerdo con la ley más alta de un país.	
+	café	sustantivo	2853	Bebida oscura hecha con semillas tostadas.	Bebida oscura y caliente que se toma para no tener sueño.	
+	ajuste	sustantivo	2855	Cambio que se hace para que algo encaje mejor.	Cambio pequeño para que algo funcione o quede mejor.	
+	pelo	sustantivo	2857	Hilo fino que crece en la piel de personas y animales.	Lo que crece en la cabeza y en la piel de personas y animales.	
+	inundación	sustantivo	2891	Agua que cubre un terreno de forma repentina.	Gran cantidad de agua que cubre calles o campos.	
+	queja	sustantivo	2901	Expresión de malestar o enfado.	Palabras con las que alguien muestra que algo no le gusta.	
+	gabinete	sustantivo	2912	Mueble con puertas para guardar objetos.	Grupo de ministros que dirige el gobierno con el presidente.	sense: cabinet, as the corpus uses it
+	feria	sustantivo	2937	Evento con exposiciones y atracciones para el público.	Mercado o fiesta con puestos y juegos al aire libre.	
+	tensión	sustantivo	2947	Estado de preocupación o inquietud entre personas o grupos.	Estado de miedo o de conflicto entre personas o grupos.	
+	yarda	sustantivo	2955	Medida de distancia que se emplea en algunos países.	Medida de distancia inglesa, algo menor que un metro.	
+	dormir	verbo	2975	Descansar con los ojos cerrados y sin movimiento.	Cerrar los ojos y perder la conciencia para recuperar fuerzas.	
+	aquello	pronombre	2976	Palabra que señala algo distante en el tiempo o espacio.	Señala algo que está lejos del que habla.	
+	captura	sustantivo	2980	Acción de detener a alguien que huía.	Acción de detener a alguien que intenta escapar.	
+	señora	sustantivo	3001	Mujer a la que se trata con respeto o casada.	Mujer mayor de edad; se usa para hablar de ella con respeto.	
+	expansión	sustantivo	3012	Acción de extender algo en mayor espacio.	Acción de hacer algo más grande o de ocupar más espacio.	
+	impulso	sustantivo	3014	Fuerza que mueve o anima algo.	Fuerza que hace mover algo o que lleva a hacer algo.	
+	confesar	verbo	3026	Decir algo que se escondía.	Decir algo que se tenía en secreto.	
+	archivo	sustantivo	3049	Lugar donde se guardan papeles o documentos.	Conjunto de documentos que se tienen en un lugar para el futuro.	
+	baño	sustantivo	3060	Habitación con agua para limpiar el cuerpo.	Habitación de la casa con agua, para el cuidado del cuerpo.	
+	punta	sustantivo	3085	Extremo delgado o final de un objeto.	Extremo final de algo largo.	
+	guardia	sustantivo	3119	Persona que protege y vigila un lugar o a alguien.	Persona que protege un lugar o a alguien.	
+	musulmán	sustantivo	3127	Persona que sigue la religión de los musulmanes.	Persona que sigue la religión de Mahoma.	proper name: needs your check
+	coordinación	sustantivo	3153	Acción de organizar elementos para que actúen juntos.	Acción de organizar a varios para un trabajo en común.	
+	griego	adjetivo	3159	Que tiene que ver con el país de los griegos o sus habitantes.	De Grecia o de sus habitantes.	place name: needs your check
+	escapar	verbo	3194	Salir de un lugar sin que nadie lo impida.	Salir de un lugar donde se estaba preso o en peligro.	
+	tabla	sustantivo	3202	Lista de datos colocados en filas y columnas.	Datos puestos en filas y columnas.	
+	milla	sustantivo	3239	Medida de distancia equivalente a mil seiscientos nueve metros.	Medida de distancia de algo más de un kilómetro y medio.	
+	preciso	adjetivo	3261	Que tiene exactitud y no presenta errores.	Que no tiene errores y dice las cosas tal como son.	
+	árbol	sustantivo	3268	Planta alta con tronco y ramas.	Planta alta de madera, con hojas.	
+	poeta	sustantivo	3379	Persona que hace poemas.	Persona que escribe poesía.	
+	intelectual	adjetivo	3391	Que se relaciona con el conocimiento y la mente.	Que tiene que ver con la mente y el conocimiento.	
+	veinte	numeral	3430	Número que sigue al diecinueve.	Dos veces diez.	
+	cama	sustantivo	3456	Mueble para dormir o descansar.	Objeto de la casa donde se pasa la noche para dormir.	
+	helicóptero	sustantivo	3464	Aparato que vuela con palas en la parte superior.	Aparato que viaja por el aire y puede subir sin correr por el suelo.	
+	pecho	sustantivo	3465	Parte delantera del cuerpo entre cuello y estómago.	Parte de delante del cuerpo, debajo del cuello.	
+	valenciano	adjetivo	3470	De Valencia o de sus habitantes.	De Valencia o de sus habitantes.	place name: needs your check
+	descubrir	verbo	3495	Encontrar algo que estaba oculto o que no se conocía.	Encontrar algo que no se conocía.	
+	someter	verbo	3505	Hacer que alguien obedezca una autoridad o control.	Obligar a alguien a aceptar un poder o una autoridad.	
+	uruguayo	adjetivo	3522	Que tiene que ver con un país de américa o su gente.	De Uruguay o de sus habitantes.	place name: needs your check
+	pan	sustantivo	3596	Alimento básico hecho con polvo de grano y agua.	Alimento básico que se hace con agua y plantas y se come cada día.	
+	clínica	sustantivo	3601	Centro médico donde se atienden enfermos.	Centro médico, más pequeño que un hospital.	
+	rebote	sustantivo	3612	Salto que da un objeto al chocar contra algo.	Salto de un objeto después de dar contra algo.	
+	fiel	adjetivo	3642	Que cumple con lealtad sus compromisos.	Que no deja a una persona o una idea y cumple lo que promete.	
+	incrementar	verbo	3649	Hacer que algo crezca en cantidad o tamaño.	Hacer que algo sea mayor en cantidad o tamaño.	
+	clic	sustantivo	3656	Acción de pulsar un botón del ordenador.	Acción de tocar un botón del ordenador para elegir algo.	
+	quince	numeral	3689	Número que sigue al catorce.	Diez más cinco.	
+	plástico	sustantivo	3692	Material ligero y que se dobla con facilidad.	Material ligero con el que se hacen bolsas y muchos otros objetos.	
+	arco	sustantivo	3697	Estructura curva que sostiene un techo o puente.	Construcción en forma de medio círculo sobre una puerta o un puente.	
+	lema	sustantivo	3705	Frase que resume una idea o causa.	Frase corta que expresa la idea de un grupo o de una causa.	
+	lamentar	verbo	3706	Sentir pena o disgusto por algo ocurrido.	Sentir pena por algo que ha pasado.	
+	ahorrar	verbo	3715	Guardar dinero para usarlo después.	Guardar dinero para el futuro.	
+	laboratorio	sustantivo	3717	Lugar donde se hacen experimentos científicos.	Lugar con aparatos donde se hacen pruebas de ciencia.	
+	normativa	sustantivo	3731	Conjunto de reglas que regula una actividad.	Conjunto de reglas de una actividad.	
+	surgir	verbo	3751	Aparecer de repente algo nuevo o que no se espera.	Aparecer algo nuevo o que no se esperaba.	
+	suizo	adjetivo	3811	De suiza o de sus habitantes.	De Suiza o de sus habitantes.	place name: needs your check
+	unir	verbo	3819	Juntar dos o más cosas en una sola.	Hacer que dos o más cosas pasen a ser una sola.	
+	perdón	sustantivo	3834	Acto de disculpar una falta.	Acción de aceptar las disculpas de alguien por una falta.	
+	detectar	verbo	3843	Descubrir la presencia de algo oculto.	Descubrir que algo está presente.	
+	lógico	adjetivo	3850	Que sigue un razonamiento claro.	Que tiene sentido y sigue un orden claro de ideas.	
+	copia	sustantivo	3893	Cosa que imita exactamente a otra.	Cosa hecha igual que otra.	
+	nieve	sustantivo	3918	Agua que cae del cielo en forma de trozos blancos y fríos.	Agua que cae del cielo en invierno, blanca y fría.	
+	gracia	sustantivo	3925	Lo que hace reír o sonreír a las personas.	Capacidad de hacer que otros pasen un buen rato.	
+	persecución	sustantivo	3990	Acción de seguir a alguien para capturarlo.	Acción de correr detrás de alguien para detener a esa persona.	
+	litro	sustantivo	4031	Medida de capacidad para líquidos que vale mil mililitros.	Medida de volumen que se usa para el agua o la leche.	
+	apellido	sustantivo	4060	Nombre de familia que identifica a una persona.	Nombre de familia que va después del nombre propio.	
+	alarma	sustantivo	4096	Señal que avisa de un peligro o emergencia.	Señal que advierte de un peligro.	
+	montaña	sustantivo	4100	Elevación natural del terreno más alta que una colina.	Parte del terreno mucho más alta que lo que hay alrededor.	
+	desfile	sustantivo	4102	Marcha ordenada de personas o vehículos en celebración.	Paso de personas o vehículos en fila, en una fiesta o un acto.	
+	tenis	sustantivo	4107	Deporte que enfrenta a dos o cuatro jugadores con raquetas.	Deporte en el que dos o cuatro jugadores pasan una pelota por encima de una red.	
+	holandés	adjetivo	4110	Relativo a Países Bajos o sus habitantes.	De los Países Bajos o de sus habitantes.	place name: needs your check
+	turístico	adjetivo	4122	Relativo a los viajes de placer o visita.	Que tiene que ver con los viajes para conocer lugares.	
+	reglamento	sustantivo	4126	Conjunto de normas que rigen una actividad.	Conjunto de normas de una actividad o de un grupo.	
+	polvo	sustantivo	4128	Partículas muy pequeñas de tierra seca.	Tierra en partes muy pequeñas que se mueven con el viento.	
+	pegar	verbo	4134	Unir algo con cola o adhesivo.	Unir una cosa a otra para que queden juntas.	
+	galardón	sustantivo	4145	Premio que reconoce un logro o mérito.	Premio que se da por un trabajo bien hecho.	
+	héroe	sustantivo	4161	Persona que realiza acciones de valentía.	Persona que hace algo muy difícil y peligroso para ayudar a los demás.	
+	ventana	sustantivo	4174	Hueco en pared que se abre.	Parte de una pared que se abre para dejar pasar luz y aire.	
+	limitar	verbo	4179	Poner límite a algo para que no aumente más.	Poner un límite a algo para que no pase de cierto punto.	
+	barril	sustantivo	4259	Envase grande de metal para contener cosas.	Gran objeto de madera o metal para guardar vino, cerveza o petróleo.	
+	taller	sustantivo	4294	Lugar donde se hacen o se arreglan objetos.	Lugar donde se hacen objetos o se ponen bien los que no funcionan.	
+	comedia	sustantivo	4308	Obra de teatro o cine que hace reír a la gente.	Obra de teatro o de cine con humor y final feliz.	
+	bebida	sustantivo	4310	Líquido que se toma para quitar la sed.	Líquido que se toma, como el agua o el vino.	
+	maíz	sustantivo	4315	Planta de granos que se come y son amarillos.	Planta alta cuyo fruto amarillo se come.	
+	rodilla	sustantivo	4321	Parte de la pierna que permite doblarla y caminar.	Parte de la pierna que une la parte de arriba con la de abajo.	
+	lágrima	sustantivo	4355	Líquido que sale del ojo cuando se llora.	Poco de agua que sale del ojo cuando se sufre.	
+	acoso	sustantivo	4380	Acción de seguir o molestar a alguien.	Acción de hacer daño a alguien una y otra vez.	
+	dios	sustantivo	4392	Ser al que se reza en religión.	Ser superior que, según una religión, creó el mundo.	
+	mentira	sustantivo	4406	Dicho falso que engaña a otros.	Algo que se dice sabiendo que no es verdad.	
+	serbio	adjetivo	4488	Relacionado con un país de oriente o con sus habitantes.	De Serbia o de sus habitantes.	place name: needs your check
+	contundente	adjetivo	4502	Que convence de forma clara y fuerte.	Que no deja duda por su fuerza.	
+	sentar	verbo	4515	Colocar a alguien en un lugar para descansar.	Poner a alguien en una silla.	
+	depresión	sustantivo	4531	Estado de tristeza profunda y continua.	Enfermedad en la que la persona siente una pena profunda y continua.	
+	atacante	sustantivo	4540	Persona que agrede o lanza ofensiva contra otra.	Persona que hace un ataque; en deportes, jugador que busca marcar.	
+	grabar	verbo	4541	Registrar sonidos o imágenes para guardarlos.	Guardar sonidos o imágenes en un aparato.	
+	denominar	verbo	4543	Dar un nombre específico a algo o alguien.	Dar un nombre a algo o a alguien.	
+	atraer	verbo	4554	Hacer que algo o alguien se acerque.	Hacer que algo o alguien venga hacia uno.	
+	guitarra	sustantivo	4571	Instrumento musical de cuerda con caja de madera.	Instrumento musical de madera que se toca con los dedos.	
+	cirugía	sustantivo	4583	Operación médica que abre el cuerpo para sanar.	Parte de la medicina que trata enfermedades con una operación.	
+	hilo	sustantivo	4591	Objeto largo y delgado para unir o hacer ropa.	Material largo y de muy poco ancho con el que se hace la ropa.	
+	indignación	sustantivo	4602	Sentimiento fuerte de rabia ante algo que no es justo.	Sentimiento fuerte contra algo que parece que no es justo.	
+	castellano	adjetivo	4609	Relativo a la lengua principal de un lugar de nuestro país.	La lengua española; también, de Castilla.	place name: needs your check
+	deterioro	sustantivo	4643	Daño que empeora el estado de algo con el paso del tiempo.	Daño que hace peor el estado de algo con el tiempo.	
+	oír	verbo	4645	Sentir sonidos con el sentido del oído.	Recibir los sonidos que llegan a la cabeza.	
+	bola	sustantivo	4647	Objeto con forma redonda que se usa en juegos.	Objeto con forma de pelota.	
+	caballo	sustantivo	4661	Animal grande de cuatro patas que se monta o tira de algo.	Animal grande y fuerte que las personas usan para ir de un lugar a otro.	
+	palo	sustantivo	4668	Pieza de madera larga y delgada.	Pieza de madera larga y de poco ancho.	
+	podio	sustantivo	4689	Plataforma donde se premia a los tres primeros.	Lugar alto donde se ponen los tres primeros de una prueba.	
+	norteamericano	adjetivo	4696	De Estados Unidos o de sus habitantes.	De Estados Unidos o de sus habitantes.	place name: needs your check
+	foco	sustantivo	4697	Luz que alumbra un punto concreto.	Aparato que da una luz fuerte hacia un punto.	
+	cerveza	sustantivo	4726	Bebida con alcohol hecha con cereales y plantas.	Bebida con alcohol, de color amarillo, que se hace con plantas.	
+	protocolo	sustantivo	4734	Conjunto de reglas que rigen un acto formal.	Conjunto de reglas para actos oficiales.	
+	belga	adjetivo	4787	De un país de europa o de sus habitantes.	De Bélgica o de sus habitantes.	place name: needs your check
+	comparar	verbo	4835	Ver las diferencias y semejanzas entre cosas.	Ver en qué se parecen y en qué son distintas dos cosas.	
+	jonrón	sustantivo	4884	Golpe que envía la pelota muy lejos en el juego de béisbol.	Golpe en el que la pelota sale del campo y el jugador da la vuelta entera.	
+	zapato	sustantivo	4889	Pieza de ropa que cubre el pie y se cierra con cordones o hebillas.	Pieza de ropa que cubre y protege el pie.	
+	carbón	sustantivo	4893	Material negro que se quema y da calor al prenderlo.	Material negro que se usa para dar calor y energía.	
+	guardar	verbo	4895	Mantiene algo en lugar seguro para usarlo más tarde.	Poner algo en un lugar seguro para después.	
+	treinta	numeral	4903	Número que sigue al veintinueve.	Tres veces diez.	
+	pistola	sustantivo	4905	Arma de fuego corta que se dispara con una mano.	Arma de fuego pequeña que se usa con una mano.	
+	excepcional	adjetivo	4906	Que supera notablemente a lo común o habitual.	Que es mucho mejor o más raro de lo normal.	
+	escasez	sustantivo	4908	Falta o insuficiencia de algo necesario.	Falta de algo que se necesita.	
+	excepto	preposición	4940	Indica la parte que se aparta de un grupo.	Menos; indica lo que queda fuera de un grupo.	
+	indemnización	sustantivo	4944	Dinero que se paga por daños o males causados.	Dinero que se paga a alguien por un daño que ha sufrido.	
+	uniforme	sustantivo	4977	Ropa igual que identifica a un grupo.	Ropa igual que llevan los miembros de un grupo.	
+	relato	sustantivo	4989	Historia breve de hechos reales o imaginarios.	Historia corta, real o creada por quien la cuenta.	
+	rosa	sustantivo	4993	Flor de tallo con púas y colores diferentes.	Flor de jardín, a menudo roja, que se da como regalo.	
+	abridor	sustantivo	5005	Objeto para abrir envases de bebidas o conservas.	Objeto que sirve para abrir cosas que se venden cerradas, como bebidas.	
+	líquido	sustantivo	5019	Sustancia que fluye y se ajusta a su envase.	Sustancia que corre y toma la forma de lo que la contiene, como el agua.	
+	fibra	sustantivo	5026	Hilo delgado y fuerte que forma telas o cables.	Cada una de las partes largas y de poco ancho que forman un material.	
+	hincapié	sustantivo	5028	Insistencia especial al resaltar algo importante.	Fuerza con que se insiste en algo importante.	sense: lives in "hacer hincapié"; consider dropping like través
+	unido	adjetivo	5041	Que está junto o pegado a otra cosa.	Que forma un todo con otra cosa; también, que tiene buena relación.	
+	turco	sustantivo	5101	Persona de un país de oriente.	De Turquía o de sus habitantes.	place name: needs your check
+	aplauso	sustantivo	5123	Acción de golpear las manos para mostrar aprobación.	Acción de dar golpes con las manos para mostrar que algo gusta.	
+	pronunciar	verbo	5154	Decir palabras de forma clara y que se escuchen.	Decir los sonidos de una palabra.	
+	magia	sustantivo	5162	Arte de hacer trucos que parecen muy difíciles.	Arte de hacer cosas que parecen no ser posibles.	
+	preservar	verbo	5214	Mantiene algo en buen estado para que no se dañe.	Cuidar algo para que se mantenga en buen estado.	
+	divertido	adjetivo	5228	Que hace reír o pasar un buen rato.	Que hace pasar un buen rato.	
+	detenido	adjetivo	5236	Persona a quien la policía lleva presa.	Que ha sido llevado por la policía y no puede irse.	
+	comunista	adjetivo	5268	Relativo a la ideología que busca una sociedad sin clases.	Que sigue la idea de una sociedad sin clases sociales.	
+	reparación	sustantivo	5271	Acción de arreglar algo que está roto.	Acción de poner bien algo que estaba roto.	
+	yen	sustantivo	5286	Moneda que se usa en Japón.	Moneda que se usa en Japón.	place name: needs your check
+	corregir	verbo	5287	Arreglar errores o fallos en algo.	Quitar los errores de algo.	
+	estimar	verbo	5297	Calcular de forma aproximada una cantidad.	Calcular más o menos el valor de algo.	
