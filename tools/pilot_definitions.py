@@ -41,46 +41,17 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
+import definitions  # noqa: E402
 import llm  # noqa: E402
 import validate  # noqa: E402
 
 SAMPLE = 50
 BATCH = 10
-MAX_WORDS = 12
-
-PROMPT = f"""Eres lexicógrafo. Escribes definiciones para un diccionario \
-monolingüe de español para estudiantes de nivel inicial y medio.
-
-Reglas para cada definición:
-- Una sola frase en español, completa y gramatical, con punto final. Revisa la \
-concordancia y los verbos pronominales: una ventana "se abre", no "abre".
-- Como máximo {MAX_WORDS} palabras y {validate.MAX_DEFINITION_CHARS} caracteres, \
-espacios incluidos.
-- Di qué distingue a esta palabra de otras cercanas. Una definición vaga, que \
-serviría también para otra palabra, no sirve.
-- Usa solo palabras que el estudiante puede buscar en este libro. {{vocab}}
-- No uses la palabra definida ni ninguna de sus formas, ni palabras de su misma \
-familia: para "libertad", no "libre".
-- Define el sentido básico que un estudiante aprende primero, con la categoría \
-gramatical dada, aunque otro sentido sea más frecuente en la prensa: "partido" es \
-primero un juego entre dos equipos, no un grupo político.
-- No empieces repitiendo la palabra ni con "Palabra que".
-- Sin ejemplos, sin comillas, sin paréntesis.
-
-Responde con un objeto JSON {{{{"definitions": [...]}}}}, un elemento por palabra \
-y en el mismo orden: {{{{"lemma": "...", "definition": "..."}}}}. Nada más."""
-
-VOCAB_LIST = (
-    "La lista completa de palabras permitidas va al final; usa las formas "
-    "exactamente como aparecen en ella."
-)
+MAX_WORDS = definitions.MAX_WORDS
+PROMPT = definitions.RULES
+VOCAB_LIST = definitions.VOCAB_LIST
 VOCAB_NONE = "Prefiere las palabras más frecuentes y sencillas."
-
-REPAIR = """Estas definiciones no cumplen las reglas. Para cada una se indica \
-el problema. Escribe una definición nueva que las cumpla todas.
-Cambia solo lo necesario: explica con palabras sencillas lo que decía cada \
-palabra que falta, y conserva todo el significado. No acortes la definición \
-quitando información."""
+REPAIR = definitions.REPAIR
 
 Chat = Callable[[str, str], dict]
 
@@ -89,15 +60,6 @@ def sample(entries: list[dict], n: int = SAMPLE) -> list[dict]:
     """Every (len/n)th headword, from the middle of each slice of the ranks."""
     step = len(entries) // n
     return [entries[i * step + step // 2] for i in range(n)]
-
-
-def book_words(book: list[dict]) -> list[str]:
-    """Every headword and listed form, spelled as the book spells them.
-
-    Not the validator's normalised set: the model is told to copy these forms,
-    and a list without accents would teach it to drop them.
-    """
-    return sorted({w for e in book for w in (e["lemma"], *e["forms"])})
 
 
 def system_prompt(vocab: str, words: list[str]) -> str:
@@ -234,7 +196,7 @@ def run(
     sets the vocabulary.
     """
     known = {validate.normalise(w) for e in book for w in (e["lemma"], *e["forms"])}
-    system = system_prompt(vocab, book_words(book))
+    system = system_prompt(vocab, definitions.book_words(book))
     defs = first_round(chat, system, entries, batch)
     history = [[_row(e, defs[e["lemma"]], known, 0) for e in entries]]
     for number in range(1, rounds + 1):

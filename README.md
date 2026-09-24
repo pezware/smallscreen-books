@@ -31,23 +31,26 @@ docs/            device constraints and the build plan
 
 ## Status
 
-Early. Stages 1 and 1b have landed. `src/frequency.py` ranks 8,000 word forms
+Early. Stages 1 and 1b have landed, and stage 2 is built. `src/frequency.py` ranks 8,000 word forms
 from the corpus into `data/es/frequency.txt`, and `src/headwords.py` merges
 them into 3,000 lemmas in `data/es/headwords.jsonl`: an LLM maps each form to
 its lemma, and Wiktionary checks the mapping. The renderer (`src/render.py`)
 builds a real EPUB from those headwords, one XHTML file per word, with a
 letter-level table of contents.
 
-Definitions and examples do not exist yet, so every entry currently reads
-`(sin definición)`. That is deliberate: the 3,000-item spine is the design's
-largest untested assumption, and it can be tested on the hardware before any
-content is generated.
+`src/definitions.py` writes a definition for every headword into
+`data/es/words.jsonl`, in words the book itself defines, and lists the ones a
+person should read in `build/definitions-review.tsv`. Until it has run, entries
+read `(sin definición)`: the 3,000-item spine is the design's largest untested
+assumption, and it can be tested on the hardware before any content exists.
+Examples (stage 3) do not exist yet.
 
 ```sh
 curl -O https://downloads.wortschatz-leipzig.de/corpora/spa_news_2011_1M.tar.gz
 tar xzf spa_news_2011_1M.tar.gz -C data/es/raw/       # gitignored, 266 MB
 python3 src/frequency.py                              # writes data/es/frequency.txt
 mise run headwords                                    # LLM, cached; see below
+mise run definitions                                  # LLM, cached; writes data/es/words.jsonl
 mise run book                                         # writes build/es-wordbook.epub
 python3 -m unittest discover -s tests -t tests        # stdlib only, no venv
 ```
@@ -62,8 +65,8 @@ toolchain. CI runs lint and test on every change; a separate scheduled job
 rebuilds `frequency.txt` from the real corpus and fails if the committed
 artifact has drifted from what the generator produces.
 
-`src/validate.py:accept_definition` is unimplemented on purpose. It decides how
-strict the vocabulary rule is, and Andy owns that call. See `docs/plan.md`.
+`src/validate.py:accept_definition` is strict on purpose, and review is the way
+past it. See `docs/plan.md`, "The definition rule".
 
 ## Licences
 

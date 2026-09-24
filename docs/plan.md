@@ -12,7 +12,8 @@ Consequence: the fit measurement reports a spill rate. It does not fail the
 build.
 
 **An LLM writes the definitions; Wiktionary checks them.** Definitions use a
-graded register — about 12 simple Spanish words, drawn from the top 3,000. This
+graded register — at most 12 simple Spanish words, drawn from the book's own
+headwords (amended 2026-09-24, below). This
 reads better than a raw Wiktionary gloss and stays consistent across 3,000
 entries. It also needs a review pass, because a wrong definition is worse than
 an awkward one.
@@ -67,8 +68,8 @@ lemma.
 {"lemma": "decir", "pos": "verbo", "rank": 37, "forms": ["dijo", "dice", "decir"],
  "definition": "Usar palabras para dar a otra persona una idea.",
  "examples": ["¿Qué dice tu madre?", "No me dijo nada."],
- "source": {"definition": "llm:v1", "examples": ["tatoeba:3456789", "tatoeba:4567890"]},
- "generation": {"input_hash": "sha256:9f2c…", "model": "claude-sonnet-5", "prompt": "v1"},
+ "source": {"definition": "llm:grok-4.20-0309-non-reasoning", "examples": ["tatoeba:3456789", "tatoeba:4567890"]},
+ "generation": {"input_hash": "sha256:9f2c…", "model": "grok-4.20-0309-non-reasoning", "prompt": "v1", "repairs": 0},
  "checked": true}
 ```
 
@@ -76,7 +77,8 @@ lemma.
 gives the frequency position, which also drives the vocabulary check. `forms`
 lists the frequency-list forms merged into this entry, most frequent first.
 
-`generation` is the cache identity. `input_hash` is the SHA-256 of the
+`generation` is the cache identity; `repairs` counts the repair rounds the
+definition needed. `input_hash` is the SHA-256 of the
 canonical JSON (sorted keys, no whitespace) of everything the generator reads
 for this entry: `lemma`, `pos`, `forms`, `model` and the prompt text, not just
 its version label. The generator uses it this way:
@@ -91,18 +93,43 @@ every run re-checks every entry, cache hits included, against the current
 vocabulary and `accept_definition`, because a rebuilt frequency list can make a
 once-valid definition fail. A failure is reported, never silently kept.
 
-## Open decision, owned by Andy
+## The definition rule
 
-`src/validate.py:accept_definition` raises `NotImplementedError`. It decides
-whether a generated definition may enter the book.
+Andy took this on 2026-09-24, after a 50-word pilot against Grok
+(`tools/pilot_definitions.py`).
 
-The trade-off: `unknown_words()` compares surface forms, so it flags any form
-no entry lists, even of a verb the book defines. A rule that rejects every
-out-of-vocabulary word sends good definitions back to the generator in a loop.
-A tolerant rule lets a few unknown words through and trusts the sentence around
-them.
+**`accept_definition` is strict, and review is the escape hatch.** A
+definition is accepted when every word is one the book defines, it uses
+neither its headword nor any form the entry lists, and it fits
+`MAX_DEFINITION_CHARS`. A `checked: true` entry is accepted as it stands:
+someone read it. That is how a definition needing a word the book lacks, a
+place name such as `España` included, gets in.
 
-Leave this function alone. Build around it.
+A looser rule was measured and rejected. Allowing an unlisted form of a
+headword (`oye` for `oír`) would have saved about one definition in fifty, but
+telling that apart from a word the book lacks needs Wiktionary at validation
+time, and Wiktionary never enters the repository, so CI and a fresh checkout
+could not run the check.
+
+**A rejected definition goes back up to twice, its problem named.** The repair
+prompt asks to paraphrase the missing word and keep the meaning. An earlier
+prompt that said "shorter is better" bought passes by deleting meaning
+(`venganza`: "Daño que se causa por daño"). A definition still rejected after
+two repairs is kept and reported, not regenerated.
+
+**Every definition is read before it counts as done.** The checker cannot see
+a news sense chosen over the basic one (`formación` as a political formation),
+a wrong sense (`sobre`: "posición superior sin contacto"), or a headword that
+is not a word on its own (`través`). On one reading of the pilot, about one
+definition in eight needed a human edit. `mise run definitions-check` writes
+`build/definitions-review.tsv`, most urgent first: rejected, same word family
+as the headword, repaired, then the rest.
+
+**`través` leaves the headword list.** It lives only inside *a través de*, and
+every definition the pilot drew for it was wrong. It goes as an override
+(`través` → `-` in `forms.overrides.tsv`), so the next lemma takes its slot;
+the change needs `mise run headwords-check`, which only runs where the
+Wiktionary table is. `set` is a candidate for the same treatment.
 
 ## Stages
 
@@ -126,7 +153,10 @@ Each stage lands in the same branch and the same pull request.
    by two entries, and the lemma source is recorded.
 
 2. **Definitions.** Generate, cache by `generation.input_hash`, validate, write
-   `data/es/words.jsonl`.
+   `data/es/words.jsonl` (`src/definitions.py`). The hash leaves out the word
+   list pasted into the prompt: it is the whole vocabulary, so one changed
+   headword would otherwise regenerate every definition, and `check`
+   re-validates every entry against the current list anyway.
    Done when: every entry has a definition that `accept_definition` admits, and
    a second run regenerates nothing.
 

@@ -24,6 +24,9 @@ mise run book      # build/es-wordbook.epub
 mise run build     # rebuild data/es/frequency.txt (needs the corpus in data/es/raw/)
 mise run headwords # map new forms to lemmas via the LLM, rebuild headwords.jsonl
 mise run headwords-check  # compare with Wiktionary -> build/headwords-review.tsv
+mise run definitions      # write missing or stale definitions via the LLM -> data/es/words.jsonl
+mise run definitions-check  # re-validate, no LLM -> build/definitions-review.tsv
+uv run python tools/pilot_definitions.py  # measure a prompt change on 50 headwords first
 uv run python tools/check_epub.py build/es-wordbook.epub   # structural EPUB check
 ```
 
@@ -40,9 +43,11 @@ src/frequency.py   corpus -> data/es/frequency.txt, 8,000 ranked forms (+ siblin
 src/headwords.py   forms -> lemmas (LLM) -> data/es/headwords.jsonl, the 3,000 entries
 src/llm.py         the only way to call an LLM: xAI broker, Anthropic API or agent files
 src/wiktionary.py  Wiktionary lemma pairs, for checking only -> data/es/raw/ (local)
+src/definitions.py headwords -> definitions (LLM), repaired and cached -> words.jsonl
 src/render.py      entries -> EPUB, one XHTML file per word
-src/validate.py    checks a generated definition against the book's headwords
+src/validate.py    accept_definition: the rule a definition must pass
 tools/check_epub.py  structural EPUB checks (no JVM here, so no epubcheck)
+tools/pilot_definitions.py  a prompt change measured on 50 headwords, before 3,000
 tools/fit/         host build of the firmware's line breaker and parser
 data/<lang>/       source of truth for book content
 tests/             one test file per module
@@ -94,9 +99,18 @@ share-alike would decide the book's licence. `wiktionary.py` writes it to the
 gitignored `data/**/raw/`, and the review report goes to `build/`. Only a
 reviewed decision, written as an override, is committed.
 
-**`validate.accept_definition` stays unimplemented.** It raises
-`NotImplementedError` on purpose, because Andy owns the strictness rule. Build
-around it and leave the function alone.
+**`validate.accept_definition` is Andy's rule.** It is strict on purpose, and
+`checked: true` is the only way past it (`docs/plan.md`, "The definition
+rule"). Do not loosen it to make a run pass; a definition it rejects goes to
+review.
+
+**`words.jsonl` is the definition cache, and a reviewer's file.** Each entry
+carries the hash of what produced it, so `mise run definitions` only pays for
+what changed. The only hand edits are a reviewer's: correct `definition`, and
+set `checked` to `true`. A checked entry is never regenerated. Change the
+prompt in `src/definitions.py` only with a pilot run to show it helps
+(`tools/pilot_definitions.py` sends the same prompt), because every changed
+character regenerates all 3,000 unchecked definitions.
 
 **Record provenance for every piece of content.** Each entry's `source` field
 names where its definition and examples came from, and that attribution goes

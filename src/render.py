@@ -300,8 +300,9 @@ def build_epub(
 # because merging forms into lemmas consumes forms (docs/plan.md, stage 1b).
 BOOK_SIZE = 3000
 
-# Shown until stage 2 writes definitions. Entries need no definition to test
-# the spine: 3,000 sections behave the same whether or not each says anything.
+# Shown for an entry stage 2 has not defined yet. Entries need no definition to
+# test the spine: 3,000 sections behave the same whether or not each says
+# anything.
 PLACEHOLDER = "(sin definición)"
 
 
@@ -361,10 +362,10 @@ def main(argv: list[str] | None = None) -> int:
     source_files = [Path("data/es/frequency.source.json")]
     source_files += [p for p in args.source_json or [] if p not in source_files]
 
-    if args.entries.exists():
-        entries = entries_from_jsonl(args.entries)
-    else:
-        entries = entries_from_jsonl(args.headwords, PLACEHOLDER)
+    # words.jsonl lists every headword while stage 2 is partial, so it needs
+    # the placeholder as much as headwords.jsonl does.
+    source = args.entries if args.entries.exists() else args.headwords
+    entries = entries_from_jsonl(source, PLACEHOLDER)
     sources = [
         json.loads(path.read_text(encoding="utf-8"))["source"] for path in source_files
     ]
