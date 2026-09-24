@@ -41,6 +41,15 @@ def normalise(word: str) -> str:
     return unicodedata.normalize("NFC", "".join(out))
 
 
+def _composed(text: str) -> str:
+    """NFC, so a decomposed ñ is one letter before the text is split into words.
+
+    `_WORD` does not match a combining mark, so "an" + U+0303 + "o" would
+    otherwise tokenise as "an" and "o".
+    """
+    return unicodedata.normalize("NFC", text)
+
+
 def load_known_forms(path: Path | str) -> set[str]:
     """Read a frequency list into the vocabulary the checks compare against.
 
@@ -61,7 +70,7 @@ def unknown_words(definition: str, known_forms: set[str]) -> set[str]:
     """
     return {
         w
-        for w in (normalise(m.group()) for m in _WORD.finditer(definition))
+        for w in (normalise(m.group()) for m in _WORD.finditer(_composed(definition)))
         if w not in known_forms
     }
 
@@ -69,7 +78,8 @@ def unknown_words(definition: str, known_forms: set[str]) -> set[str]:
 def is_circular(definition: str, lemma: str) -> bool:
     """True when the definition explains the word with the word itself."""
     target = normalise(lemma)
-    return any(normalise(m.group()) == target for m in _WORD.finditer(definition))
+    words = _WORD.finditer(_composed(definition))
+    return any(normalise(m.group()) == target for m in words)
 
 
 @dataclass

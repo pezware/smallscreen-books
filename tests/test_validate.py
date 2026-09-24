@@ -45,10 +45,20 @@ class Normalise(unittest.TestCase):
         self.assertEqual(validate.normalise("AÑO"), "año")
 
     def test_decomposed_enye_equals_precomposed(self):
-        self.assertEqual(validate.normalise("año"), "año")
+        self.assertEqual(validate.normalise("an\u0303o"), "año")
 
     def test_stress_accents_still_fold(self):
         self.assertEqual(validate.normalise("Rápido"), "rapido")
+
+
+class DecomposedText(unittest.TestCase):
+    """A decomposed ñ must survive tokenising, not only normalise()."""
+
+    def test_a_decomposed_known_word_is_known(self):
+        self.assertEqual(validate.unknown_words("an\u0303o", {"año"}), set())
+
+    def test_a_decomposed_headword_is_caught_as_circular(self):
+        self.assertTrue(validate.is_circular("Un an\u0303o entero.", "año"))
 
 
 if __name__ == "__main__":
