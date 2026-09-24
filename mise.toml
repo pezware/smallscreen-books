@@ -39,6 +39,10 @@ run = "uv run python src/definitions.py generate"
 description = "Re-validate every definition with no LLM; writes build/definitions-review.tsv"
 run = "uv run python src/definitions.py check"
 
+[tasks.definitions-apply]
+description = "Apply the rows marked y in a review sheet: mise run definitions-apply -- data/es/review/<sheet>.tsv"
+run = "uv run python src/definitions.py apply"
+
 [tasks.headwords-check]
 description = "Compare the headwords with Wiktionary; writes build/headwords-review.tsv"
 run = "uv run python src/headwords.py check"

@@ -316,5 +316,64 @@ class Main(unittest.TestCase):
         self.assertEqual(self.run_check("--strict", first=GOOD)[0], 0)
 
 
+class ApplySheet(unittest.TestCase):
+    ENTRIES = [
+        {"lemma": "casa", "definition": "Hogar.", "source": {"definition": "llm:m"}},
+        {"lemma": "lugar", "definition": "Sitio.", "source": {"definition": "llm:m"}},
+    ]
+
+    def row(self, lemma, current, suggested, ok="y"):
+        return {
+            "ok": ok,
+            "lemma": lemma,
+            "pos": "",
+            "rank": "",
+            "current": current,
+            "suggested": suggested,
+            "note": "",
+        }
+
+    def test_an_approved_row_is_applied_and_checked(self):
+        rows = [self.row("casa", "Hogar.", "Lugar donde vive una persona.")]
+        out, applied, skipped = definitions.apply_sheet(self.ENTRIES, rows)
+        self.assertEqual(applied, ["casa"])
+        self.assertEqual(out[0]["definition"], "Lugar donde vive una persona.")
+        self.assertIs(out[0]["checked"], True)
+        self.assertEqual(out[0]["source"]["definition"], "review")
+
+    def test_an_unmarked_row_is_left_alone(self):
+        rows = [self.row("casa", "Hogar.", "Otra.", ok="")]
+        out, applied, _ = definitions.apply_sheet(self.ENTRIES, rows)
+        self.assertEqual((out, applied), (self.ENTRIES, []))
+
+    def test_a_row_whose_definition_changed_since_is_skipped(self):
+        rows = [self.row("casa", "Casa vieja.", "Otra.")]
+        out, applied, skipped = definitions.apply_sheet(self.ENTRIES, rows)
+        self.assertEqual(applied, [])
+        self.assertIn("changed", skipped[0][1])
+
+    def test_an_unknown_lemma_is_skipped(self):
+        _, _, skipped = definitions.apply_sheet(self.ENTRIES, [self.row("x", "", "Y.")])
+        self.assertEqual(skipped, [("x", "not in words.jsonl")])
+
+    def test_approving_the_current_definition_keeps_its_source(self):
+        rows = [self.row("lugar", "Sitio.", "Sitio.", ok="sí")]
+        out, _, _ = definitions.apply_sheet(self.ENTRIES, rows)
+        self.assertEqual(out[1]["source"]["definition"], "llm:m")
+        self.assertIs(out[1]["checked"], True)
+
+    def test_a_sheet_round_trips(self):
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        rows = [self.row("casa", "Hogar.", "Una casa.", ok="")]
+        definitions.write_sheet(tmp / "s.tsv", rows)
+        self.assertEqual(definitions.read_sheet(tmp / "s.tsv"), rows)
+
+    def test_a_sheet_with_other_columns_fails(self):
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        (tmp / "s.tsv").write_text("a\tb\n", encoding="utf-8")
+        with self.assertRaisesRegex(definitions.DefinitionError, "columns"):
+            definitions.read_sheet(tmp / "s.tsv")
+
+
 if __name__ == "__main__":
     unittest.main()

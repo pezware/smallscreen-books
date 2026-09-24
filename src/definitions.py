@@ -18,6 +18,8 @@ Two steps, so that the expensive one runs once:
     check     re-validate every entry with no LLM, because validation is not
               cached: a changed headword list can make a once-valid definition
               fail. Writes the review report.
+    apply     take a reviewer's sheet of suggested definitions and apply the
+              rows marked `y`: each gets its new definition and `checked: true`.
 
 The hash covers the lemma, its part of speech and forms, the model and the
 prompt rules, but not the word list pasted into the prompt. That list is the
@@ -377,6 +379,76 @@ def write_review(path: Path, rows: list[tuple[int, str, dict]]) -> None:
     path.write_text("".join(lines), encoding="utf-8")
 
 
+SHEET_COLUMNS = ("ok", "lemma", "pos", "rank", "current", "suggested", "note")
+_YES = {"y", "yes", "s", "si", "sí"}
+
+
+def write_sheet(path: Path, rows: list[dict]) -> None:
+    """A review sheet: one suggested definition per row, `ok` left for a person."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    lines = ["\t".join(SHEET_COLUMNS) + "\n"]
+    for row in rows:
+        cells = [str(row.get(c, "")).replace("\t", " ") for c in SHEET_COLUMNS]
+        lines.append("\t".join(cells) + "\n")
+    path.write_text("".join(lines), encoding="utf-8")
+
+
+def read_sheet(path: Path) -> list[dict]:
+    lines = path.read_text(encoding="utf-8").splitlines()
+    header = lines[0].lstrip("# ").split("\t")
+    if tuple(header) != SHEET_COLUMNS:
+        raise DefinitionError(f"{path}: columns are {header}, not {SHEET_COLUMNS}")
+    rows = []
+    for number, line in enumerate(lines[1:], start=2):
+        if not line.strip():
+            continue
+        cells = line.split("\t")
+        if len(cells) != len(SHEET_COLUMNS):
+            raise DefinitionError(f"{path}:{number}: {len(cells)} columns")
+        rows.append(dict(zip(SHEET_COLUMNS, cells, strict=True)))
+    return rows
+
+
+def apply_sheet(
+    entries: list[dict], rows: list[dict]
+) -> tuple[list[dict], list[str], list[tuple[str, str]]]:
+    """Apply the approved rows; return (entries, applied lemmas, skipped).
+
+    Only a row marked `y` is applied, because marking it is the review. A row
+    whose `current` no longer matches words.jsonl is skipped: the definition
+    changed after the sheet was made, and the reviewer approved the old one.
+    """
+    by_lemma = {e["lemma"]: i for i, e in enumerate(entries)}
+    out = list(entries)
+    applied, skipped = [], []
+    for row in rows:
+        if row["ok"].strip().casefold() not in _YES:
+            continue
+        lemma = row["lemma"]
+        if lemma not in by_lemma:
+            skipped.append((lemma, "not in words.jsonl"))
+            continue
+        entry = out[by_lemma[lemma]]
+        if entry.get("definition", "") != row["current"]:
+            skipped.append((lemma, "its definition changed since the sheet was made"))
+            continue
+        definition = " ".join(row["suggested"].split())
+        if not definition:
+            skipped.append((lemma, "no suggested definition"))
+            continue
+        source = dict(entry.get("source", {}))
+        if definition != entry.get("definition"):
+            source["definition"] = "review"
+        out[by_lemma[lemma]] = {
+            **entry,
+            "definition": definition,
+            "source": source,
+            "checked": True,
+        }
+        applied.append(lemma)
+    return out, applied, skipped
+
+
 def read_jsonl(path: Path) -> list[dict]:
     if not path.exists():
         return []
@@ -393,7 +465,8 @@ def write_jsonl(path: Path, entries: list[dict]) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("step", choices=["generate", "check"])
+    parser.add_argument("step", choices=["generate", "check", "apply"])
+    parser.add_argument("sheet", nargs="?", type=Path, help="apply: the sheet")
     parser.add_argument("--data", type=Path, default=Path("data/es"))
     parser.add_argument(
         "--provider", choices=llm.PROVIDERS, help="default: $SMALLSCREEN_LLM or xai"
@@ -419,6 +492,17 @@ def main(argv: list[str] | None = None) -> int:
     words_path = args.data / "words.jsonl"
     existing = {e["lemma"]: e for e in read_jsonl(words_path) if "definition" in e}
     entries = merge(headwords, existing)
+
+    if args.step == "apply":
+        if args.sheet is None:
+            parser.error("apply needs the sheet to apply")
+        every = read_jsonl(words_path)
+        every, applied, skipped = apply_sheet(every, read_sheet(args.sheet))
+        write_jsonl(words_path, every)
+        for lemma, reason in skipped:
+            print(f"{lemma}: skipped, {reason}", file=sys.stderr)
+        print(f"{len(applied)} applied and checked, {len(skipped)} skipped")
+        entries = merge(headwords, {e["lemma"]: e for e in every if "definition" in e})
 
     if args.step == "generate":
         provider = llm.provider_name(args.provider)
