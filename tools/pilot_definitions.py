@@ -46,18 +46,22 @@ import validate  # noqa: E402
 
 SAMPLE = 50
 BATCH = 10
-TARGET_WORDS = 12
+MAX_WORDS = 12
 
 PROMPT = f"""Eres lexicógrafo. Escribes definiciones para un diccionario \
 monolingüe de español para estudiantes de nivel inicial y medio.
 
 Reglas para cada definición:
-- Una sola frase en español, de unas {TARGET_WORDS} palabras, con punto final.
-- Como máximo {validate.MAX_DEFINITION_CHARS} caracteres, espacios incluidos.
+- Una sola frase en español, completa y gramatical, con punto final. Revisa la \
+concordancia y los verbos pronominales: una ventana "se abre", no "abre".
+- Como máximo {MAX_WORDS} palabras y {validate.MAX_DEFINITION_CHARS} caracteres, \
+espacios incluidos. Más corta es mejor, si queda clara.
 - Usa solo palabras que el estudiante puede buscar en este libro. {{vocab}}
 - No uses la palabra definida ni ninguna de sus formas.
-- Define el sentido más común en el español general, con la categoría gramatical \
-dada. No empieces repitiendo la palabra ni con "Palabra que".
+- Define el sentido básico que un estudiante aprende primero, con la categoría \
+gramatical dada, aunque otro sentido sea más frecuente en la prensa: "partido" es \
+primero un juego entre dos equipos, no un grupo político.
+- No empieces repitiendo la palabra ni con "Palabra que".
 - Sin ejemplos, sin comillas, sin paréntesis.
 
 Responde con un objeto JSON {{{{"definitions": [...]}}}}, un elemento por palabra \
@@ -303,6 +307,21 @@ def summary(history: list[list[dict]], classify_word) -> str:
                 for r in rows
             )
             lines.append(f"  accepted under '{name}' (+ length, self): {ok}/{n}")
+    last = history[-1]
+    failing = [r for r in last if r["fails"]]
+    if failing:
+        lines.append(f"still failing after round {last[0]['round']}:")
+        lines += [
+            f"  {r['lemma']}: «{r['definition']}» — {problems(r)}" for r in failing
+        ]
+    first = {r["lemma"]: r["definition"] for r in history[0]}
+    changed = [r for r in last if r["definition"] != first[r["lemma"]]]
+    if changed:
+        lines.append("repaired:")
+        lines += [
+            f"  {r['lemma']}: «{first[r['lemma']]}» -> «{r['definition']}»"
+            for r in changed
+        ]
     return "\n".join(lines)
 
 
