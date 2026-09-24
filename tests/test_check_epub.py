@@ -25,7 +25,16 @@ class Checker(unittest.TestCase):
             [render.Entry("casa"), render.Entry("zona")],
             self.tmp / "good.epub",
             "T",
-            "test",
+            [
+                {
+                    "name": "Corpus",
+                    "licence": "CC BY 4.0",
+                    "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+                    "attribution": "A citation.",
+                    "changes": "Modified.",
+                    "material": "https://example.org/corpus.tar.gz",
+                }
+            ],
         )
 
     def test_accepts_a_book_the_renderer_produced(self):
@@ -66,6 +75,43 @@ class Checker(unittest.TestCase):
                     continue
                 dst.writestr(info, src.read(info.filename))
         self.assertTrue(any("container" in p for p in check_epub.problems(out)))
+
+    def rewritten(self, name: str, change) -> Path:
+        out = self.tmp / "rewritten.epub"
+        with zipfile.ZipFile(self.good) as src, zipfile.ZipFile(out, "w") as dst:
+            for info in src.infolist():
+                data = src.read(info.filename)
+                dst.writestr(info, change(data) if info.filename == name else data)
+        return out
+
+    def test_rejects_a_spine_entry_that_is_only_commented_out(self):
+        out = self.rewritten(
+            "OEBPS/content.opf",
+            lambda d: d.replace(
+                b'<itemref idref="sources"/>', b'<!-- <itemref idref="sources"/> -->'
+            ),
+        )
+        found = check_epub.problems(out)
+        self.assertTrue(any("attribution" in p for p in found), found)
+
+    def test_rejects_an_attribution_page_with_no_licence_link(self):
+        out = self.rewritten(
+            "OEBPS/sources.xhtml",
+            lambda d: d.replace(b"creativecommons.org", b"example.org"),
+        )
+        found = check_epub.problems(out)
+        self.assertTrue(any("licence" in p for p in found), found)
+
+    def test_rejects_a_book_without_its_attribution_page(self):
+        out = self.tmp / "noattribution.epub"
+        with zipfile.ZipFile(self.good) as src, zipfile.ZipFile(out, "w") as dst:
+            for info in src.infolist():
+                data = src.read(info.filename)
+                if info.filename == "OEBPS/content.opf":
+                    data = data.replace(b'<itemref idref="sources"/>', b"")
+                dst.writestr(info, data)
+        found = check_epub.problems(out)
+        self.assertTrue(any("attribution" in p for p in found), found)
 
 
 if __name__ == "__main__":

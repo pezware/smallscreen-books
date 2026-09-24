@@ -100,7 +100,9 @@ around it and leave the function alone.
 
 **Record provenance for every piece of content.** Each entry's `source` field
 names where its definition and examples came from, and that attribution goes
-into the built book. Do not add data from a share-alike source (such as
+into the built book. `render.py` turns the `source` block of each
+`*.source.json` into the "Fuentes" page, and `check_epub.py` fails a book
+without it; a new licensed input needs its own `source` block there. Do not add data from a share-alike source (such as
 OpenSubtitles) without asking, because it would decide the book's licence.
 
 **Spanish sorting is not ASCII sorting.** `ñ` is its own letter, filed after

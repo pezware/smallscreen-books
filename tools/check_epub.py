@@ -14,6 +14,7 @@ import re
 import sys
 import zipfile
 from pathlib import Path
+from xml.etree import ElementTree
 
 
 def problems(path: Path) -> list[str]:
@@ -53,9 +54,39 @@ def problems(path: Path) -> list[str]:
         for idref in re.findall(r'<itemref idref="([^"]+)"', opf):
             if idref not in ids:
                 found.append(f"spine references unknown manifest id {idref}")
+        found.extend(_attribution_problems(zf, opf, base))
         if not re.search(r'properties="nav"', opf):
             found.append("no navigation document declared")
     return found
+
+
+_OPF = "{http://www.idpf.org/2007/opf}"
+_XHTML = "{http://www.w3.org/1999/xhtml}"
+
+
+def _attribution_problems(zf: zipfile.ZipFile, opf: str, base: str) -> list[str]:
+    """The corpus is CC BY: a book that lost its credit may not be shared.
+
+    Parsed as XML rather than matched as text, so a commented-out spine entry
+    or an empty page does not pass for the real thing.
+    """
+    try:
+        package = ElementTree.fromstring(opf)
+    except ElementTree.ParseError as error:
+        return [f"package document is not well-formed XML: {error}"]
+    items = {item.get("href"): item.get("id") for item in package.iter(f"{_OPF}item")}
+    spine = {ref.get("idref") for ref in package.iter(f"{_OPF}itemref")}
+    page_id = items.get("sources.xhtml")
+    if page_id is None or page_id not in spine:
+        return ["the attribution page is not in the spine"]
+    try:
+        page = ElementTree.fromstring(zf.read(f"{base}/sources.xhtml"))
+    except (KeyError, ElementTree.ParseError) as error:
+        return [f"the attribution page cannot be read: {error}"]
+    links = [a.get("href", "") for a in page.iter(f"{_XHTML}a")]
+    if not any("creativecommons.org/licenses/" in href for href in links):
+        return ["the attribution page links no licence"]
+    return []
 
 
 def main() -> int:
