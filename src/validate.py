@@ -23,10 +23,31 @@ MAX_DEFINITION_CHARS = 90
 _WORD = re.compile(r"[^\W\d_]+", re.UNICODE)
 
 
+_COMBINING_TILDE = "̃"
+
+
 def normalise(word: str) -> str:
-    """Lowercase and strip accents, so 'Rápido' and 'rapido' compare equal."""
+    """Lowercase and strip accents, so 'Rápido' and 'rapido' compare equal.
+
+    N-tilde is kept. It is a separate letter in Spanish, not an accented n, and
+    folding it would make 'año' and 'ano' the same word.
+    """
     folded = unicodedata.normalize("NFD", word.casefold())
-    return "".join(c for c in folded if unicodedata.category(c) != "Mn")
+    out: list[str] = []
+    for char in folded:
+        is_enye = char == _COMBINING_TILDE and out and out[-1] == "n"
+        if is_enye or unicodedata.category(char) != "Mn":
+            out.append(char)
+    return unicodedata.normalize("NFC", "".join(out))
+
+
+def _composed(text: str) -> str:
+    """NFC, so a decomposed ñ is one letter before the text is split into words.
+
+    `_WORD` does not match a combining mark, so "an" + U+0303 + "o" would
+    otherwise tokenise as "an" and "o".
+    """
+    return unicodedata.normalize("NFC", text)
 
 
 def load_known_forms(path: Path | str) -> set[str]:
@@ -49,7 +70,7 @@ def unknown_words(definition: str, known_forms: set[str]) -> set[str]:
     """
     return {
         w
-        for w in (normalise(m.group()) for m in _WORD.finditer(definition))
+        for w in (normalise(m.group()) for m in _WORD.finditer(_composed(definition)))
         if w not in known_forms
     }
 
@@ -57,7 +78,8 @@ def unknown_words(definition: str, known_forms: set[str]) -> set[str]:
 def is_circular(definition: str, lemma: str) -> bool:
     """True when the definition explains the word with the word itself."""
     target = normalise(lemma)
-    return any(normalise(m.group()) == target for m in _WORD.finditer(definition))
+    words = _WORD.finditer(_composed(definition))
+    return any(normalise(m.group()) == target for m in words)
 
 
 @dataclass
