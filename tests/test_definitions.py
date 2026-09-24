@@ -282,6 +282,23 @@ class Review(unittest.TestCase):
             [(0, "mal"), (1, "legitimidad"), (2, "justo"), (3, "uno")],
         )
 
+    def test_a_broken_style_rule_is_sent_to_review(self):
+        entries = [self.entry("uno", "palabra que cuenta", 1)]
+        ((priority, reason, _),) = definitions.review(
+            entries, {"palabra", "que", "cuenta"}
+        )
+        self.assertEqual(priority, 1)
+        self.assertIn("lowercase", reason)
+        self.assertIn("Palabra que", reason)
+        self.assertIn("no final period", reason)
+
+    def test_over_twelve_words_is_a_style_problem(self):
+        long = " ".join(["una"] * 13) + "."
+        self.assertIn("over 12 words", definitions.style_problems(long))
+
+    def test_a_clean_definition_has_no_style_problem(self):
+        self.assertEqual(definitions.style_problems("Una persona."), [])
+
     def test_same_family_ignores_short_headwords(self):
         entry = self.entry("sede", "Sedes.", 1)
         self.assertEqual(definitions.same_family(entry), [])

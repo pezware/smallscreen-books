@@ -148,6 +148,25 @@ def same_family(entry: dict) -> list[str]:
     )
 
 
+def style_problems(definition: str) -> list[str]:
+    """Rules of the prompt a model can break and the vocabulary check cannot see.
+
+    They send a definition to review rather than reject it: the rule a
+    definition must pass is Andy's (validate.accept_definition).
+    """
+    out = []
+    text = definition.strip()
+    if text and not text[0].isupper():
+        out.append("starts in lowercase")
+    if validate.normalise(text).startswith("palabra que"):
+        out.append('starts with "Palabra que"')
+    if len(validate._WORD.findall(validate._composed(text))) > MAX_WORDS:
+        out.append(f"over {MAX_WORDS} words")
+    if text and not text.endswith("."):
+        out.append("no final period")
+    return out
+
+
 def problems(entry: dict, known: set[str]) -> str:
     """Why a definition was rejected, in Spanish, for the repair prompt."""
     definition = entry.get("definition", "")
@@ -348,7 +367,8 @@ def generate(
 def review(entries: list[dict], known: set[str]) -> list[tuple[int, str, dict]]:
     """Entries a person should read, as (priority, reason), most urgent first.
 
-    0 rejected, 1 same word family, 2 repaired, 3 accepted and not yet checked.
+    0 rejected, 1 same word family or a broken style rule, 2 repaired, 3
+    accepted and not yet checked.
     Reviewed entries are left out.
     """
     rows = []
@@ -357,10 +377,12 @@ def review(entries: list[dict], known: set[str]) -> list[tuple[int, str, dict]]:
             continue
         verdict = validate.accept_definition(entry, known)
         family = same_family(entry)
+        style = style_problems(entry["definition"])
         if not verdict.accepted:
             rows.append((0, verdict.reason, entry))
-        elif family:
-            rows.append((1, "same family: " + ", ".join(family), entry))
+        elif family or style:
+            reasons = style + (["same family: " + ", ".join(family)] if family else [])
+            rows.append((1, "; ".join(reasons), entry))
         elif entry.get("generation", {}).get("repairs"):
             rows.append((2, f"repaired ({entry['generation']['repairs']})", entry))
         else:
