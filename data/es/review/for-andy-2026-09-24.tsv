@@ -1,51 +1,31 @@
 ok	lemma	pos	rank	current	suggested	note
-	embargo	sustantivo	114	Retención legal de bienes por orden de un juez.	Orden de un juez que impide a alguien usar sus bienes.	headword problem: learners meet it almost only in the fixed phrase 'sin embargo'; suggested text also had 13 words
-	bajo	preposición	216	En lugar inferior a algo.	Que tiene poca altura.	headword problem: Forms baja/bajas/bajos are the adjective, not a preposition; POS wrong.
-	personal	sustantivo	389	Conjunto de trabajadores de una empresa.	Que pertenece a alguien o solo tiene que ver con él.	headword problem: Tagged noun (staff) but form 'personales' is the adjective; the adjective is the basic sense.
-	respecto	sustantivo	404	Relación o comparación entre dos cosas.	Relación que una cosa tiene con otra.	headword problem: Lives only in the fixed phrases 'respecto a' / 'con respecto a'.
-	pese	preposición	458	Indica oposición o dificultad a pesar de algo.	Indica una dificultad que no impide que algo ocurra.	headword problem: Lives only in the fixed phrase 'pese a'; old definition used family word 'pesar'.
 	estadounidense	adjetivo	481	De ese país o de sus habitantes.	De Estados Unidos o de sus habitantes.	place name the book lacks: needs your check
-	cabo	sustantivo	483	Extremo de algo como tierra o similar.	Punta de tierra que entra en el mar.	headword problem: Mostly in fixed phrases 'llevar a cabo', 'al cabo de'; old definition vague.
-	partir	verbo	540	Irse de un lugar hacia otro.	Irse de un lugar hacia otro.	headword problem: Frequency comes from the fixed phrase 'a partir de'.
 	mexicano	adjetivo	570	Que es de méxico o de sus habitantes.	De México o de sus habitantes.	agent ok, still fails: not in the book: mexico.
 	francés	adjetivo	819	Que es o viene de ese país europeo.	De Francia, de sus habitantes o de su lengua.	place name the book lacks: needs your check
-	cuanto	adverbio	891	Indica la cantidad o grado de algo.	Indica la cantidad o grado de algo.	headword problem: As an adverb it lives in fixed phrases (en cuanto, cuanto antes, cuanto más); forms mix in determiner 'cuantas'.
 	inglés	adjetivo	895	Que pertenece a un país de europa o a su idioma.	De Inglaterra o de su lengua.	agent ok, still fails: not in the book: inglaterra.
 	argentino	adjetivo	909	Que es natural de un país de américa del sur.	De Argentina o de sus habitantes.	agent ok, still fails: uses the headword or one of its forms.
 	europeo	adjetivo	948	Que tiene que ver con un lugar o sus habitantes.	De Europa o de sus habitantes.	place name the book lacks: needs your check
 	alemán	adjetivo	996	Que pertenece a ese país o a sus personas.	De Alemania, de sus habitantes o de su lengua.	place name the book lacks: needs your check
-	siquiera	adverbio	1026	Expresa mínimo grado o cantidad posible.	Por lo menos; con ni, niega hasta lo más pequeño.	headword problem: Lives almost only in 'ni siquiera'; old definition also lacked an article.
 	libio	adjetivo	1031	Que es natural de Libia o pertenece a ese país.	De Libia o de sus habitantes.	agent ok, still fails: uses the headword or one of its forms.
-	torno	sustantivo	1160	Máquina que gira para dar forma a piezas.	Máquina que gira para dar forma a piezas.	headword problem: Lives almost only in the fixed phrase 'en torno a'; the lathe sense is rare for learners.
-	acerca	preposición	1163	Indica el tema o asunto de que se trata.	Indica el tema o asunto de que se trata.	headword problem: Lives only in the fixed phrase 'acerca de'.
-	supuesto	sustantivo	1288	Idea que se toma como cierta para pensar.	Que se da por cierto sin saber si lo es.	headword problem: Mainly an adjective ('alleged') or fixed 'por supuesto'; noun POS is doubtful and forms include 'supuesta'.
-	pleno	sustantivo	1359	Reunión de un órgano con todos sus miembros.	Que está lleno o completo.	headword problem: Basic word is the adjective 'full' (forms include 'plena'); noun 'plenary session' is a news sense.
 	británico	adjetivo	1405	Que pertenece o viene del país del Reino Unido.	Del Reino Unido o de sus habitantes.	agent ok, still fails: not in the book: reino.
 	ruso	adjetivo	1494	Que tiene que ver con el país grande del norte o sus habitantes.	Que tiene que ver con el país más grande del mundo o su gente.	agent fix, still fails: over 12 words. "país grande del norte" does not identify Russia (fits Canada)
 	italiano	adjetivo	1550	Que tiene que ver con Italia o sus habitantes.	De Italia o de sus habitantes.	agent ok, still fails: not in the book: italia.
 	árabe	adjetivo	1557	Que tiene que ver con la gente o cultura de Arabia.	De los pueblos de Oriente Medio y del norte de África.	agent fix, still fails: not in the book: africa, oriente. 14 words, and 'esta lengua' refers to nothing (place-name exception applies)
 	estrella	sustantivo	1673	Cuerpo que se ve en el cielo por la noche.	Cuerpo que da luz propia y se ve en el cielo de noche.	agent fix, still fails: over 12 words. Too vague: also fits the moon and planets
-	post	sustantivo	1696	Mensaje o imagen que alguien publica en internet.	Mensaje o imagen que alguien publica en internet.	headword problem: English loanword, not core Spanish vocabulary (Spanish: publicación)
 	colombiano	adjetivo	1715	Que pertenece a ese país de américa o es propio de él.	De Colombia o de sus habitantes.	agent ok, still fails: not in the book: colombia.
-	activo	sustantivo	1720	Bien o recurso que posee valor económico.	Que hace muchas cosas o está en movimiento.	headword problem: Forms (activa) show the adjective; the noun sense "financial asset" is a news sense, POS should be adjective
-	mediados	sustantivo	1774	Momento cercano al centro de un periodo.	Momento cercano al centro de un periodo.	headword problem: Only lives in the fixed phrase "a mediados de"
 	venezolano	adjetivo	1815	Que es de ese país de américa del sur.	De Venezuela o de sus habitantes.	agent ok, still fails: not in the book: venezuela.
-	puesta	sustantivo	1990	Acción de colocar algo en un sitio.	Acción de colocar algo en un sitio.	headword problem: Lives mainly in fixed phrases (puesta de sol, puesta en marcha)
 	catalán	adjetivo	2067	De Cataluña o de su lengua.	De Cataluña o de su lengua.	agent ok, still fails: not in the book: cataluña.
 	palestino	sustantivo	2222	Persona nacida o natural de esa tierra.	Persona de Palestina.	place name the book lacks: needs your check
 	chino	adjetivo	2242	Que es de china o de sus habitantes.	De China o de sus habitantes.	agent ok, still fails: uses the headword or one of its forms.
 	israelí	adjetivo	2310	De Israel o de sus habitantes.	De Israel o de sus habitantes.	agent ok, still fails: not in the book: israel.
-	bordo	sustantivo	2346	Lado de un barco o avión.	Lado exterior de un barco.	headword problem: Lives almost only in the fixed phrase 'a bordo'; also 'o avión' only applies inside that phrase
 	japonés	adjetivo	2412	De Japón o de sus habitantes.	De Japón o de sus habitantes.	agent ok, still fails: not in the book: japon.
 	chileno	adjetivo	2445	De Chile o relacionado con este país.	De Chile o de sus habitantes.	agent ok, still fails: not in the book: chile.
 	cubano	adjetivo	2463	De Cuba o relacionado con este país.	De Cuba o de sus habitantes.	agent ok, still fails: not in the book: cuba.
 	dominicano	adjetivo	2468	De la nación que comparte isla con el país vecino.	De la República Dominicana o de sus habitantes.	place name the book lacks: needs your check
-	menudo	adjetivo	2713	Que tiene tamaño pequeño o escaso.	Que tiene tamaño pequeño o escaso.	headword problem: Frequency comes from the fixed phrase 'a menudo'; the adjective 'small' is rare
 	egipcio	adjetivo	2865	De ese país o de sus habitantes.	De Egipto o de sus habitantes.	place name the book lacks: needs your check
 	sirio	adjetivo	2895	De ese país o de sus habitantes.	De Siria o de sus habitantes.	place name the book lacks: needs your check
 	vasco	adjetivo	3032	De la comunidad del norte.	Del País Vasco, de sus habitantes o de su lengua.	place name the book lacks: needs your check
 	musulmán	sustantivo	3127	Persona que sigue la religión de los musulmanes.	Persona que sigue la religión de Mahoma.	agent ok, still fails: not in the book: mahoma.
-	obstante	preposición	3141	A pesar de algo que se menciona antes.	A pesar de lo que se ha dicho antes.	headword problem: Exists only in the fixed phrase 'no obstante'; not a preposition
 	griego	adjetivo	3159	Que tiene que ver con el país de los griegos o sus habitantes.	De Grecia o de sus habitantes.	agent ok, still fails: not in the book: grecia.
 	andaluz	adjetivo	3344	De la región del sur.	De Andalucía o de sus habitantes.	place name the book lacks: needs your check
 	valenciano	adjetivo	3470	De Valencia o de sus habitantes.	De Valencia o de sus habitantes.	agent ok, still fails: not in the book: valencia.
@@ -57,15 +37,9 @@ ok	lemma	pos	rank	current	suggested	note
 	madrileño	adjetivo	3982	De la capital de nuestro país.	De Madrid o de sus habitantes.	place name the book lacks: needs your check
 	judío	adjetivo	4153	Del pueblo o religión de israelíes.	Del pueblo hebreo o de su religión.	place name the book lacks: needs your check
 	azulgrana	adjetivo	4190	Del equipo de fútbol con esos colores.	Del Barcelona, el club de fútbol.	place name the book lacks: needs your check
-	do	sustantivo	4195	Primera nota de la escala musical.	Primera nota de la escala musical.	headword problem: Likely English "do" noise in the corpus; the musical note is too rare for the top 3,000.
-	hit	sustantivo	4348	Canción o tema musical de gran éxito.	Canción de gran éxito.	headword problem: English loanword, not established Spanish vocabulary; also "tema musical" redundant.
 	peruano	adjetivo	4463	De ese país o sus habitantes.	Del Perú o de sus habitantes.	place name the book lacks: needs your check
 	serbio	adjetivo	4488	Relacionado con un país de oriente o con sus habitantes.	De Serbia o de sus habitantes.	agent ok, still fails: not in the book: serbia.
-	abertzale	adjetivo	4568	Que defiende la independencia del País Vasco.	Que defiende la independencia del País Vasco.	headword problem: Basque word, not general Spanish vocabulary (Spain-only political term).
 	castellano	adjetivo	4609	Relativo a la lengua principal de un lugar de nuestro país.	La lengua española; también, de Castilla.	agent ok, still fails: not in the book: castilla.
 	norteamericano	adjetivo	4696	De Estados Unidos o de sus habitantes.	De Estados Unidos o de sus habitantes.	agent ok, still fails: not in the book: unidos.
 	belga	adjetivo	4787	De un país de europa o de sus habitantes.	De Bélgica o de sus habitantes.	agent ok, still fails: not in the book: belgica.
-	hincapié	sustantivo	5028	Insistencia especial al resaltar algo importante.	Fuerza con que se insiste en algo importante.	headword problem: only lives in the fixed phrase 'hacer hincapié'
-	turco	sustantivo	5101	Persona de un país de oriente.	De Turquía o de sus habitantes.	headword problem: tagged sustantivo but defined as an adjective like other nationality words; POS should be adjetivo
-	conseller	sustantivo	5194	Miembro del gobierno en algunas autonomías.	Consejero del gobierno catalán.	headword problem: Catalan word, not Spanish vocabulary.
 	yen	sustantivo	5286	Moneda que se usa en Japón.	Moneda que se usa en Japón.	agent ok, still fails: not in the book: japon.

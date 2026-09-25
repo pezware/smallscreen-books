@@ -9,3 +9,44 @@ poquito	poco	adjetivo
 perdida	perder	verbo
 muchísimo	mucho	adjetivo
 km	-
+
+# 2026-09-25, from the definition review: words that live only inside a
+# fixed phrase (a través de, sin embargo, a partir de...) or are not Spanish.
+través	-
+embargo	-
+respecto	-
+pese	-
+cabo	-
+partir	-
+cuanto	-
+siquiera	-
+torno	-
+acerca	-
+obstante	-
+menudo	-
+bordo	-
+mediados	-
+hincapié	-
+post	-
+hits	-
+do	-
+abertzale	-
+conseller	-
+# Part of speech: the forms show the adjective, not the noun or preposition.
+bajo	bajo	adjetivo
+baja	bajo	adjetivo
+bajas	bajo	adjetivo
+bajos	bajo	adjetivo
+personal	personal	adjetivo
+personales	personal	adjetivo
+activos	activo	adjetivo
+activo	activo	adjetivo
+activa	activo	adjetivo
+pleno	pleno	adjetivo
+plena	pleno	adjetivo
+supuesto	supuesto	adjetivo
+supuesta	supuesto	adjetivo
+supuestos	supuesto	adjetivo
+turco	turco	adjetivo
+# The participle of poner, not a noun of its own.
+puesta	poner	verbo

@@ -4,17 +4,17 @@
     "prompt_sha256": "2471738634bf46423ddacadc25cc5591a84ef563a56b806c7decc485a6757f7f",
     "forms_mapped": 8000
   },
-  "overrides": 6,
+  "overrides": 42,
   "entries": 3000,
   "check": {
     "against": "English Wiktionary, Spanish entries, via kaikki.org",
     "licence": "CC BY-SA 4.0",
     "use": "local comparison only; no Wiktionary data is redistributed",
-    "headwords_sha256": "3b12faf1b3708f0fbff3fb99878d0974fc7a4b28d6fb92f2d5faf928e4424f61",
+    "headwords_sha256": "6b722e64cb9fed88c57f65810b8c9c2da4cf2d7cd2fb7209abe68cc997c5be83",
     "counts": {
-      "agree": 4992,
-      "ambiguous": 1551,
-      "disagree": 32,
+      "agree": 5140,
+      "ambiguous": 1588,
+      "disagree": 30,
       "no evidence": 8
     }
   }
