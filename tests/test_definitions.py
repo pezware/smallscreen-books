@@ -255,6 +255,37 @@ class Merge(unittest.TestCase):
         self.assertEqual((casa["rank"], casa["forms"]), (1, ["casa", "casas"]))
 
 
+class Retire(unittest.TestCase):
+    def test_a_defined_entry_whose_headword_left_is_retired(self):
+        existing = {"gone": {"lemma": "gone", "definition": "x"}, "casa": {}}
+        self.assertEqual(definitions.retired(HEADWORDS, existing), [existing["gone"]])
+
+    def test_sync_moves_it_out_and_generate_reuses_it_when_it_returns(self):
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        entries, _, _ = generate()
+        definitions.write_jsonl(tmp / "words.jsonl", entries)
+
+        def write_headwords(rows):
+            text = "".join(json.dumps(h, ensure_ascii=False) + "\n" for h in rows)
+            (tmp / "headwords.jsonl").write_text(text, encoding="utf-8")
+
+        argv = ["sync", "--data", str(tmp), "--review", str(tmp / "r.tsv")]
+        write_headwords(HEADWORDS[1:])
+        with contextlib.redirect_stdout(io.StringIO()):
+            definitions.main(argv)
+        retired = definitions.read_jsonl(tmp / "words.retired.jsonl")
+        self.assertEqual([e["lemma"] for e in retired], ["casa"])
+        words = definitions.read_jsonl(tmp / "words.jsonl")
+        self.assertNotIn("casa", [e["lemma"] for e in words])
+
+        write_headwords(HEADWORDS)
+        with contextlib.redirect_stdout(io.StringIO()):
+            definitions.main(argv)
+        words = definitions.read_jsonl(tmp / "words.jsonl")
+        self.assertEqual(words[0]["definition"], GOOD["casa"])
+        self.assertEqual(definitions.read_jsonl(tmp / "words.retired.jsonl"), [])
+
+
 class Review(unittest.TestCase):
     def entry(self, lemma, definition, rank, **extra):
         return {

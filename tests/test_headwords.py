@@ -18,6 +18,11 @@ def mapped(form, lemma, pos="verbo", skip=False):
     return headwords.Mapping(form, lemma, pos, skip, "sha256:x", "m")
 
 
+def falling(forms):
+    """Counts that fall with rank, as frequency.txt's do: 100, 99, 98..."""
+    return {form: 100 - i for i, form in enumerate(forms)}
+
+
 class ParseAnswer(unittest.TestCase):
     def answer(self, *items):
         return {"forms": [dict(item) for item in items]}
@@ -130,11 +135,26 @@ class Build(unittest.TestCase):
             ["dijo", "dice", "decir"],
             {f: mapped(f, "decir") for f in ["dijo", "dice", "decir"]},
             {},
+            falling(["dijo", "dice", "decir"]),
             size=1,
         )
         self.assertEqual(entries[0]["forms"], ["dijo", "dice", "decir"])
 
-    def test_the_rank_is_the_best_rank_among_the_forms(self):
+    def test_a_lemma_is_ranked_by_the_sum_of_its_forms(self):
+        # "limpia" and "limpio" each trail "cumbre", but together they lead it.
+        entries = headwords.build(
+            ["cumbre", "limpia", "limpio"],
+            {
+                "cumbre": mapped("cumbre", "cumbre", "sustantivo"),
+                **{f: mapped(f, "limpio", "adjetivo") for f in ["limpia", "limpio"]},
+            },
+            {},
+            {"cumbre": 50, "limpia": 30, "limpio": 25},
+            size=1,
+        )
+        self.assertEqual(entries[0]["lemma"], "limpio")
+
+    def test_the_rank_is_the_lemma_s_position(self):
         entries = headwords.build(
             ["de", "dijo", "decir"],
             {
@@ -142,11 +162,26 @@ class Build(unittest.TestCase):
                 **{f: mapped(f, "decir") for f in ["dijo", "decir"]},
             },
             {},
+            {"de": 100, "dijo": 10, "decir": 9},
             size=2,
         )
         self.assertEqual(
             [(e["lemma"], e["rank"]) for e in entries], [("de", 1), ("decir", 2)]
         )
+
+    def test_a_tie_goes_to_the_better_best_form(self):
+        entries = headwords.build(
+            ["a", "b", "c"],
+            {"a": mapped("a", "x"), "b": mapped("b", "y"), "c": mapped("c", "x")},
+            {},
+            {"a": 5, "b": 10, "c": 5},
+            size=2,
+        )
+        self.assertEqual([e["lemma"] for e in entries], ["x", "y"])
+
+    def test_a_form_without_a_count_fails_loudly(self):
+        with self.assertRaisesRegex(headwords.MappingError, "no count"):
+            headwords.build(["a"], {"a": mapped("a", "a")}, {}, {}, size=1)
 
     def test_the_part_of_speech_comes_from_the_best_ranked_form(self):
         entries = headwords.build(
@@ -156,6 +191,7 @@ class Build(unittest.TestCase):
                 "baja": mapped("baja", "bajo", "adjetivo"),
             },
             {},
+            falling(["bajo", "baja"]),
             size=1,
         )
         self.assertEqual(entries[0]["pos"], "preposición")
@@ -165,6 +201,7 @@ class Build(unittest.TestCase):
             ["uu", "de"],
             {"uu": mapped("uu", "", "", skip=True), "de": mapped("de", "de")},
             {},
+            falling(["uu", "de"]),
             size=1,
         )
         self.assertEqual([e["lemma"] for e in entries], ["de"])
@@ -174,6 +211,7 @@ class Build(unittest.TestCase):
             ["vino"],
             {"vino": mapped("vino", "vino", "sustantivo")},
             {"vino": ("venir", "verbo")},
+            falling(["vino"]),
             size=1,
         )
         self.assertEqual((entries[0]["lemma"], entries[0]["pos"]), ("venir", "verbo"))
@@ -183,23 +221,30 @@ class Build(unittest.TestCase):
             ["uu", "de"],
             {"uu": mapped("uu", "uu"), "de": mapped("de", "de")},
             {"uu": None},
+            falling(["uu", "de"]),
             size=1,
         )
         self.assertEqual([e["lemma"] for e in entries], ["de"])
 
     def test_stops_at_the_book_size(self):
         entries = headwords.build(
-            ["a", "b", "c"], {f: mapped(f, f) for f in "abc"}, {}, size=2
+            ["a", "b", "c"],
+            {f: mapped(f, f) for f in "abc"},
+            {},
+            falling("abc"),
+            size=2,
         )
         self.assertEqual(len(entries), 2)
 
     def test_too_few_lemmas_fails_loudly(self):
         with self.assertRaisesRegex(headwords.MappingError, "1 lemmas"):
-            headwords.build(["a"], {"a": mapped("a", "a")}, {}, size=2)
+            headwords.build(["a"], {"a": mapped("a", "a")}, {}, {"a": 1}, size=2)
 
     def test_an_unmapped_form_fails_loudly(self):
         with self.assertRaisesRegex(headwords.MappingError, "b"):
-            headwords.build(["a", "b"], {"a": mapped("a", "a")}, {}, size=1)
+            headwords.build(
+                ["a", "b"], {"a": mapped("a", "a")}, {}, falling("ab"), size=1
+            )
 
 
 class Stale(unittest.TestCase):
@@ -336,6 +381,7 @@ class ShippedHeadwords(unittest.TestCase):
             headwords.read_frequency(DATA / "frequency.txt"),
             headwords.load_mappings(DATA / "forms.jsonl"),
             headwords.load_overrides(DATA / "forms.overrides.tsv"),
+            headwords.read_counts(DATA / "frequency.txt"),
         )
         self.assertEqual(rebuilt, self.entries())
 

@@ -37,6 +37,7 @@ from collections.abc import Callable
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+import frequency
 import llm
 import validate
 
@@ -187,12 +188,19 @@ def build(
     forms: list[str],
     mappings: dict[str, Mapping],
     overrides: dict[str, tuple[str, str] | None],
+    counts: dict[str, int],
     size: int = BOOK_SIZE,
 ) -> list[dict]:
-    """Merge ranked forms into lemmas, and keep the `size` best-ranked lemmas.
+    """Merge ranked forms into lemmas, and keep the `size` most used lemmas.
 
-    A lemma's rank is the line number of its best form, and its part of speech
-    is that form's. Forms are listed most frequent first. An override wins
+    A lemma is ranked by the summed count of its forms, not by its best form:
+    use of a verb or an adjective is spread over many forms (limpia, limpio,
+    limpias), and ranking on one of them buried everyday words below news
+    vocabulary with a single form (docs/plan.md, 2026-09-25). Ties go to the
+    better best form, then to spelling, so a rebuild is byte-identical.
+
+    `rank` is the lemma's position in that order. The part of speech is the
+    best-ranked form's, and forms are listed most used first. An override wins
     over the LLM; `None` drops the form.
     """
     grouped: dict[str, list[tuple[int, str, str]]] = collections.defaultdict(list)
@@ -209,6 +217,8 @@ def build(
             if mapping.skip:
                 continue
             lemma, pos = mapping.lemma, mapping.pos
+        if form not in counts:
+            raise MappingError(f"{form!r} has no count in the frequency list")
         grouped[lemma].append((rank, form, pos))
 
     if len(grouped) < size:
@@ -216,15 +226,21 @@ def build(
             f"the list yields {len(grouped)} lemmas, fewer than {size}; "
             "raise frequency.DEFAULT_LIMIT"
         )
-    ordered = sorted(grouped.items(), key=lambda item: item[1][0][0])[:size]
+
+    def total(uses: list[tuple[int, str, str]]) -> int:
+        return sum(counts[form] for _, form, _ in uses)
+
+    ordered = sorted(
+        grouped.items(), key=lambda item: (-total(item[1]), item[1][0][0], item[0])
+    )[:size]
     return [
         {
             "lemma": lemma,
             "pos": uses[0][2],
-            "rank": uses[0][0],
+            "rank": position,
             "forms": [form for _, form, _ in uses],
         }
-        for lemma, uses in ordered
+        for position, (lemma, uses) in enumerate(ordered, start=1)
     ]
 
 
@@ -252,11 +268,13 @@ def check_status(
 
 
 def read_frequency(path: Path) -> list[str]:
-    return [
-        line.strip()
-        for line in path.read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
+    """The ranked forms of frequency.txt, most used first."""
+    return [form for form, _ in frequency.read_list(path)]
+
+
+def read_counts(path: Path) -> dict[str, int]:
+    """Each form's ranking count, which `build` sums per lemma."""
+    return dict(frequency.read_list(path))
 
 
 def load_mappings(path: Path) -> dict[str, Mapping]:
@@ -436,7 +454,8 @@ def main(argv: list[str] | None = None) -> int:
             f"{len(stale)} forms have no current mapping (first: {stale[0]!r}); "
             "run `map` first"
         )
-    entries = build(forms, mappings, overrides)
+    counts = read_counts(args.data / "frequency.txt")
+    entries = build(forms, mappings, overrides, counts)
     headwords_path = args.data / "headwords.jsonl"
     source_path = args.data / "headwords.source.json"
     if args.step == "build":

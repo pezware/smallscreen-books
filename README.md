@@ -33,7 +33,7 @@ docs/            device constraints and the build plan
 
 Early. Stages 1 and 1b have landed, and stage 2 is built. `src/frequency.py` ranks 8,000 word forms
 from the corpus into `data/es/frequency.txt`, and `src/headwords.py` merges
-them into 3,000 lemmas in `data/es/headwords.jsonl`: an LLM maps each form to
+them into 3,000 lemmas, ranked by the summed use of their forms, in `data/es/headwords.jsonl`: an LLM maps each form to
 its lemma, and Wiktionary checks the mapping. The renderer (`src/render.py`)
 builds a real EPUB from those headwords, one XHTML file per word, with a
 letter-level table of contents.

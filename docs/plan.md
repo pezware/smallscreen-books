@@ -51,6 +51,18 @@ onto a continuation page, which the first decision already accepts. Examples
 come from Tatoeba only. When Tatoeba cannot supply two, the entry is reported,
 not padded with a generated sentence that has no source.
 
+**A lemma is ranked by the summed use of its forms.** Andy took this on
+2026-09-25, replacing "the entry's `rank` is the best rank among its forms".
+Ranking on one form buried words whose use is spread over many forms:
+`limpio` (limpia, limpio, limpias) missed the cut by 45 places though three
+of its forms were in the list. `frequency.txt` now carries each form's count,
+`headwords.py` sums them per lemma, and `rank` is the lemma's position.
+
+Consequence: only forms in the frequency list are summed, so a verb whose
+conjugations fall below the list's end is still under-counted (`beber`: only
+the infinitive is in the top 8,000). A headword that leaves the list keeps its
+definition in `words.retired.jsonl`, and gets it back if it returns.
+
 **Frequency counts only lowercase uses.** A form that survives the proper-noun
 cut is ranked by its total count scaled by its share of lowercase uses, not by
 the total alone. Place-name uses no longer lift `china` or `granada` above real

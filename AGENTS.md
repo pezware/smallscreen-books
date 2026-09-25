@@ -39,7 +39,7 @@ Both need `CROSSPOINT_ROOT` set to a crosspoint-reader checkout.
 ## Layout
 
 ```
-src/frequency.py   corpus -> data/es/frequency.txt, 8,000 ranked forms (+ siblings)
+src/frequency.py   corpus -> data/es/frequency.txt, 8,000 ranked forms and counts (+ siblings)
 src/headwords.py   forms -> lemmas (LLM) -> data/es/headwords.jsonl, the 3,000 entries
 src/llm.py         the only way to call an LLM: xAI broker, Anthropic API or agent files
 src/wiktionary.py  Wiktionary lemma pairs, for checking only -> data/es/raw/ (local)
@@ -104,7 +104,10 @@ reviewed decision, written as an override, is committed.
 rule"). Do not loosen it to make a run pass; a definition it rejects goes to
 review.
 
-**`words.jsonl` is the definition cache, and a reviewer's file.** Each entry
+**`words.jsonl` is the definition cache, and a reviewer's file.** It follows
+`headwords.jsonl`; `definitions.py sync` rewrites it after the headwords change,
+and a definition whose headword left moves to `words.retired.jsonl` so it is
+never lost. Each entry
 carries the hash of what produced it, so `mise run definitions` only pays for
 what changed. The only hand edits are a reviewer's: correct `definition`, and
 set `checked` to `true`. Suggestions for a reviewer go in a sheet under

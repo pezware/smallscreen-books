@@ -19,7 +19,7 @@ SAMPLES_PER_LENGTH = 40
 
 def passages(frequency_list: Path, lengths: range, pool_size: int) -> list[str]:
     words = [
-        w.strip()
+        w.split("\t")[0].strip()
         for w in frequency_list.read_text(encoding="utf-8").splitlines()
         if w.strip()
     ]

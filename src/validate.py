@@ -55,11 +55,13 @@ def load_known_forms(path: Path | str) -> set[str]:
     """Read a frequency list as a set of normalised surface forms.
 
     One surface form per line, most frequent first, as written by
-    `frequency.py`. This is not the vocabulary definitions are checked
-    against; that is `load_headword_forms`.
+    `frequency.py`, with its count after a tab. This is not the vocabulary
+    definitions are checked against; that is `load_headword_forms`.
     """
     with open(path, encoding="utf-8") as handle:
-        return {normalise(line.strip()) for line in handle if line.strip()}
+        return {
+            normalise(line.split("\t")[0].strip()) for line in handle if line.strip()
+        }
 
 
 def load_headword_forms(path: Path | str) -> set[str]:

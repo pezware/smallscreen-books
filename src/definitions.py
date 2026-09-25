@@ -20,6 +20,11 @@ Two steps, so that the expensive one runs once:
               fail. Writes the review report.
     apply     take a reviewer's sheet of suggested definitions and apply the
               rows marked `y`: each gets its new definition and `checked: true`.
+    sync      rewrite words.jsonl for the current headword list, with no LLM.
+
+A definition whose headword leaves the list moves to words.retired.jsonl
+rather than being lost: it was paid for and may have been reviewed, and when
+the headword returns, generation reuses it like any other cached entry.
 
 The hash covers the lemma, its part of speech and forms, the model and the
 prompt rules, but not the word list pasted into the prompt. That list is the
@@ -322,6 +327,12 @@ def plan(
     return todo, stale_checked
 
 
+def retired(headwords: list[dict], existing: dict[str, dict]) -> list[dict]:
+    """Defined entries whose headword is no longer in the list, by lemma."""
+    current = {h["lemma"] for h in headwords}
+    return [existing[k] for k in sorted(existing) if k not in current]
+
+
 def merge(headwords: list[dict], existing: dict[str, dict]) -> list[dict]:
     """words.jsonl in headword order: every headword, defined or not yet.
 
@@ -490,7 +501,7 @@ def write_jsonl(path: Path, entries: list[dict]) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("step", choices=["generate", "check", "apply"])
+    parser.add_argument("step", choices=["generate", "check", "apply", "sync"])
     parser.add_argument("sheet", nargs="?", type=Path, help="apply: the sheet")
     parser.add_argument(
         "--reviewer",
@@ -520,17 +531,31 @@ def main(argv: list[str] | None = None) -> int:
 
     headwords = read_jsonl(args.data / "headwords.jsonl")
     words_path = args.data / "words.jsonl"
-    existing = {e["lemma"]: e for e in read_jsonl(words_path) if "definition" in e}
+    retired_path = args.data / "words.retired.jsonl"
+    existing = {
+        e["lemma"]: e
+        for path in (retired_path, words_path)
+        for e in read_jsonl(path)
+        if "definition" in e
+    }
     entries = merge(headwords, existing)
+
+    def save_retired(pool: dict[str, dict]) -> None:
+        write_jsonl(retired_path, retired(headwords, pool))
+
+    if args.step == "sync":
+        write_jsonl(words_path, entries)
+        save_retired(existing)
 
     if args.step == "apply":
         if args.sheet is None:
             parser.error("apply needs the sheet to apply")
-        every = read_jsonl(words_path)
+        every = entries
         every, applied, skipped = apply_sheet(
             every, read_sheet(args.sheet), args.reviewer
         )
         write_jsonl(words_path, every)
+        save_retired(existing)
         for lemma, reason in skipped:
             print(f"{lemma}: skipped, {reason}", file=sys.stderr)
         print(f"{len(applied)} applied and checked, {len(skipped)} skipped")
@@ -558,6 +583,7 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"  {waiting.request} -> {waiting.answer}")
             return 3
         write_jsonl(words_path, entries)
+        save_retired(existing)
         for entry in stale:
             print(
                 f"{entry['lemma']}: checked, but its inputs changed; left alone",
