@@ -8,10 +8,9 @@ ok	lemma	pos	rank	current	suggested	note
 	alemán	adjetivo	996	Que pertenece a ese país o a sus personas.	De Alemania, de sus habitantes o de su lengua.	place name the book lacks: needs your check
 	libio	adjetivo	1031	Que es natural de Libia o pertenece a ese país.	De Libia o de sus habitantes.	agent ok, still fails: uses the headword or one of its forms.
 	británico	adjetivo	1405	Que pertenece o viene del país del Reino Unido.	Del Reino Unido o de sus habitantes.	agent ok, still fails: not in the book: reino.
-	ruso	adjetivo	1494	Que tiene que ver con el país grande del norte o sus habitantes.	Que tiene que ver con el país más grande del mundo o su gente.	agent fix, still fails: over 12 words. "país grande del norte" does not identify Russia (fits Canada)
+	ruso	adjetivo	1494	Que tiene que ver con el país grande del norte o sus habitantes.	De Rusia, de sus habitantes o de su lengua.	place name the book lacks: needs your check
 	italiano	adjetivo	1550	Que tiene que ver con Italia o sus habitantes.	De Italia o de sus habitantes.	agent ok, still fails: not in the book: italia.
-	árabe	adjetivo	1557	Que tiene que ver con la gente o cultura de Arabia.	De los pueblos de Oriente Medio y del norte de África.	agent fix, still fails: not in the book: africa, oriente. 14 words, and 'esta lengua' refers to nothing (place-name exception applies)
-	estrella	sustantivo	1673	Cuerpo que se ve en el cielo por la noche.	Cuerpo que da luz propia y se ve en el cielo de noche.	agent fix, still fails: over 12 words. Too vague: also fits the moon and planets
+	árabe	adjetivo	1557	Que tiene que ver con la gente o cultura de Arabia.	De los pueblos de Oriente Medio y del norte de África.	place name the book lacks: needs your check
 	colombiano	adjetivo	1715	Que pertenece a ese país de américa o es propio de él.	De Colombia o de sus habitantes.	agent ok, still fails: not in the book: colombia.
 	venezolano	adjetivo	1815	Que es de ese país de américa del sur.	De Venezuela o de sus habitantes.	agent ok, still fails: not in the book: venezuela.
 	catalán	adjetivo	2067	De Cataluña o de su lengua.	De Cataluña o de su lengua.	agent ok, still fails: not in the book: cataluña.

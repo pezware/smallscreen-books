@@ -284,3 +284,4 @@ y	informativo	adjetivo	2646	Programa que da noticias actuales.	Que sirve para da
 y	concentrado	adjetivo	2805	Sustancia con mucha materia en poco espacio.	Que pone toda su atención en una sola cosa.	agent headword: adjective, as its forms show
 y	masculino	adjetivo	2934	Que pertenece al sexo varón.	Que es propio de los hombres y no de las mujeres.	agent fix, shortened to 12 words: 'sexo varón' was unnatural
 y	contaminar	verbo	2983	Introducir sustancias malas en el ambiente.	Dañar el aire, el agua o la tierra con basura o sustancias.	agent fix, shortened to 12 words
+y	estrella	sustantivo	1673	Cuerpo que se ve en el cielo por la noche.	Cuerpo del cielo que da luz propia y se ve de noche.	agent fix, shortened to 12 words: too vague before (fit the moon)
