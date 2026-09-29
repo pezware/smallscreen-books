@@ -81,6 +81,18 @@ class MappingError(RuntimeError):
     pass
 
 
+class Unmappable(MappingError):
+    """Forms the LLM could not map even one at a time; each needs an override.
+
+    Raised after the whole run, so one pass finds every such form. The forms
+    that did map are saved by then.
+    """
+
+    def __init__(self, failures: list[tuple[str, str]]):
+        super().__init__(f"{len(failures)} forms could not be mapped")
+        self.failures = failures
+
+
 @dataclass(frozen=True)
 class Mapping:
     """One form's lemma, and the identity of the call that produced it."""
@@ -149,11 +161,14 @@ def map_forms(
     model: str,
     batch: int = BATCH,
     save: Callable[[dict[str, Mapping]], None] = lambda _: None,
+    overridden: frozenset[str] = frozenset(),
 ) -> dict[str, Mapping]:
     """Map every form whose current mapping is missing or stale.
 
     Saves after each batch, so an interrupted run resumes where it stopped
-    instead of paying for the same batches again.
+    instead of paying for the same batches again. A form with an override is
+    never sent: the override decides it. A form that cannot be mapped even on
+    its own is collected, and `Unmappable` names them all at the end.
     """
     # Only forms still in the list survive, so a dropped form cannot pin an
     # old model in the cache after everything else moved on.
@@ -161,44 +176,61 @@ def map_forms(
     todo = [
         f
         for f in forms
-        if f not in result or result[f].input_hash != form_hash(f, model, PROMPT)
+        if f not in overridden
+        and (f not in result or result[f].input_hash != form_hash(f, model, PROMPT))
     ]
+    failures: list[tuple[str, str]] = []
     for start in range(0, len(todo), batch):
-        for row in _map_chunk(todo[start : start + batch], chat, model):
+        for row in _map_chunk(todo[start : start + batch], chat, model, failures):
             result[row["form"]] = Mapping(
                 **row, input_hash=form_hash(row["form"], model, PROMPT), model=model
             )
         save(result)
+    if failures:
+        raise Unmappable(failures)
     return result
 
 
-def _map_chunk(chunk: list[str], chat: Chat, model: str) -> list[dict]:
+def _map_chunk(
+    chunk: list[str], chat: Chat, model: str, failures: list[tuple[str, str]]
+) -> list[dict]:
     """Map one batch; if the answer is malformed, map each half instead.
 
     A long batch sometimes comes back one item short, and at temperature 0
     sending the same batch again gets the same answer. Halving changes the
     input, and every half is still checked item by item, so nothing is
-    guessed. A single form that still fails stops the run.
+    guessed. A single form that still fails goes to `failures`, unmapped.
     """
     try:
         answer = chat(PROMPT, json.dumps(chunk, ensure_ascii=False), model)
         return parse_answer(answer, chunk)
-    except MappingError:
+    except MappingError as error:
         if len(chunk) == 1:
-            raise
+            failures.append((chunk[0], str(error)))
+            return []
     middle = len(chunk) // 2
-    return _map_chunk(chunk[:middle], chat, model) + _map_chunk(
-        chunk[middle:], chat, model
+    return _map_chunk(chunk[:middle], chat, model, failures) + _map_chunk(
+        chunk[middle:], chat, model, failures
     )
 
 
-def stale_forms(forms: list[str], mappings: dict[str, Mapping]) -> list[str]:
-    """Forms whose mapping is missing or was made with a different prompt."""
+def stale_forms(
+    forms: list[str],
+    mappings: dict[str, Mapping],
+    overridden: frozenset[str] = frozenset(),
+) -> list[str]:
+    """Forms whose mapping is missing or was made with a different prompt.
+
+    An overridden form needs no mapping: the override decides it.
+    """
     return [
         f
         for f in forms
-        if f not in mappings
-        or mappings[f].input_hash != form_hash(f, mappings[f].model, PROMPT)
+        if f not in overridden
+        and (
+            f not in mappings
+            or mappings[f].input_hash != form_hash(f, mappings[f].model, PROMPT)
+        )
     ]
 
 
@@ -459,14 +491,27 @@ def main(argv: list[str] | None = None) -> int:
             print(f"{len(result)}/{len(forms)} forms mapped", file=sys.stderr)
 
         try:
-            mappings = map_forms(forms, mappings, chat, model, save=save)
+            mappings = map_forms(
+                forms, mappings, chat, model, save=save, overridden=frozenset(overrides)
+            )
         except llm.PendingAnswer as pending:
             print(f"{pending}; then run `map` again", file=sys.stderr)
             return 3
+        except Unmappable as unmappable:
+            overrides_path = args.data / "forms.overrides.tsv"
+            print(
+                f"{unmappable}. Each needs a line in {overrides_path}"
+                " (form<TAB>- to drop it, or form<TAB>lemma<TAB>pos), then run"
+                " `map` again:",
+                file=sys.stderr,
+            )
+            for form, reason in unmappable.failures:
+                print(f"  {form}\t-\t# {reason}", file=sys.stderr)
+            return 4
         save_mappings(mappings_path, forms, mappings)
         return 0
 
-    stale = stale_forms(forms, mappings)
+    stale = stale_forms(forms, mappings, frozenset(overrides))
     if stale:
         parser.error(
             f"{len(stale)} forms have no current mapping (first: {stale[0]!r}); "

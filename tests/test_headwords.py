@@ -133,12 +133,29 @@ class MapForms(unittest.TestCase):
         self.assertEqual(set(result), {"a", "b", "c", "d"})
         self.assertEqual(calls, [["a", "b", "c", "d"], ["a", "b"], ["c", "d"]])
 
-    def test_a_single_form_that_still_fails_stops_the_run(self):
+    def test_forms_that_fail_alone_are_named_at_the_end(self):
         def chat(system, user, model):
-            return {"forms": []}
+            forms = json.loads(user)
+            lemma = {"osea": "o sea"}
+            return {
+                "forms": [
+                    {"form": f, "lemma": lemma.get(f, f), "pos": "verbo"} for f in forms
+                ]
+            }
 
-        with self.assertRaisesRegex(headwords.MappingError, "asked for 1"):
-            headwords.map_forms(["a", "b"], {}, chat, "m", batch=2)
+        saved = []
+        with self.assertRaises(headwords.Unmappable) as caught:
+            headwords.map_forms(
+                ["a", "osea", "b"], {}, chat, "m", batch=4, save=saved.append
+            )
+        self.assertEqual([f for f, _ in caught.exception.failures], ["osea"])
+        self.assertIn("not one word", caught.exception.failures[0][1])
+        self.assertEqual(set(saved[-1]), {"a", "b"})
+
+    def test_an_overridden_form_is_never_sent(self):
+        chat, calls = self.fake()
+        headwords.map_forms(["a", "b"], {}, chat, "m", overridden=frozenset({"b"}))
+        self.assertEqual(calls, [["a"]])
 
     def test_saves_after_every_batch(self):
         chat, _ = self.fake()
@@ -268,6 +285,9 @@ class Build(unittest.TestCase):
 
 
 class Stale(unittest.TestCase):
+    def test_an_overridden_form_needs_no_mapping(self):
+        self.assertEqual(headwords.stale_forms(["de"], {}, frozenset({"de"})), [])
+
     def test_a_mapping_from_another_prompt_is_stale(self):
         old = headwords.Mapping("de", "de", "preposición", False, "sha256:old", "m")
         self.assertEqual(headwords.stale_forms(["de"], {"de": old}), ["de"])
@@ -408,7 +428,9 @@ class ShippedHeadwords(unittest.TestCase):
     def test_every_mapping_is_current(self):
         forms = headwords.read_frequency(DATA / "frequency.txt")
         mappings = headwords.load_mappings(DATA / "forms.jsonl")
-        self.assertEqual(headwords.stale_forms(forms, mappings), [])
+        overrides = headwords.load_overrides(DATA / "forms.overrides.tsv")
+        stale = headwords.stale_forms(forms, mappings, frozenset(overrides))
+        self.assertEqual(stale, [])
 
     def test_the_recorded_check_saw_these_headwords(self):
         source = json.loads((DATA / "headwords.source.json").read_text("utf-8"))

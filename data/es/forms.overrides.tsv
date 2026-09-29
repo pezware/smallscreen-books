@@ -50,3 +50,5 @@ supuestos	supuesto	adjetivo
 turco	turco	adjetivo
 # The participle of poner, not a noun of its own.
 puesta	poner	verbo
+# Spellings of a two-word phrase: a headword is one word.
+osea	-
