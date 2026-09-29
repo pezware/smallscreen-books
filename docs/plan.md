@@ -196,6 +196,13 @@ Each stage lands in the same branch and the same pull request.
    each by its Tatoeba id and contributor. A reviewer chooses among the
    candidates, because a form can carry another word's sense (`vino` from
    venir under the noun). A reviewed entry is never refilled.
+   Status, 2026-09-30: review agents chose every entry's examples in two
+   rounds, the second with 40 candidates and leave to widen a definition
+   whose sense the sentences never use (`clase` as a lesson, not only the
+   group; `tarde` also as "late"); 141 definitions were widened that way.
+   2,911 entries have two examples, 59 one, and 30 none: news words Tatoeba
+   does not cover (`priísta`, `azulgrana`, `comparecencia`), listed by
+   `mise run examples-report`. They are candidates to leave the book.
    Done when: every entry carries two examples, each with its Tatoeba id, and
    any entry Tatoeba cannot fill is listed in a report.
 
