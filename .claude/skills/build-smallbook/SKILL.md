@@ -19,7 +19,7 @@ the way it does.
 | The person wants | Go to |
 |---|---|
 | the EPUB, or the book on their reader | [Build the book](#build-the-book) |
-| a word's lemma, definition or examples changed | [Change the content](#change-the-content), which uses the agent loop |
+| a word's lemma, definition or examples changed, or a definition that went missing | [Change the content](#change-the-content), which uses the agent loop |
 | more or different headwords, or a newer corpus | [Change the content](#change-the-content), whole stages |
 | a book in another language, or poems or cards | [Another kind of book](#another-kind-of-book) |
 
@@ -77,9 +77,11 @@ request file, and the command stops until the answers exist:
    stop at the next batch or at a repair round. Repeat until it exits 0.
 
 **Answer as the model would.** Write your best answer to the prompt as it is
-written. Don't run `validate.py` on your draft and tune it until it passes.
-The validator's rejections and the repair rounds are how the pipeline finds
-weak definitions, and pre-filtering hides them (`AGENTS.md`, "agent").
+written. Read the word list the prompt gives you, as a model would, but don't
+run code over your draft: no `validate.py`, and no script that checks your
+words against the list. The validator's rejections and the repair rounds are
+how the pipeline finds weak definitions, and pre-filtering hides them
+(`AGENTS.md`, "agent").
 
 **Many requests: fan out.** Answer files are independent, so give subagents
 disjoint sets of request paths, and have each one write only the answer files
@@ -104,6 +106,14 @@ Specifically:
   provider it therefore only writes definitions for new headwords, in requests
   of 10 words, 50 words per saved chunk, plus up to 2 repair rounds.
 
+So a run with the agent provider also prints one line saying the other
+2,997 checked entries "were made from other inputs" and are left alone. That
+is expected: they were written by another model and stay as they were
+reviewed.
+
+An entry the loop writes comes out `checked: false`. It is in the book, but it
+is not done until it is reviewed; see [Definitions](#definitions).
+
 Never set `SMALLSCREEN_LLM_MODEL` to another model's name to reuse its cache.
 That records answers you wrote as another model's, and provenance is a rule
 here.
@@ -114,9 +124,14 @@ After any change, run the tests and lint before committing:
 
 ```sh
 python3 -m unittest discover -s tests -t tests
-uv run ruff format --check . && uv run ruff check .
+uv run ruff format --check . && uv run ruff check .   # uv creates a gitignored .venv on first use
 python3 src/definitions.py check --strict    # CI's stage 2 gate: every entry accepted
 ```
+
+Review sheets go in `data/es/review/`, named for what they hold and the date,
+such as `definitions-regenerated-2026-10-02.tsv`. Pick a new name rather than
+overwriting a sheet that already exists; the sheets are the record of every
+review.
 
 ### Fix a lemma, or drop a form
 
@@ -145,13 +160,27 @@ python3 src/definitions.py check                             # -> build/definiti
 ```
 
 A definition must pass `validate.accept_definition`: at most 90 characters,
-only words the book defines, and never the headword or one of its forms. That rule is the owner's; never
-loosen it to make a run pass.
+only words the book defines, and never the headword or one of its forms. That
+rule is the owner's; never loosen it to make a run pass. The book's small
+vocabulary also limits how exact a definition can be (`limpio` can't say
+"dirt" if the book has no word for it). Tell the person when a definition had
+to give ground.
 
-To fix a definition, whether it was rejected or is simply wrong, write a
+**A definition that went missing** (lost from `words.jsonl`): look for its
+approved text in the sheets under `data/es/review/` first. If you find it,
+restore it through a sheet and `apply`, so it keeps its review. Otherwise
+regenerate it with `generate`. Either way, the entry keeps its examples.
+
+To review new definitions, or fix one that is rejected or wrong, write a
 review sheet under `data/es/review/` with the columns
 `ok lemma pos rank current suggested note`. `definitions.write_sheet` writes
-one. The person marks `ok` as `y` on the rows they approve, then:
+one:
+
+- `suggested` holds the text to approve. It is the same as `current` when the
+  definition stands as written.
+- `note` holds a short reason, such as `agent ok` or what changed.
+
+The person marks `ok` as `y` on the rows they approve, then:
 
 ```sh
 python3 src/definitions.py apply data/es/review/<sheet>.tsv                    # approved by a person
@@ -164,14 +193,23 @@ If their Spanish isn't strong enough to review, offer an agent review and say
 it will be recorded as `agent`. Don't reword an entry marked
 `reviewed_by: human` without asking.
 
+**An agent review should come from a different agent than the writer.**
+Start a fresh subagent. Give it only the sheet, the definition rule above and
+the book's word list (`data/es/headwords.jsonl`). Ask it to mark `ok`, and to
+write a better `suggested` text where one is needed. A writer approving its
+own definitions is not a review. If you can't start a subagent, tell the
+person, and let them decide whether a self-check will do. `reviewed_by: agent`
+can't tell those two cases apart, so say which one happened.
+
 ### Examples
 
 Examples are real sentences, never written by an LLM. Tatoeba comes first,
 and the Leipzig news corpus is the fallback:
 
 ```sh
-curl -O https://downloads.tatoeba.org/exports/per_language/spa/spa_sentences_detailed.tsv.bz2
-bunzip2 spa_sentences_detailed.tsv.bz2 && mv spa_sentences_detailed.tsv data/es/raw/
+mkdir -p data/es/raw
+curl -o data/es/raw/spa_sentences_detailed.tsv.bz2 https://downloads.tatoeba.org/exports/per_language/spa/spa_sentences_detailed.tsv.bz2
+bunzip2 data/es/raw/spa_sentences_detailed.tsv.bz2
 python3 src/examples.py pick          # fills entries short of two examples; reviewed entries are never refilled
 python3 src/examples.py report        # -> build/examples-report.tsv
 ```
@@ -188,6 +226,11 @@ python3 src/examples.py choose <sheet> --reviewer agent|human
 To see the candidates for a lemma, call `examples.candidates()` from Python;
 there is no command for it. An entry with no fitting sentence stays short and
 shows in the report. Don't pad it.
+
+`pick` and `choose` also rewrite `data/es/examples.source.json`, which holds
+the Tatoeba export's digest and the contributors credited on the sources page.
+Tatoeba publishes a new export every week, so a fresh download changes the
+digest. Commit that file together with `words.jsonl`.
 
 ### A newer corpus or more words
 
