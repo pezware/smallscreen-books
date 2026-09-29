@@ -1,18 +1,29 @@
-# Publishes the current book where anyone can download it: the `latest`
-# release, rebuilt from main on every change. The README links straight to its
-# EPUB, so the link never goes stale.
+# Publishes the book where anyone can download it.
+#
+# Every push to main replaces the `latest` release, which the README links to,
+# so that link never goes stale. A version (a `v1.2.3` tag pushed, or given to
+# a manual run) gets its own release that is never replaced, so a reader can
+# keep and cite a fixed edition.
 name: publish the book
 
 on:
   push:
     branches: [main]
+    tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Publish a versioned release, such as v1.0.0, from this commit (empty: refresh latest)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
 
+# One group per ref, so a version published right after a merge does not
+# cancel the run that refreshes `latest`.
 concurrency:
-  group: book-release
+  group: book-release-${{ github.ref }}-${{ inputs.version }}
   cancel-in-progress: true
 
 jobs:
@@ -28,9 +39,26 @@ jobs:
       - name: Check the archive is a well-formed EPUB
         run: uv run python tools/check_epub.py build/es-wordbook.epub
 
+      - name: Publish a versioned release
+        if: github.ref_type == 'tag' || inputs.version != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.version || github.ref_name }}
+        run: |
+          if ! [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "version must look like v1.2.3, not '$VERSION'" >&2
+            exit 1
+          fi
+          cp build/es-wordbook.epub "build/es-wordbook-$VERSION.epub"
+          gh release create "$VERSION" "build/es-wordbook-$VERSION.epub" \
+            --target "$GITHUB_SHA" \
+            --title "Spanish wordbook $VERSION" \
+            --notes "The 3,000 most used Spanish words, one per page, each with a short definition in the book's own words and real example sentences. Made for a 4.3\" e-ink reader running CrossPoint. Built from ${GITHUB_SHA::7}. Book and data CC BY 4.0, code MIT."
+
       # The release is recreated rather than updated, so its tag always points
       # at the commit the book was built from.
       - name: Publish as the latest release
+        if: github.ref_type != 'tag' && inputs.version == ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
