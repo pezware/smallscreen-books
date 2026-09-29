@@ -28,8 +28,37 @@ echo "built: build/fit/fit-entry  (give it XHTML files; prints pages and a spill
 """
 
 [tasks.headwords]
-description = "Map new or changed forms to lemmas through the xAI broker, then rebuild the headwords"
+description = "Map new or changed forms to lemmas through the LLM ($SMALLSCREEN_LLM, default xai), then rebuild the headwords"
 run = ["uv run python src/headwords.py map", "uv run python src/headwords.py build"]
+
+[tasks.definitions]
+description = "Write missing or stale definitions through the LLM ($SMALLSCREEN_LLM, default xai) into data/es/words.jsonl"
+run = "uv run python src/definitions.py generate"
+
+[tasks.definitions-check]
+description = "Re-validate every definition with no LLM; writes build/definitions-review.tsv"
+run = "uv run python src/definitions.py check"
+
+[tasks.definitions-apply]
+description = "Apply the rows marked y in a review sheet: mise run definitions-apply -- data/es/review/<sheet>.tsv"
+run = "uv run python src/definitions.py apply"
+
+[tasks.headwords-refresh]
+description = "After frequency.txt changes: map new forms via the LLM, rebuild and check the headwords, sync words.jsonl"
+run = [
+  "uv run python src/headwords.py map",
+  "uv run python src/headwords.py build",
+  "uv run python src/headwords.py check",
+  "uv run python src/definitions.py sync",
+]
+
+[tasks.examples]
+description = "Fill each entry's missing examples from Tatoeba (data/es/raw/spa_sentences_detailed.tsv)"
+run = "uv run python src/examples.py pick"
+
+[tasks.examples-report]
+description = "List entries short of two examples, and examples to look at -> build/examples-report.tsv"
+run = "uv run python src/examples.py report"
 
 [tasks.headwords-check]
 description = "Compare the headwords with Wiktionary; writes build/headwords-review.tsv"
@@ -46,6 +75,10 @@ run = ["uv run ruff format --check .", "uv run ruff check ."]
 [tasks.fmt]
 description = "Apply formatting"
 run = "uv run ruff format ."
+
+[tasks.fit-book]
+description = "Pages per entry of the built book at each font size (needs `mise run book` and `mise run fit-entry`)"
+run = "uv run python tools/fit/fit_book.py"
 
 [tasks.fit]
 description = "Measure how many lines Spanish prose takes, using the device's own line breaker"

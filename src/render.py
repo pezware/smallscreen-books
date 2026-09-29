@@ -134,6 +134,13 @@ def entry_xhtml(entry: Entry) -> str:
 
 SOURCES_FILE = "sources.xhtml"
 
+# The book's own licence (data/LICENSE). CC BY 4.0 is the most open licence the
+# sources allow: they are CC BY, so every copy must keep their credits anyway.
+BOOK_LICENCE = {
+    "name": "CC BY 4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+}
+
 
 def _attr(value: str) -> str:
     """Escape for a double-quoted attribute; escape() alone leaves `"` bare."""
@@ -146,8 +153,8 @@ def sources_xhtml(sources: list[dict]) -> str:
     CC BY asks for the work, its licence, a link to the material and a note
     of changes (issue #21), and each `*.source.json` records exactly those
     fields. Plain headings, paragraphs and links, so it reads with the
-    stylesheet off. It names no licence for the book itself: that is still
-    Andy's to choose (README, "Licences").
+    stylesheet off. It ends with the book's own licence, which the sources'
+    licences allow and do not replace.
     """
     parts = ["    <h1>Fuentes</h1>"]
     for source in sources:
@@ -161,6 +168,15 @@ def sources_xhtml(sources: list[dict]) -> str:
             f"{escape(source['material'])}</a></p>",
             f"    <p>{escape(source['changes'])}</p>",
         ]
+        if source.get("contributors"):
+            names = ", ".join(escape(n) for n in source["contributors"])
+            parts.append(f"    <p>Colaboradores: {names}.</p>")
+    parts += [
+        "    <h2>Este libro</h2>",
+        f'    <p>Licencia: <a href="{_attr(BOOK_LICENCE["url"])}">'
+        f"{escape(BOOK_LICENCE['name'])}</a>. Las frases de ejemplo conservan "
+        "la licencia de su fuente.</p>",
+    ]
     body = "\n".join(parts)
     return (
         '<?xml version="1.0" encoding="utf-8"?>\n'
@@ -240,6 +256,7 @@ def content_opf(
         f'    <dc:identifier id="pub-id">{escape(identifier)}</dc:identifier>\n'
         f"    <dc:title>{escape(title)}</dc:title>\n"
         "    <dc:language>es</dc:language>\n"
+        f"    <dc:rights>{escape(BOOK_LICENCE['name'])}</dc:rights>\n"
         f"{dc_sources}"
         '    <meta property="dcterms:modified">2026-01-01T00:00:00Z</meta>\n'
         "  </metadata>\n"
@@ -300,8 +317,9 @@ def build_epub(
 # because merging forms into lemmas consumes forms (docs/plan.md, stage 1b).
 BOOK_SIZE = 3000
 
-# Shown until stage 2 writes definitions. Entries need no definition to test
-# the spine: 3,000 sections behave the same whether or not each says anything.
+# Shown for an entry stage 2 has not defined yet. Entries need no definition to
+# test the spine: 3,000 sections behave the same whether or not each says
+# anything.
 PLACEHOLDER = "(sin definición)"
 
 
@@ -359,12 +377,17 @@ def main(argv: list[str] | None = None) -> int:
     # Added to the corpus, never instead of it: every book's vocabulary comes
     # from Leipzig, so a caller who forgets to repeat it must not drop it.
     source_files = [Path("data/es/frequency.source.json")]
+    # The examples come from Tatoeba once stage 3 has run, and every book that
+    # prints one must credit it, so it is added by itself rather than by flag.
+    examples_source = Path("data/es/examples.source.json")
+    if examples_source.exists():
+        source_files.append(examples_source)
     source_files += [p for p in args.source_json or [] if p not in source_files]
 
-    if args.entries.exists():
-        entries = entries_from_jsonl(args.entries)
-    else:
-        entries = entries_from_jsonl(args.headwords, PLACEHOLDER)
+    # words.jsonl lists every headword while stage 2 is partial, so it needs
+    # the placeholder as much as headwords.jsonl does.
+    source = args.entries if args.entries.exists() else args.headwords
+    entries = entries_from_jsonl(source, PLACEHOLDER)
     sources = [
         json.loads(path.read_text(encoding="utf-8"))["source"] for path in source_files
     ]

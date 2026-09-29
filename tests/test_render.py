@@ -104,6 +104,15 @@ class BuildEpub(unittest.TestCase):
 
 
 class SourcesPage(unittest.TestCase):
+    def test_the_page_names_the_book_s_own_licence(self):
+        page = render.sources_xhtml([SOURCE])
+        self.assertIn("<h2>Este libro</h2>", page)
+        self.assertIn(render.BOOK_LICENCE["url"], page)
+
+    def test_the_package_states_the_book_s_licence(self):
+        opf = render.content_opf([], "t", "id", [SOURCE])
+        self.assertIn("<dc:rights>CC BY 4.0</dc:rights>", opf)
+
     def page(self) -> str:
         return render.sources_xhtml([SOURCE])
 

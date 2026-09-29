@@ -6,14 +6,14 @@
     "licence": "CC BY 4.0",
     "licence_url": "https://creativecommons.org/licenses/by/4.0/",
     "attribution": "D. Goldhahn, T. Eckart, U. Quasthoff: Building Large Monolingual Dictionaries at the Leipzig Corpora Collection, LREC 2012.",
-    "changes": "Modified: word counts were case-folded, non-words, proper nouns and English tokens removed, ranked by lowercase use, and cut to the top entries. Only the word list is redistributed, not the sentences.",
+    "changes": "Modified: word counts were case-folded, non-words, proper nouns and English tokens removed, ranked by lowercase use, and cut to the top entries. The word list is redistributed, and a few unmodified sentences are used as examples for words Tatoeba does not cover.",
     "material": "https://downloads.wortschatz-leipzig.de/corpora/spa_news_2011_1M.tar.gz"
   },
   "inputs": {
     "spa_news_2011_1M-words.txt": "127aedf9a713208540f3ad7c1b23ffd345a57ba4208846681ec794b939e8a7e2",
     "spa_news_2011_1M-sentences.txt": "e001b1556c20fdb39c81b9ab72b0ff0f83438a68ab4eb9a6bdd72407ee1c250f"
   },
-  "entries": 8000,
-  "excluded_proper_nouns": 1008,
+  "entries": 20000,
+  "excluded_proper_nouns": 3729,
   "proper_noun_ratio": 0.08
 }

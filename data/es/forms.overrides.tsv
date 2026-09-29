@@ -9,3 +9,69 @@ poquito	poco	adjetivo
 perdida	perder	verbo
 muchísimo	mucho	adjetivo
 km	-
+
+# 2026-09-25, from the definition review: words that live only inside a
+# fixed phrase (a través de, sin embargo, a partir de...) or are not Spanish.
+través	-
+embargo	-
+respecto	-
+pese	-
+cabo	-
+partir	-
+cuanto	-
+siquiera	-
+torno	-
+acerca	-
+obstante	-
+menudo	-
+bordo	-
+mediados	-
+hincapié	-
+post	-
+hits	-
+do	-
+abertzale	-
+conseller	-
+# Part of speech: the forms show the adjective, not the noun or preposition.
+bajo	bajo	adjetivo
+baja	bajo	adjetivo
+bajas	bajo	adjetivo
+bajos	bajo	adjetivo
+personal	personal	adjetivo
+personales	personal	adjetivo
+activos	activo	adjetivo
+activo	activo	adjetivo
+activa	activo	adjetivo
+pleno	pleno	adjetivo
+plena	pleno	adjetivo
+supuesto	supuesto	adjetivo
+supuesta	supuesto	adjetivo
+supuestos	supuesto	adjetivo
+turco	turco	adjetivo
+# The participle of poner, not a noun of its own.
+puesta	poner	verbo
+# Spellings of a two-word phrase: a headword is one word.
+osea	-
+# 2026-09-29, from the Wiktionary check of the 20,000-form list: the LLM
+# picked the wrong verb or word for these.
+conviven	convivir	verbo
+respecta	respectar	verbo
+pare	parar	verbo
+cause	causar	verbo
+cambiaria	cambiario	adjetivo
+compete	competer	verbo
+televisora	televisora	sustantivo
+ene	-
+# "bebe" is he/she drinks; the baby is "bebé", which has its own form.
+bebe	beber	verbo
+# 2026-09-29, from the review of the new definitions: the forms show the
+# adjective; smartphone is English (Spanish says móvil).
+informativo	informativo	adjetivo
+informativa	informativo	adjetivo
+informativos	informativo	adjetivo
+informativas	informativo	adjetivo
+concentrado	concentrado	adjetivo
+concentrados	concentrado	adjetivo
+concentrada	concentrado	adjetivo
+smartphones	-
+smartphone	-

@@ -1,10 +1,13 @@
 """Checks how frequency-list forms become the book's headwords."""
 
+import contextlib
+import io
 import json
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
@@ -16,6 +19,11 @@ DATA = Path(__file__).resolve().parent.parent / "data" / "es"
 
 def mapped(form, lemma, pos="verbo", skip=False):
     return headwords.Mapping(form, lemma, pos, skip, "sha256:x", "m")
+
+
+def falling(forms):
+    """Counts that fall with rank, as frequency.txt's do: 100, 99, 98..."""
+    return {form: 100 - i for i, form in enumerate(forms)}
 
 
 class ParseAnswer(unittest.TestCase):
@@ -115,6 +123,43 @@ class MapForms(unittest.TestCase):
         first = headwords.map_forms(["a", "b"], {}, chat, "m", batch=2)
         self.assertEqual(set(headwords.map_forms(["a"], first, chat, "m")), {"a"})
 
+    def test_a_batch_answered_one_short_is_mapped_in_halves(self):
+        calls = []
+
+        def chat(system, user, model):
+            forms = json.loads(user)
+            calls.append(forms)
+            items = [{"form": f, "lemma": f, "pos": "verbo"} for f in forms]
+            return {"forms": items[:-1] if len(forms) > 2 else items}
+
+        result = headwords.map_forms(["a", "b", "c", "d"], {}, chat, "m", batch=4)
+        self.assertEqual(set(result), {"a", "b", "c", "d"})
+        self.assertEqual(calls, [["a", "b", "c", "d"], ["a", "b"], ["c", "d"]])
+
+    def test_forms_that_fail_alone_are_named_at_the_end(self):
+        def chat(system, user, model):
+            forms = json.loads(user)
+            lemma = {"osea": "o sea"}
+            return {
+                "forms": [
+                    {"form": f, "lemma": lemma.get(f, f), "pos": "verbo"} for f in forms
+                ]
+            }
+
+        saved = []
+        with self.assertRaises(headwords.Unmappable) as caught:
+            headwords.map_forms(
+                ["a", "osea", "b"], {}, chat, "m", batch=4, save=saved.append
+            )
+        self.assertEqual([f for f, _ in caught.exception.failures], ["osea"])
+        self.assertIn("not one word", caught.exception.failures[0][1])
+        self.assertEqual(set(saved[-1]), {"a", "b"})
+
+    def test_an_overridden_form_is_never_sent(self):
+        chat, calls = self.fake()
+        headwords.map_forms(["a", "b"], {}, chat, "m", overridden=frozenset({"b"}))
+        self.assertEqual(calls, [["a"]])
+
     def test_saves_after_every_batch(self):
         chat, _ = self.fake()
         saved = []
@@ -130,11 +175,26 @@ class Build(unittest.TestCase):
             ["dijo", "dice", "decir"],
             {f: mapped(f, "decir") for f in ["dijo", "dice", "decir"]},
             {},
+            falling(["dijo", "dice", "decir"]),
             size=1,
         )
         self.assertEqual(entries[0]["forms"], ["dijo", "dice", "decir"])
 
-    def test_the_rank_is_the_best_rank_among_the_forms(self):
+    def test_a_lemma_is_ranked_by_the_sum_of_its_forms(self):
+        # "limpia" and "limpio" each trail "cumbre", but together they lead it.
+        entries = headwords.build(
+            ["cumbre", "limpia", "limpio"],
+            {
+                "cumbre": mapped("cumbre", "cumbre", "sustantivo"),
+                **{f: mapped(f, "limpio", "adjetivo") for f in ["limpia", "limpio"]},
+            },
+            {},
+            {"cumbre": 50, "limpia": 30, "limpio": 25},
+            size=1,
+        )
+        self.assertEqual(entries[0]["lemma"], "limpio")
+
+    def test_the_rank_is_the_lemma_s_position(self):
         entries = headwords.build(
             ["de", "dijo", "decir"],
             {
@@ -142,11 +202,26 @@ class Build(unittest.TestCase):
                 **{f: mapped(f, "decir") for f in ["dijo", "decir"]},
             },
             {},
+            {"de": 100, "dijo": 10, "decir": 9},
             size=2,
         )
         self.assertEqual(
             [(e["lemma"], e["rank"]) for e in entries], [("de", 1), ("decir", 2)]
         )
+
+    def test_a_tie_goes_to_the_better_best_form(self):
+        entries = headwords.build(
+            ["a", "b", "c"],
+            {"a": mapped("a", "x"), "b": mapped("b", "y"), "c": mapped("c", "x")},
+            {},
+            {"a": 5, "b": 10, "c": 5},
+            size=2,
+        )
+        self.assertEqual([e["lemma"] for e in entries], ["x", "y"])
+
+    def test_a_form_without_a_count_fails_loudly(self):
+        with self.assertRaisesRegex(headwords.MappingError, "no count"):
+            headwords.build(["a"], {"a": mapped("a", "a")}, {}, {}, size=1)
 
     def test_the_part_of_speech_comes_from_the_best_ranked_form(self):
         entries = headwords.build(
@@ -156,6 +231,7 @@ class Build(unittest.TestCase):
                 "baja": mapped("baja", "bajo", "adjetivo"),
             },
             {},
+            falling(["bajo", "baja"]),
             size=1,
         )
         self.assertEqual(entries[0]["pos"], "preposición")
@@ -165,6 +241,7 @@ class Build(unittest.TestCase):
             ["uu", "de"],
             {"uu": mapped("uu", "", "", skip=True), "de": mapped("de", "de")},
             {},
+            falling(["uu", "de"]),
             size=1,
         )
         self.assertEqual([e["lemma"] for e in entries], ["de"])
@@ -174,6 +251,7 @@ class Build(unittest.TestCase):
             ["vino"],
             {"vino": mapped("vino", "vino", "sustantivo")},
             {"vino": ("venir", "verbo")},
+            falling(["vino"]),
             size=1,
         )
         self.assertEqual((entries[0]["lemma"], entries[0]["pos"]), ("venir", "verbo"))
@@ -183,26 +261,74 @@ class Build(unittest.TestCase):
             ["uu", "de"],
             {"uu": mapped("uu", "uu"), "de": mapped("de", "de")},
             {"uu": None},
+            falling(["uu", "de"]),
             size=1,
         )
         self.assertEqual([e["lemma"] for e in entries], ["de"])
 
     def test_stops_at_the_book_size(self):
         entries = headwords.build(
-            ["a", "b", "c"], {f: mapped(f, f) for f in "abc"}, {}, size=2
+            ["a", "b", "c"],
+            {f: mapped(f, f) for f in "abc"},
+            {},
+            falling("abc"),
+            size=2,
         )
         self.assertEqual(len(entries), 2)
 
     def test_too_few_lemmas_fails_loudly(self):
         with self.assertRaisesRegex(headwords.MappingError, "1 lemmas"):
-            headwords.build(["a"], {"a": mapped("a", "a")}, {}, size=2)
+            headwords.build(["a"], {"a": mapped("a", "a")}, {}, {"a": 1}, size=2)
 
     def test_an_unmapped_form_fails_loudly(self):
         with self.assertRaisesRegex(headwords.MappingError, "b"):
-            headwords.build(["a", "b"], {"a": mapped("a", "a")}, {}, size=1)
+            headwords.build(
+                ["a", "b"], {"a": mapped("a", "a")}, {}, falling("ab"), size=1
+            )
+
+
+class MappingModel(unittest.TestCase):
+    def test_names_the_one_model(self):
+        maps = {"a": mapped("a", "a"), "b": mapped("b", "b")}
+        self.assertEqual(headwords.mapping_model(["a", "b"], maps), "m")
+
+    def test_mixed_models_fail(self):
+        maps = {
+            "a": mapped("a", "a"),
+            "b": headwords.Mapping("b", "b", "verbo", False, "x", "other"),
+        }
+        with self.assertRaisesRegex(headwords.MappingError, "mixes models"):
+            headwords.mapping_model(["a", "b"], maps)
+
+
+class BuildStep(unittest.TestCase):
+    def test_a_form_with_only_an_override_does_not_break_the_build(self):
+        # osea is dropped by override and never sent to the LLM, so it has no
+        # mapping; the build step looked one up for it (2026-09-29).
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        (tmp / "frequency.txt").write_text("de\t10\nosea\t5\n", encoding="utf-8")
+        de = headwords.Mapping(
+            "de",
+            "de",
+            "preposición",
+            False,
+            headwords.form_hash("de", "m", headwords.PROMPT),
+            "m",
+        )
+        headwords.save_mappings(tmp / "forms.jsonl", ["de"], {"de": de})
+        (tmp / "forms.overrides.tsv").write_text("osea\t-\n", encoding="utf-8")
+        self.enterContext(mock.patch.object(headwords, "BOOK_SIZE", 1))
+        with contextlib.redirect_stderr(io.StringIO()):
+            code = headwords.main(["build", "--data", str(tmp)])
+        self.assertEqual(code, 0)
+        source = json.loads((tmp / "headwords.source.json").read_text("utf-8"))
+        self.assertEqual(source["lemmas"]["forms_mapped"], 1)
 
 
 class Stale(unittest.TestCase):
+    def test_an_overridden_form_needs_no_mapping(self):
+        self.assertEqual(headwords.stale_forms(["de"], {}, frozenset({"de"})), [])
+
     def test_a_mapping_from_another_prompt_is_stale(self):
         old = headwords.Mapping("de", "de", "preposición", False, "sha256:old", "m")
         self.assertEqual(headwords.stale_forms(["de"], {"de": old}), ["de"])
@@ -336,13 +462,16 @@ class ShippedHeadwords(unittest.TestCase):
             headwords.read_frequency(DATA / "frequency.txt"),
             headwords.load_mappings(DATA / "forms.jsonl"),
             headwords.load_overrides(DATA / "forms.overrides.tsv"),
+            headwords.read_counts(DATA / "frequency.txt"),
         )
         self.assertEqual(rebuilt, self.entries())
 
     def test_every_mapping_is_current(self):
         forms = headwords.read_frequency(DATA / "frequency.txt")
         mappings = headwords.load_mappings(DATA / "forms.jsonl")
-        self.assertEqual(headwords.stale_forms(forms, mappings), [])
+        overrides = headwords.load_overrides(DATA / "forms.overrides.tsv")
+        stale = headwords.stale_forms(forms, mappings, frozenset(overrides))
+        self.assertEqual(stale, [])
 
     def test_the_recorded_check_saw_these_headwords(self):
         source = json.loads((DATA / "headwords.source.json").read_text("utf-8"))

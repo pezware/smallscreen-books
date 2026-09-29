@@ -12,7 +12,8 @@ Consequence: the fit measurement reports a spill rate. It does not fail the
 build.
 
 **An LLM writes the definitions; Wiktionary checks them.** Definitions use a
-graded register — about 12 simple Spanish words, drawn from the top 3,000. This
+graded register — at most 12 simple Spanish words, drawn from the book's own
+headwords (amended 2026-09-24, below). This
 reads better than a raw Wiktionary gloss and stays consistent across 3,000
 entries. It also needs a review pass, because a wrong definition is worse than
 an awkward one.
@@ -47,8 +48,23 @@ A form no entry lists, such as a rare conjugation, is still unknown.
 
 **Every entry carries two examples.** The second example may push an entry
 onto a continuation page, which the first decision already accepts. Examples
-come from Tatoeba only. When Tatoeba cannot supply two, the entry is reported,
-not padded with a generated sentence that has no source.
+come from Tatoeba, and, since 2026-09-30 (Andy), from the Leipzig news corpus
+for a word Tatoeba does not cover: the corpus is CC BY 4.0 and already
+credited, and a Tatoeba sentence always ranks first. When neither can supply
+two, the entry is reported, not padded with a generated sentence that has no
+source.
+
+**A lemma is ranked by the summed use of its forms.** Andy took this on
+2026-09-25, replacing "the entry's `rank` is the best rank among its forms".
+Ranking on one form buried words whose use is spread over many forms:
+`limpio` (limpia, limpio, limpias) missed the cut by 45 places though three
+of its forms were in the list. `frequency.txt` now carries each form's count,
+`headwords.py` sums them per lemma, and `rank` is the lemma's position.
+
+Consequence: only forms in the frequency list are summed, so the list runs
+to 20,000 forms (2026-09-29). At 8,000 a verb lost most of its conjugations
+(`beber`: only the infinitive made the list), and the ranking favoured nouns. A headword that leaves the list keeps its
+definition in `words.retired.jsonl`, and gets it back if it returns.
 
 **Frequency counts only lowercase uses.** A form that survives the proper-noun
 cut is ranked by its total count scaled by its share of lowercase uses, not by
@@ -67,8 +83,8 @@ lemma.
 {"lemma": "decir", "pos": "verbo", "rank": 37, "forms": ["dijo", "dice", "decir"],
  "definition": "Usar palabras para dar a otra persona una idea.",
  "examples": ["¿Qué dice tu madre?", "No me dijo nada."],
- "source": {"definition": "llm:v1", "examples": ["tatoeba:3456789", "tatoeba:4567890"]},
- "generation": {"input_hash": "sha256:9f2c…", "model": "claude-sonnet-5", "prompt": "v1"},
+ "source": {"definition": "llm:grok-4.20-0309-non-reasoning", "examples": ["tatoeba:3456789", "tatoeba:4567890"]},
+ "generation": {"input_hash": "sha256:9f2c…", "model": "grok-4.20-0309-non-reasoning", "prompt": "v1", "repairs": 0},
  "checked": true}
 ```
 
@@ -76,7 +92,8 @@ lemma.
 gives the frequency position, which also drives the vocabulary check. `forms`
 lists the frequency-list forms merged into this entry, most frequent first.
 
-`generation` is the cache identity. `input_hash` is the SHA-256 of the
+`generation` is the cache identity; `repairs` counts the repair rounds the
+definition needed. `input_hash` is the SHA-256 of the
 canonical JSON (sorted keys, no whitespace) of everything the generator reads
 for this entry: `lemma`, `pos`, `forms`, `model` and the prompt text, not just
 its version label. The generator uses it this way:
@@ -91,27 +108,68 @@ every run re-checks every entry, cache hits included, against the current
 vocabulary and `accept_definition`, because a rebuilt frequency list can make a
 once-valid definition fail. A failure is reported, never silently kept.
 
-## Open decision, owned by Andy
+## The definition rule
 
-`src/validate.py:accept_definition` raises `NotImplementedError`. It decides
-whether a generated definition may enter the book.
+Andy took this on 2026-09-24, after a 50-word pilot against Grok
+(`tools/pilot_definitions.py`).
 
-The trade-off: `unknown_words()` compares surface forms, so it flags any form
-no entry lists, even of a verb the book defines. A rule that rejects every
-out-of-vocabulary word sends good definitions back to the generator in a loop.
-A tolerant rule lets a few unknown words through and trusts the sentence around
-them.
+**`accept_definition` is strict, and review is the escape hatch.** A
+definition is accepted when every word is one the book defines, it uses
+neither its headword nor any form the entry lists, and it fits
+`MAX_DEFINITION_CHARS`. A `checked: true` entry is accepted as it stands:
+someone read it. That is how a definition needing a word the book lacks, a
+place name such as `España` included, gets in.
 
-Leave this function alone. Build around it.
+A looser rule was measured and rejected. Allowing an unlisted form of a
+headword (`oye` for `oír`) would have saved about one definition in fifty, but
+telling that apart from a word the book lacks needs Wiktionary at validation
+time, and Wiktionary never enters the repository, so CI and a fresh checkout
+could not run the check.
+
+**A rejected definition goes back up to twice, its problem named.** The repair
+prompt asks to paraphrase the missing word and keep the meaning. An earlier
+prompt that said "shorter is better" bought passes by deleting meaning
+(`venganza`: "Daño que se causa por daño"). A definition still rejected after
+two repairs is kept and reported, not regenerated.
+
+**Every definition is read before it counts as done.** The checker cannot see
+a news sense chosen over the basic one (`formación` as a political formation),
+a wrong sense (`sobre`: "posición superior sin contacto"), or a headword that
+is not a word on its own (`través`). On one reading of the pilot, about one
+definition in eight needed a human edit. `mise run definitions-check` writes
+`build/definitions-review.tsv`, most urgent first: rejected, same word family
+as the headword, repaired, then the rest.
+
+**An agent review counts, and says so.** Andy asked on 2026-09-24 for review
+agents to read the definitions, because checking 3,000 Spanish definitions by
+hand is beyond his Spanish. Seven agents read all 3,000 and rewrote 455; a
+rewrite was applied only if it passes `accept_definition` and the prompt's
+style rules. Every entry they approved carries `reviewed_by: agent`; a
+person's approval carries `reviewed_by: human`. Nationality and place words
+whose country the book lacks are left for Andy, defined as "De X o de sus
+habitantes": the agents' workarounds described countries instead of naming
+them, and some did so badly (`sirio` by a war).
+
+**A definition may name a place.** Andy took this on 2026-09-30: nationality
+and place words are defined as "De México o de sus habitantes." although the
+book has no entry for México. He approved all 49 such definitions, recorded as
+`reviewed_by: human`.
+
+**`través` leaves the headword list.** It lives only inside *a través de*, and
+every definition the pilot drew for it was wrong. It goes as an override
+(`través` → `-` in `forms.overrides.tsv`), so the next lemma takes its slot;
+the change needs `mise run headwords-check`, which only runs where the
+Wiktionary table is. `set` is a candidate for the same treatment.
 
 ## Stages
 
 Each stage lands in the same branch and the same pull request.
 
 1. **Frequency list.** Fetch a Leipzig or OpenSubtitles Spanish list. Write the
-   top 8,000 surface forms to `data/es/frequency.txt`, enough to fill 3,000
-   lemmas after merging (about 4,800 are needed).
-   Done when: the file holds 8,000 lines and the checks in `src/validate.py`
+   top 20,000 surface forms and their counts to `data/es/frequency.txt`:
+   enough to fill 3,000 lemmas, and to count most forms of each when stage 1b
+   sums them.
+   Done when: the file holds 20,000 lines and the checks in `src/validate.py`
    can load it.
 
 1b. **Headwords.** Map surface forms to lemmas and part of speech, merge ranks,
@@ -126,25 +184,55 @@ Each stage lands in the same branch and the same pull request.
    by two entries, and the lemma source is recorded.
 
 2. **Definitions.** Generate, cache by `generation.input_hash`, validate, write
-   `data/es/words.jsonl`.
+   `data/es/words.jsonl` (`src/definitions.py`). The hash leaves out the word
+   list pasted into the prompt: it is the whole vocabulary, so one changed
+   headword would otherwise regenerate every definition, and `check`
+   re-validates every entry against the current list anyway.
    Done when: every entry has a definition that `accept_definition` admits, and
-   a second run regenerates nothing.
+   a second run regenerates nothing. `definitions.py check --strict` exits 1
+   until then; without `--strict` a rejection is review work, not a failure.
 
 3. **Examples.** Mine Tatoeba. Prefer short sentences whose other words all sit
-   inside the top 3,000.
+   inside the top 3,000. `src/examples.py` matches a headword's own forms with
+   their accents, keeps sentences of 4-10 words and 70 characters (16 and 110
+   only when nothing shorter exists), uses each sentence once, and credits
+   each by its Tatoeba id and contributor. A reviewer chooses among the
+   candidates, because a form can carry another word's sense (`vino` from
+   venir under the noun). A reviewed entry is never refilled.
+   Status, 2026-09-30: review agents chose every entry's examples in two
+   rounds, the second with 40 candidates and leave to widen a definition
+   whose sense the sentences never use (`clase` as a lesson, not only the
+   group; `tarde` also as "late"); 141 definitions were widened that way.
+   The 30 left with none were news words Tatoeba does not cover
+   (`priísta`, `azulgrana`, `comparecencia`); they took examples from the
+   Leipzig corpus instead. 2,935 entries have two examples, 63 one, and 2
+   none (`puntualizar`, `apostillar`: every candidate is a quotation
+   fragment), listed by `mise run examples-report`.
    Done when: every entry carries two examples, each with its Tatoeba id, and
    any entry Tatoeba cannot fill is listed in a report.
 
 4. **Render.** One XHTML file per word, letter-level TOC, zip, run epubcheck.
    Read `device-constraints.md` first — the CSS subset binds here.
    Done when: epubcheck passes and the book opens on the device.
+   Status, 2026-09-30: rendered, and `tools/check_epub.py` passes (no JVM here,
+   so no epubcheck). CI publishes the book as the `latest` release on every
+   push to `main`. Opening it on the device waits for Andy's X4 Pro.
 
 5. **Measure fit.** Build the host-side page counter against the real layout
    engine. Report the spill rate.
    Done when: the tool prints how many of the 3,000 entries need two pages.
+   Status, 2026-09-30: done. `mise run fit-book` reports 0 at sizes 12-16, 2 at
+   size 18 and 61 (2.0%) at size 18 with margin 40
+   (`device-constraints.md`). The 90-character budget stands.
 
 Stage 5 comes last because it tunes the character budget rather than gating the
-build. Move it earlier if the spill rate turns out to matter.
+build.
+
+Licence, decided by Andy on 2026-09-30: the most open terms the sources allow,
+so anyone may reuse the corpus and code. Code is MIT (`LICENSE`); data and
+books are CC BY 4.0 (`data/LICENSE`), since Leipzig and Tatoeba are CC BY
+themselves. Tatoeba sentences keep their CC BY 2.0 FR. A share-alike input
+would force CC BY-SA, so none is used.
 
 ## Later
 

@@ -2,20 +2,20 @@
   "lemmas": {
     "source": "llm:grok-4.20-0309-non-reasoning",
     "prompt_sha256": "2471738634bf46423ddacadc25cc5591a84ef563a56b806c7decc485a6757f7f",
-    "forms_mapped": 8000
+    "forms_mapped": 19999
   },
-  "overrides": 6,
+  "overrides": 61,
   "entries": 3000,
   "check": {
     "against": "English Wiktionary, Spanish entries, via kaikki.org",
     "licence": "CC BY-SA 4.0",
     "use": "local comparison only; no Wiktionary data is redistributed",
-    "headwords_sha256": "3b12faf1b3708f0fbff3fb99878d0974fc7a4b28d6fb92f2d5faf928e4424f61",
+    "headwords_sha256": "ef77bfc3155bbe9c7e392b3c8e3fc9ece18915383219cafe58685cfe75d7b3a6",
     "counts": {
-      "agree": 4992,
-      "ambiguous": 1551,
-      "disagree": 32,
-      "no evidence": 8
+      "agree": 9124,
+      "ambiguous": 2052,
+      "disagree": 66,
+      "no evidence": 63
     }
   }
 }

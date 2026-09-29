@@ -96,5 +96,63 @@ class DecomposedText(unittest.TestCase):
         self.assertTrue(validate.is_circular("Un an\u0303o entero.", "año"))
 
 
+class AcceptDefinition(unittest.TestCase):
+    """The rule Andy chose on 2026-09-24 (docs/plan.md)."""
+
+    KNOWN = {"lugar", "donde", "vive", "una", "persona", "o", "familia"}
+
+    def entry(self, definition: str, **extra) -> dict:
+        return {
+            "lemma": "casa",
+            "forms": ["casa", "casas"],
+            "definition": definition,
+            **extra,
+        }
+
+    def verdict(self, definition: str, **extra) -> validate.Verdict:
+        return validate.accept_definition(self.entry(definition, **extra), self.KNOWN)
+
+    def test_a_definition_in_the_book_s_words_is_accepted(self):
+        self.assertTrue(self.verdict("Lugar donde vive una persona.").accepted)
+
+    def test_one_unknown_word_rejects_and_is_named(self):
+        verdict = self.verdict("Lugar donde vive una familia feliz.")
+        self.assertFalse(verdict.accepted)
+        self.assertIn("feliz", verdict.reason)
+
+    def test_an_unlisted_form_of_a_headword_is_still_rejected(self):
+        # "viven" may be a form of a headword, but only listed forms are known.
+        self.assertFalse(self.verdict("Lugar donde viven personas.").accepted)
+
+    def test_the_headword_itself_rejects(self):
+        verdict = self.verdict("Lugar donde vive una persona, una casa.")
+        self.assertFalse(verdict.accepted)
+        self.assertIn("headword", verdict.reason)
+
+    def test_another_form_of_the_headword_rejects(self):
+        self.assertFalse(self.verdict("Lugar donde vive una persona o casas.").accepted)
+
+    def test_over_the_character_budget_rejects(self):
+        long = "Lugar donde vive una persona o una familia " * 3
+        self.assertGreater(len(long), validate.MAX_DEFINITION_CHARS)
+        self.assertFalse(self.verdict(long).accepted)
+
+    def test_exactly_the_character_budget_is_accepted(self):
+        exact = "persona " * 11 + "o."
+        self.assertEqual(len(exact), validate.MAX_DEFINITION_CHARS)
+        self.assertTrue(self.verdict(exact).accepted)
+
+    def test_no_definition_rejects(self):
+        self.assertFalse(self.verdict("").accepted)
+
+    def test_a_checked_entry_is_accepted_whatever_it_says(self):
+        verdict = self.verdict("Vivienda en España.", checked=True)
+        self.assertTrue(verdict.accepted)
+        self.assertEqual(verdict.reason, "checked")
+
+    def test_an_unchecked_entry_gets_no_such_pass(self):
+        self.assertFalse(self.verdict("Vivienda en España.", checked=False).accepted)
+
+
 if __name__ == "__main__":
     unittest.main()

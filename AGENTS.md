@@ -22,8 +22,14 @@ mise run lint      # ruff format --check + ruff check
 mise run fmt       # ruff format
 mise run book      # build/es-wordbook.epub
 mise run build     # rebuild data/es/frequency.txt (needs the corpus in data/es/raw/)
-mise run headwords # map new forms to lemmas via the xAI broker, rebuild headwords.jsonl
+mise run headwords # map new forms to lemmas via the LLM, rebuild headwords.jsonl
 mise run headwords-check  # compare with Wiktionary -> build/headwords-review.tsv
+mise run headwords-refresh  # after frequency.txt changes: map, build, check, sync words.jsonl
+mise run definitions      # write missing or stale definitions via the LLM -> data/es/words.jsonl
+mise run definitions-check  # re-validate, no LLM -> build/definitions-review.tsv
+mise run examples           # fill missing examples from Tatoeba, then the Leipzig corpus (data/es/raw/)
+mise run examples-report    # entries short of two examples -> build/examples-report.tsv
+uv run python tools/pilot_definitions.py  # measure a prompt change on 50 headwords first
 uv run python tools/check_epub.py build/es-wordbook.epub   # structural EPUB check
 ```
 
@@ -31,19 +37,24 @@ Without mise: `python3 -m unittest discover -s tests -t tests`. Run one test
 with `python3 -m unittest discover -s tests -t tests -p test_render.py`.
 
 `mise run fit` and `mise run fit-entry` build the C++ tools in `tools/fit/`.
-Both need `CROSSPOINT_ROOT` set to a crosspoint-reader checkout.
+Both need `CROSSPOINT_ROOT` set to a crosspoint-reader checkout. After
+`mise run book` and `mise run fit-entry`, `mise run fit-book` counts the
+entries that need a continuation page at each font size.
 
 ## Layout
 
 ```
-src/frequency.py   corpus -> data/es/frequency.txt, 8,000 ranked forms (+ siblings)
+src/frequency.py   corpus -> data/es/frequency.txt, 20,000 ranked forms and counts (+ siblings)
 src/headwords.py   forms -> lemmas (LLM) -> data/es/headwords.jsonl, the 3,000 entries
-src/llm.py         the only way to call the LLM: the xAI broker's unix socket
+src/llm.py         the only way to call an LLM: xAI broker, Anthropic API or agent files
 src/wiktionary.py  Wiktionary lemma pairs, for checking only -> data/es/raw/ (local)
+src/definitions.py headwords -> definitions (LLM), repaired and cached -> words.jsonl
+src/examples.py    Tatoeba, then Leipzig -> two examples per entry, credited -> words.jsonl
 src/render.py      entries -> EPUB, one XHTML file per word
-src/validate.py    checks a generated definition against the book's headwords
+src/validate.py    accept_definition: the rule a definition must pass
 tools/check_epub.py  structural EPUB checks (no JVM here, so no epubcheck)
-tools/fit/         host build of the firmware's line breaker and parser
+tools/pilot_definitions.py  a prompt change measured on 50 headwords, before 3,000
+tools/fit/         host build of the firmware's line breaker and parser; fit_book.py runs the whole book
 data/<lang>/       source of truth for book content
 tests/             one test file per module
 ```
@@ -90,26 +101,61 @@ the headwords, run `mise run headwords-check`: it stamps
 until the stamp matches.
 
 **Wiktionary data never enters the repository.** It is CC BY-SA, and
-share-alike would decide the book's licence. `wiktionary.py` writes it to the
+share-alike would turn the book's CC BY 4.0 into CC BY-SA. `wiktionary.py` writes it to the
 gitignored `data/**/raw/`, and the review report goes to `build/`. Only a
 reviewed decision, written as an override, is committed.
 
-**`validate.accept_definition` stays unimplemented.** It raises
-`NotImplementedError` on purpose, because Andy owns the strictness rule. Build
-around it and leave the function alone.
+**`validate.accept_definition` is Andy's rule.** It is strict on purpose, and
+`checked: true` is the only way past it (`docs/plan.md`, "The definition
+rule"). Do not loosen it to make a run pass; a definition it rejects goes to
+review.
+
+**`words.jsonl` is the definition cache, and a reviewer's file.** It follows
+`headwords.jsonl`; `definitions.py sync` rewrites it after the headwords change,
+and a definition whose headword left moves to `words.retired.jsonl` so it is
+never lost. Each entry
+carries the hash of what produced it, so `mise run definitions` only pays for
+what changed. The only hand edits are a reviewer's: correct `definition`, and
+set `checked` to `true`. Suggestions for a reviewer go in a sheet under
+`data/es/review/` (`definitions.write_sheet`); the reviewer marks `ok` with `y`
+on the rows they approve, and `definitions.py apply <sheet>` applies only
+those. Never mark `ok` yourself unless Andy asks for an agent review; then
+apply with `--reviewer agent`, so every entry records who approved it
+(`reviewed_by`) and an agent's approval can be re-read later. A checked entry is never regenerated. Change the
+prompt in `src/definitions.py` only with a pilot run to show it helps
+(`tools/pilot_definitions.py` sends the same prompt), because every changed
+character regenerates all 3,000 unchecked definitions.
 
 **Record provenance for every piece of content.** Each entry's `source` field
 names where its definition and examples came from, and that attribution goes
 into the built book. `render.py` turns the `source` block of each
 `*.source.json` into the "Fuentes" page, and `check_epub.py` fails a book
 without it; a new licensed input needs its own `source` block there. Do not add data from a share-alike source (such as
-OpenSubtitles) without asking, because it would decide the book's licence.
+OpenSubtitles) without asking, because it would turn the book's CC BY 4.0
+(`data/LICENSE`) into CC BY-SA.
 
 **Spanish sorting is not ASCII sorting.** `ñ` is its own letter, filed after
 `n`. Accents do not change a word's alphabetical position. Use
 `render.sort_key` and `render.initial`, not an ad-hoc sort.
 
-## The LLM key
+## Choosing the LLM
+
+`src/llm.py` has three providers. `SMALLSCREEN_LLM` picks one, and the
+`--provider` flag of `headwords.py` and `tools/pilot_definitions.py` overrides
+it. `SMALLSCREEN_LLM_MODEL` overrides the provider's default model.
+
+| Provider | Default model | Needs |
+|---|---|---|
+| `xai` (default) | `grok-4.20-0309-non-reasoning` | the broker socket |
+| `anthropic` | `claude-opus-5` | `ANTHROPIC_API_KEY` in the shell |
+| `agent` | `agent` (a label) | someone to answer the request files |
+
+The model is part of every cache hash (`generation.input_hash`, and each
+mapping's hash in `forms.jsonl`). Switching provider or model therefore
+regenerates everything that command touches: `mise run headwords` with a new
+model re-maps all 20,000 forms. Pick one per stage and keep it.
+
+### xai: the broker
 
 There is no xAI key on the devbox, and there must never be one in this repo,
 in a `.env` file, or in the environment. The devbox runs a broker that holds
@@ -118,27 +164,29 @@ the key and proxies `api.x.ai`. Send requests to the unix socket
 `Authorization` header; the broker replaces the header and journals the call.
 `GET /healthz` answers without calling upstream.
 
-The runtime is stdlib only, so no `requests` or SDK:
-
-```python
-import http.client
-import socket
-
-
-class BrokerConnection(http.client.HTTPConnection):
-    def __init__(self, path, **kwargs):
-        super().__init__("xai", **kwargs)
-        self._path = path
-
-    def connect(self):
-        self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        self.sock.connect(self._path)
-```
-
-Read the socket path from `XAI_BROKER_SOCKET`, defaulting to the path above,
+The socket path comes from `XAI_BROKER_SOCKET`, defaulting to the path above,
 so a Mac can use an ssh-forwarded socket. The broker allows 60 requests a
 minute, which is one more reason generation is cached and versioned
 (`docs/plan.md`). Do not work around the limit by adding a second key.
+
+### anthropic: the Claude API
+
+`llm.py` calls `https://api.anthropic.com/v1/messages` over the standard
+library, with the key read from `ANTHROPIC_API_KEY`. Export it in your shell
+only. It never goes in this repo, a `.env` file, or `mise.toml`. A refusal or a
+truncated answer fails the call instead of falling back to another model,
+because the cache records which model wrote each entry.
+
+### agent: a coding agent plays the model
+
+No network and no key. Each call writes `build/llm-exchange/requests/<key>.json`
+(the user message, the path of the system prompt under `systems/`, and the
+answer path) and raises `llm.PendingAnswer`. Whoever plays the model, such as
+Claude Code in a cloud session, writes the JSON answer to
+`build/llm-exchange/answers/<key>.json`, and the same command resumes. The
+answer file is the reply exactly as a model would give it: one JSON object.
+Answer the request as written, without running the validator on your own
+answer first, or the pilot measures the validator instead of the writer.
 
 ## Conventions
 

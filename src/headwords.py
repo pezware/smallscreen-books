@@ -37,6 +37,7 @@ from collections.abc import Callable
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+import frequency
 import llm
 import validate
 
@@ -78,6 +79,18 @@ Chat = Callable[[str, str, str], dict]
 
 class MappingError(RuntimeError):
     pass
+
+
+class Unmappable(MappingError):
+    """Forms the LLM could not map even one at a time; each needs an override.
+
+    Raised after the whole run, so one pass finds every such form. The forms
+    that did map are saved by then.
+    """
+
+    def __init__(self, failures: list[tuple[str, str]]):
+        super().__init__(f"{len(failures)} forms could not be mapped")
+        self.failures = failures
 
 
 @dataclass(frozen=True)
@@ -148,11 +161,14 @@ def map_forms(
     model: str,
     batch: int = BATCH,
     save: Callable[[dict[str, Mapping]], None] = lambda _: None,
+    overridden: frozenset[str] = frozenset(),
 ) -> dict[str, Mapping]:
     """Map every form whose current mapping is missing or stale.
 
     Saves after each batch, so an interrupted run resumes where it stopped
-    instead of paying for the same batches again.
+    instead of paying for the same batches again. A form with an override is
+    never sent: the override decides it. A form that cannot be mapped even on
+    its own is collected, and `Unmappable` names them all at the end.
     """
     # Only forms still in the list survive, so a dropped form cannot pin an
     # old model in the cache after everything else moved on.
@@ -160,26 +176,61 @@ def map_forms(
     todo = [
         f
         for f in forms
-        if f not in result or result[f].input_hash != form_hash(f, model, PROMPT)
+        if f not in overridden
+        and (f not in result or result[f].input_hash != form_hash(f, model, PROMPT))
     ]
+    failures: list[tuple[str, str]] = []
     for start in range(0, len(todo), batch):
-        chunk = todo[start : start + batch]
-        answer = chat(PROMPT, json.dumps(chunk, ensure_ascii=False), model)
-        for row in parse_answer(answer, chunk):
+        for row in _map_chunk(todo[start : start + batch], chat, model, failures):
             result[row["form"]] = Mapping(
                 **row, input_hash=form_hash(row["form"], model, PROMPT), model=model
             )
         save(result)
+    if failures:
+        raise Unmappable(failures)
     return result
 
 
-def stale_forms(forms: list[str], mappings: dict[str, Mapping]) -> list[str]:
-    """Forms whose mapping is missing or was made with a different prompt."""
+def _map_chunk(
+    chunk: list[str], chat: Chat, model: str, failures: list[tuple[str, str]]
+) -> list[dict]:
+    """Map one batch; if the answer is malformed, map each half instead.
+
+    A long batch sometimes comes back one item short, and at temperature 0
+    sending the same batch again gets the same answer. Halving changes the
+    input, and every half is still checked item by item, so nothing is
+    guessed. A single form that still fails goes to `failures`, unmapped.
+    """
+    try:
+        answer = chat(PROMPT, json.dumps(chunk, ensure_ascii=False), model)
+        return parse_answer(answer, chunk)
+    except MappingError as error:
+        if len(chunk) == 1:
+            failures.append((chunk[0], str(error)))
+            return []
+    middle = len(chunk) // 2
+    return _map_chunk(chunk[:middle], chat, model, failures) + _map_chunk(
+        chunk[middle:], chat, model, failures
+    )
+
+
+def stale_forms(
+    forms: list[str],
+    mappings: dict[str, Mapping],
+    overridden: frozenset[str] = frozenset(),
+) -> list[str]:
+    """Forms whose mapping is missing or was made with a different prompt.
+
+    An overridden form needs no mapping: the override decides it.
+    """
     return [
         f
         for f in forms
-        if f not in mappings
-        or mappings[f].input_hash != form_hash(f, mappings[f].model, PROMPT)
+        if f not in overridden
+        and (
+            f not in mappings
+            or mappings[f].input_hash != form_hash(f, mappings[f].model, PROMPT)
+        )
     ]
 
 
@@ -187,14 +238,22 @@ def build(
     forms: list[str],
     mappings: dict[str, Mapping],
     overrides: dict[str, tuple[str, str] | None],
-    size: int = BOOK_SIZE,
+    counts: dict[str, int],
+    size: int | None = None,
 ) -> list[dict]:
-    """Merge ranked forms into lemmas, and keep the `size` best-ranked lemmas.
+    """Merge ranked forms into lemmas, and keep the `size` most used lemmas.
 
-    A lemma's rank is the line number of its best form, and its part of speech
-    is that form's. Forms are listed most frequent first. An override wins
+    A lemma is ranked by the summed count of its forms, not by its best form:
+    use of a verb or an adjective is spread over many forms (limpia, limpio,
+    limpias), and ranking on one of them buried everyday words below news
+    vocabulary with a single form (docs/plan.md, 2026-09-25). Ties go to the
+    better best form, then to spelling, so a rebuild is byte-identical.
+
+    `rank` is the lemma's position in that order. The part of speech is the
+    best-ranked form's, and forms are listed most used first. An override wins
     over the LLM; `None` drops the form.
     """
+    size = BOOK_SIZE if size is None else size
     grouped: dict[str, list[tuple[int, str, str]]] = collections.defaultdict(list)
     for rank, form in enumerate(forms, start=1):
         if form in overrides:
@@ -209,6 +268,8 @@ def build(
             if mapping.skip:
                 continue
             lemma, pos = mapping.lemma, mapping.pos
+        if form not in counts:
+            raise MappingError(f"{form!r} has no count in the frequency list")
         grouped[lemma].append((rank, form, pos))
 
     if len(grouped) < size:
@@ -216,15 +277,21 @@ def build(
             f"the list yields {len(grouped)} lemmas, fewer than {size}; "
             "raise frequency.DEFAULT_LIMIT"
         )
-    ordered = sorted(grouped.items(), key=lambda item: item[1][0][0])[:size]
+
+    def total(uses: list[tuple[int, str, str]]) -> int:
+        return sum(counts[form] for _, form, _ in uses)
+
+    ordered = sorted(
+        grouped.items(), key=lambda item: (-total(item[1]), item[1][0][0], item[0])
+    )[:size]
     return [
         {
             "lemma": lemma,
             "pos": uses[0][2],
-            "rank": uses[0][0],
+            "rank": position,
             "forms": [form for _, form, _ in uses],
         }
-        for lemma, uses in ordered
+        for position, (lemma, uses) in enumerate(ordered, start=1)
     ]
 
 
@@ -252,11 +319,13 @@ def check_status(
 
 
 def read_frequency(path: Path) -> list[str]:
-    return [
-        line.strip()
-        for line in path.read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
+    """The ranked forms of frequency.txt, most used first."""
+    return [form for form, _ in frequency.read_list(path)]
+
+
+def read_counts(path: Path) -> dict[str, int]:
+    """Each form's ranking count, which `build` sums per lemma."""
+    return dict(frequency.read_list(path))
 
 
 def load_mappings(path: Path) -> dict[str, Mapping]:
@@ -265,6 +334,18 @@ def load_mappings(path: Path) -> dict[str, Mapping]:
     with path.open(encoding="utf-8") as handle:
         rows = (Mapping(**json.loads(line)) for line in handle if line.strip())
         return {row.form: row for row in rows}
+
+
+def mapping_model(forms: list[str], mappings: dict[str, Mapping]) -> str:
+    """The one model that mapped these forms, for the provenance file.
+
+    Callers pass only forms that have a mapping: an overridden form may have
+    none, because the override decides it and it is never sent to the LLM.
+    """
+    models = {mappings[f].model for f in forms}
+    if len(models) != 1:
+        raise MappingError(f"forms.jsonl mixes models {sorted(models)}; rerun `map`")
+    return models.pop()
 
 
 def save_mappings(path: Path, forms: list[str], mappings: dict[str, Mapping]) -> None:
@@ -398,7 +479,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("step", choices=["map", "build", "check"])
     parser.add_argument("--data", type=Path, default=Path("data/es"))
-    parser.add_argument("--model", default=llm.DEFAULT_MODEL)
+    parser.add_argument(
+        "--provider", choices=llm.PROVIDERS, help="default: $SMALLSCREEN_LLM or xai"
+    )
+    parser.add_argument("--model", help="default: the provider's default model")
     parser.add_argument(
         "--wiktionary", type=Path, default=Path("data/es/raw/wiktionary-lemmas.tsv")
     )
@@ -410,35 +494,54 @@ def main(argv: list[str] | None = None) -> int:
     overrides = load_overrides(args.data / "forms.overrides.tsv")
 
     if args.step == "map":
+        model = args.model or llm.default_model(args.provider)
 
         def chat(system: str, user: str, model: str) -> dict:
-            return llm.chat_json(system, user, model=model)
+            return llm.chat_json(system, user, model=model, provider=args.provider)
 
         def save(result: dict[str, Mapping]) -> None:
             save_mappings(mappings_path, forms, result)
             print(f"{len(result)}/{len(forms)} forms mapped", file=sys.stderr)
 
-        mappings = map_forms(forms, mappings, chat, args.model, save=save)
+        try:
+            mappings = map_forms(
+                forms, mappings, chat, model, save=save, overridden=frozenset(overrides)
+            )
+        except llm.PendingAnswer as pending:
+            print(f"{pending}; then run `map` again", file=sys.stderr)
+            return 3
+        except Unmappable as unmappable:
+            overrides_path = args.data / "forms.overrides.tsv"
+            print(
+                f"{unmappable}. Each needs a line in {overrides_path}"
+                " (form<TAB>- to drop it, or form<TAB>lemma<TAB>pos), then run"
+                " `map` again:",
+                file=sys.stderr,
+            )
+            for form, reason in unmappable.failures:
+                print(f"  {form}\t-\t# {reason}", file=sys.stderr)
+            return 4
         save_mappings(mappings_path, forms, mappings)
         return 0
 
-    stale = stale_forms(forms, mappings)
+    stale = stale_forms(forms, mappings, frozenset(overrides))
     if stale:
         parser.error(
             f"{len(stale)} forms have no current mapping (first: {stale[0]!r}); "
             "run `map` first"
         )
-    entries = build(forms, mappings, overrides)
+    counts = read_counts(args.data / "frequency.txt")
+    entries = build(forms, mappings, overrides, counts)
     headwords_path = args.data / "headwords.jsonl"
     source_path = args.data / "headwords.source.json"
     if args.step == "build":
         write_headwords(headwords_path, entries)
-        models = {mappings[f].model for f in forms}
-        if len(models) != 1:
-            parser.error(f"forms.jsonl mixes models {sorted(models)}; rerun `map`")
-        write_source(
-            source_path, models.pop(), len(forms), len(overrides), headwords_path
-        )
+        mapped = [f for f in forms if f in mappings]
+        try:
+            model = mapping_model(mapped, mappings)
+        except MappingError as error:
+            parser.error(str(error))
+        write_source(source_path, model, len(mapped), len(overrides), headwords_path)
         print(f"{len(entries)} headwords from {len(forms)} forms", file=sys.stderr)
         return 0
 

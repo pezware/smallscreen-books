@@ -5,8 +5,8 @@ An LLM is consistent but not reliable, and a wrong lemma is expensive: it
 decides which entry a definition is generated for. Wiktionary is the second
 opinion.
 
-Wiktionary is CC BY-SA, and share-alike would decide the book's outgoing
-licence before Andy does (README). So its data is only ever read here, on the
+Wiktionary is CC BY-SA, and share-alike would turn the book's CC BY 4.0
+(data/LICENSE) into CC BY-SA. So its data is only ever read here, on the
 machine that runs the check. The pairs this writes go to `data/**/raw/`, which
 is gitignored, and nothing derived from them is committed except a reviewed
 decision in the overrides file.

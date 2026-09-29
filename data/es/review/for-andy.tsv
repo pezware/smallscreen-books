@@ -1,0 +1,50 @@
+ok	lemma	pos	rank	current	suggested	note
+y	estadounidense	adjetivo	481	De ese país o de sus habitantes.	De Estados Unidos o de sus habitantes.	place name the book lacks: needs your check
+y	mexicano	adjetivo	570	Que es de méxico o de sus habitantes.	De México o de sus habitantes.	agent ok, still fails: not in the book: mexico.
+y	francés	adjetivo	819	Que es o viene de ese país europeo.	De Francia, de sus habitantes o de su lengua.	place name the book lacks: needs your check
+y	inglés	adjetivo	895	Que se relaciona con el país de inglaterra.	De Inglaterra o de su lengua.	agent ok, still fails: not in the book: inglaterra.
+y	argentino	adjetivo	909	Que se relaciona con el país de argentina.	De Argentina o de sus habitantes.	agent ok, still fails: uses the headword or one of its forms.
+y	europeo	adjetivo	948	Que tiene que ver con un lugar o sus habitantes.	De Europa o de sus habitantes.	place name the book lacks: needs your check
+y	alemán	adjetivo	996	Que pertenece a ese país o a sus personas.	De Alemania, de sus habitantes o de su lengua.	place name the book lacks: needs your check
+y	libio	adjetivo	1031	Que es natural de Libia o pertenece a ese país.	De Libia o de sus habitantes.	agent ok, still fails: uses the headword or one of its forms.
+y	británico	adjetivo	1405	Que pertenece o viene del país del Reino Unido.	Del Reino Unido o de sus habitantes.	agent ok, still fails: not in the book: reino.
+y	ruso	adjetivo	1494	Que tiene que ver con el país grande del norte o sus habitantes.	De Rusia, de sus habitantes o de su lengua.	place name the book lacks: needs your check
+y	italiano	adjetivo	1550	Que se relaciona con el país de italia.	De Italia o de sus habitantes.	agent ok, still fails: not in the book: italia.
+y	árabe	adjetivo	1557	Que tiene que ver con la gente o cultura de Arabia.	De los pueblos de Oriente Medio y del norte de África.	place name the book lacks: needs your check
+y	colombiano	adjetivo	1715	Que se relaciona con el país de colombia.	De Colombia o de sus habitantes.	agent ok, still fails: not in the book: colombia.
+y	venezolano	adjetivo	1815	Que se relaciona con el país de venezuela.	De Venezuela o de sus habitantes.	agent ok, still fails: not in the book: venezuela.
+y	catalán	adjetivo	2067	Que se relaciona con la región de cataluña.	De Cataluña o de su lengua.	agent ok, still fails: not in the book: cataluña.
+y	afgano	adjetivo	2219	De ese país o su gente.	De Afganistán o de sus habitantes.	place name the book lacks: needs your check
+y	palestino	sustantivo	2222	Persona que es de Palestina.	Persona de Palestina.	place name the book lacks: needs your check
+y	chino	adjetivo	2242	Que es de china o de sus habitantes.	De China o de sus habitantes.	agent ok, still fails: uses the headword or one of its forms.
+y	africano	adjetivo	2255	Que es de ese continente o pertenece a ese continente.	De África o de sus habitantes.	place name the book lacks: needs your check
+y	israelí	adjetivo	2310	De Israel o de sus habitantes.	De Israel o de sus habitantes.	agent ok, still fails: not in the book: israel.
+y	turco	adjetivo	2349	Que pertenece a ese país o a sus personas.	De Turquía o de sus habitantes.	place name the book lacks: needs your check
+y	japonés	adjetivo	2412	Que se relaciona con el país de japón.	De Japón o de sus habitantes.	agent ok, still fails: not in the book: japon.
+y	chileno	adjetivo	2445	De Chile o relacionado con este país.	De Chile o de sus habitantes.	agent ok, still fails: not in the book: chile.
+y	cubano	adjetivo	2463	Que es de la isla caribeña con capital La Habana.	De Cuba o de sus habitantes.	agent ok, still fails: not in the book: cuba.
+y	dominicano	adjetivo	2468	Que es de ese país del caribe.	De la República Dominicana o de sus habitantes.	place name the book lacks: needs your check
+y	sudamericano	adjetivo	2663	Que pertenece a la parte sur del continente americano.	De América del Sur o de sus habitantes.	place name the book lacks: needs your check
+y	nipón	adjetivo	2705	Relativo a un país de Asia o a sus habitantes.	De Japón o de sus habitantes.	place name the book lacks: needs your check
+y	indio	sustantivo	2822	Persona nacida en un país de Asia.	Persona de la India o de los pueblos originarios de América.	place name the book lacks: needs your check
+y	australiano	adjetivo	2848	Natural u originario de ese país lejano.	De Australia o de sus habitantes.	place name the book lacks: needs your check
+y	egipcio	adjetivo	2865	Que se relaciona con el país de egipto.	De Egipto o de sus habitantes.	place name the book lacks: needs your check
+y	sirio	adjetivo	2895	De ese país o de sus habitantes.	De Siria o de sus habitantes.	place name the book lacks: needs your check
+y	tunecino	adjetivo	2983	Relativo a ese país del norte o sus habitantes.	De Túnez o de sus habitantes.	place name the book lacks: needs your check
+y	vasco	adjetivo	3032	Que es de la comunidad autónoma del norte.	Del País Vasco, de sus habitantes o de su lengua.	place name the book lacks: needs your check
+y	musulmán	sustantivo	3127	Persona que sigue la religión islámica.	Persona que sigue la religión de Mahoma.	agent ok, still fails: not in the book: mahoma.
+y	griego	adjetivo	3159	Que es del país europeo con capital en el sur.	De Grecia o de sus habitantes.	agent ok, still fails: not in the book: grecia.
+y	andaluz	adjetivo	3344	Que es de la comunidad autónoma del sur.	De Andalucía o de sus habitantes.	place name the book lacks: needs your check
+y	valenciano	adjetivo	3470	Que es de la comunidad autónoma del este.	De Valencia o de sus habitantes.	agent ok, still fails: not in the book: valencia.
+y	uruguayo	adjetivo	3522	Que es de ese país o pertenece a ese país.	De Uruguay o de sus habitantes.	agent ok, still fails: not in the book: uruguay.
+y	canadiense	adjetivo	3627	Que pertenece a un país del norte o a sus personas.	De Canadá o de sus habitantes.	place name the book lacks: needs your check
+y	portugués	adjetivo	3647	De ese país o su idioma.	De Portugal, de sus habitantes o de su lengua.	place name the book lacks: needs your check
+y	americano	adjetivo	3745	Relativo a un continente o a sus habitantes.	De América o de sus habitantes; también, de Estados Unidos.	place name the book lacks: needs your check
+y	suizo	adjetivo	3811	Relativo a ese país o a sus habitantes.	De Suiza o de sus habitantes.	agent ok, still fails: not in the book: suiza.
+y	madrileño	adjetivo	3982	De la capital de nuestro país.	De Madrid o de sus habitantes.	place name the book lacks: needs your check
+y	judío	adjetivo	4153	Que pertenece al pueblo de ese país o su cultura.	Del pueblo hebreo o de su religión.	place name the book lacks: needs your check
+y	azulgrana	adjetivo	4190	De los colores azul y rojo del club.	Del Barcelona, el club de fútbol.	place name the book lacks: needs your check
+y	peruano	adjetivo	4463	De ese país o sus habitantes.	Del Perú o de sus habitantes.	place name the book lacks: needs your check
+y	serbio	adjetivo	4488	Que pertenece a serbia o a sus habitantes.	De Serbia o de sus habitantes.	agent ok, still fails: not in the book: serbia.
+y	norteamericano	adjetivo	4696	Que pertenece a un país del norte del continente.	De Estados Unidos o de sus habitantes.	agent ok, still fails: not in the book: unidos.
+y	yen	sustantivo	5286	Moneda que se usa en Japón.	Moneda que se usa en Japón.	agent ok, still fails: not in the book: japon.

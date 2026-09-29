@@ -3,6 +3,7 @@ name = "smallscreen-books"
 version = "0.1.0"
 description = "Build EPUB books that read well on a 4.3 inch e-ink screen"
 requires-python = ">=3.12"
+license = "MIT"
 # No runtime dependencies. The generator uses the standard library only, so a
 # book can be built from a checkout and a corpus, with no index available.
 dependencies = []

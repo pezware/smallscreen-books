@@ -2,8 +2,11 @@
 
 The list ranks surface forms, and stage 1b turns them into the book's 3,000
 headwords (`headwords.py`). Merging forms into lemmas consumes forms -- `dijo`,
-`dice` and `decir` fill one entry -- so the list runs past 3,000: about 4,800
-forms fill 3,000 lemmas, and DEFAULT_LIMIT leaves room over that. Proper nouns
+`dice` and `decir` fill one entry -- so the list runs well past 3,000. It runs
+to DEFAULT_LIMIT because stage 1b ranks a lemma by the summed count of its
+forms, and only listed forms are summed: at 8,000 a verb lost most of its
+conjugations (`bebe`, `bebiendo` and `beben` sat below the cut), so the ranking
+favoured nouns. Proper nouns
 are removed here, because a slot spent on `Gadafi` is a slot lost.
 
 Input is a Leipzig Corpora Collection package (CC BY 4.0), which ships a
@@ -17,8 +20,8 @@ The word file is a token list, not a word list: it holds punctuation, digits
 and every capitalisation separately, so `el` and sentence-initial `El` arrive
 as two entries. This module folds case, drops non-words, removes proper nouns
 and writes the survivors in order of their ordinary-word use (see
-`Form.ranking_count`) — one form per line, so the line number is the `rank` of
-the data contract in docs/plan.md.
+`Form.ranking_count`) — one form and that count per line, tab-separated. The
+counts let stage 1b rank a lemma by the summed use of all its forms.
 
 Why capitalisation cannot decide a proper noun on its own: Spanish news writes
 `Gobierno`, `Universidad` and `Congreso` inside institution names, so a form's
@@ -43,7 +46,7 @@ from pathlib import Path
 _WORD_ONLY = re.compile(r"^[^\W\d_]+$", re.UNICODE)
 _TOKEN = re.compile(r"[^\W\d_]+", re.UNICODE)
 
-DEFAULT_LIMIT = 8000
+DEFAULT_LIMIT = 20000
 
 # Spanish's only one-letter words. Every other single letter in a news corpus
 # is an initial, a list marker or a unit, and costs a slot in the book.
@@ -227,7 +230,8 @@ CORPUS_LICENCE = {
     "changes": (
         "Modified: word counts were case-folded, non-words, proper nouns and "
         "English tokens removed, ranked by lowercase use, and cut to the top "
-        "entries. Only the word list is redistributed, not the sentences."
+        "entries. The word list is redistributed, and a few unmodified "
+        "sentences are used as examples for words Tatoeba does not cover."
     ),
 }
 
@@ -243,8 +247,24 @@ def _digest(path: Path) -> str:
 
 
 def write_list(path: Path, kept: list[Form]) -> None:
-    """One surface form per line, so the line number is the entry's rank."""
-    path.write_text("".join(f"{form.form}\n" for form in kept), encoding="utf-8")
+    """One surface form and its ranking count per line, most used first."""
+    path.write_text(
+        "".join(f"{form.form}\t{form.ranking_count}\n" for form in kept),
+        encoding="utf-8",
+    )
+
+
+def read_list(path: Path) -> list[tuple[str, int]]:
+    """The (form, ranking count) pairs `write_list` wrote, in order."""
+    out = []
+    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        if not line.strip():
+            continue
+        form, sep, count = line.partition("\t")
+        if not sep or not count.isdigit():
+            raise ValueError(f"{path}:{number}: expected form<TAB>count")
+        out.append((form, int(count)))
+    return out
 
 
 def write_excluded(path: Path, excluded: list[Form]) -> None:

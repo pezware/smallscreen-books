@@ -194,7 +194,11 @@ class ShippedList(unittest.TestCase):
     LIST = Path(__file__).resolve().parent.parent / "data" / "es" / "frequency.txt"
 
     def forms(self) -> list[str]:
-        return self.LIST.read_text(encoding="utf-8").splitlines()
+        return [form for form, _ in frequency.read_list(self.LIST)]
+
+    def test_counts_fall_down_the_list(self):
+        counts = [count for _, count in frequency.read_list(self.LIST)]
+        self.assertEqual(counts, sorted(counts, reverse=True))
 
     def test_holds_three_thousand_words(self):
         self.assertEqual(len(self.forms()), frequency.DEFAULT_LIMIT)
@@ -229,6 +233,20 @@ class ShippedList(unittest.TestCase):
         import validate
 
         self.assertIn("casa", validate.load_known_forms(self.LIST))
+
+
+class ListFile(unittest.TestCase):
+    def test_a_written_list_reads_back_with_its_counts(self):
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        kept = [frequency.Form("de", 100, 10, 0), frequency.Form("casa", 9, 3, 0)]
+        frequency.write_list(tmp / "f.txt", kept)
+        self.assertEqual(frequency.read_list(tmp / "f.txt"), [("de", 100), ("casa", 9)])
+
+    def test_a_line_without_a_count_fails_with_its_number(self):
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        (tmp / "f.txt").write_text("de\t5\ncasa\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "f.txt:2"):
+            frequency.read_list(tmp / "f.txt")
 
 
 if __name__ == "__main__":
