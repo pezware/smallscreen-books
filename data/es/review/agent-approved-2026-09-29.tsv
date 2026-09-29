@@ -1,0 +1,286 @@
+ok	lemma	pos	rank	current	suggested	note
+y	bajo	adjetivo	150	Que tiene poca altura.	Que tiene poca altura.	agent ok
+y	personal	adjetivo	358	Que pertenece o se refiere a una persona concreta.	Que pertenece o se refiere a una persona concreta.	agent ok
+y	supuesto	adjetivo	809	Que se cree verdadero aunque no se sabe si es verdadero.	Que se da por cierto aunque no está probado.	agent fix: Repeats "verdadero" awkwardly; clearer wording.
+y	activo	adjetivo	857	Que realiza acciones o se mueve con energía.	Que realiza acciones o se mueve con energía.	agent ok
+y	pleno	adjetivo	862	Que está completamente lleno o alcanza el máximo.	Que está completamente lleno o alcanza el máximo.	agent ok
+y	extender	verbo	1283	Hacer que algo ocupe más espacio.	Hacer que algo ocupe más espacio.	agent ok
+y	acumular	verbo	1361	Hacer que una cantidad sea cada vez mayor.	Reunir poco a poco mucha cantidad de algo.	agent fix: Too vague (fits "aumentar"); acumular is gathering/amassing.
+y	proceder	verbo	1391	Actuar de cierta forma.	Venir de un lugar, una persona o una cosa.	agent fix: "Act in a certain way" is a secondary sense; learners first meet "proceder de" (come from).
+y	incorporar	verbo	1399	Añadir algo a un grupo.	Añadir algo a un grupo.	agent ok
+y	centrar	verbo	1483	Poner algo en el punto medio de un lugar.	Poner algo en el punto medio de un lugar.	agent ok
+y	golpear	verbo	1512	Dar golpes a algo o alguien.	Tocar con mucha fuerza algo o a alguien.	agent fix: Uses family word "golpe".
+y	liderar	verbo	1527	Dirigir un grupo o equipo.	Dirigir un grupo o equipo.	agent ok
+y	desplazar	verbo	1531	Mover algo de un lugar a otro.	Mover algo de un lugar a otro.	agent ok
+y	autorizar	verbo	1551	Dar permiso para hacer algo.	Dar permiso para hacer algo.	agent ok
+y	dominar	verbo	1567	Controlar algo o a alguien.	Controlar algo o a alguien.	agent ok
+y	cargar	verbo	1600	Poner peso o cosas en algo.	Poner peso o cosas en algo.	agent ok
+y	vincular	verbo	1622	Unir una cosa con otra de forma estrecha.	Unir una cosa con otra de forma estrecha.	agent ok
+y	conceder	verbo	1640	Dar algo que se pide o se merece.	Dar algo que se pide o se merece.	agent ok
+y	amenazar	verbo	1648	Anunciar daño o castigo contra alguien.	Anunciar daño o castigo contra alguien.	agent ok
+y	argumentar	verbo	1688	Dar razones para defender una idea.	Dar razones para defender una idea.	agent ok
+y	optar	verbo	1727	Elegir una posibilidad entre varias.	Elegir una posibilidad entre varias.	agent ok
+y	beneficiar	verbo	1735	Producir ventaja o ganancia a alguien.	Producir ventaja o ganancia a alguien.	agent ok
+y	consumir	verbo	1764	Usar algo como alimento o energía.	Usar algo hasta que se acaba, como comida o energía.	agent fix: "Usar algo como energía" is misleading; the core is using something up.
+y	violar	verbo	1777	Romper una ley o un derecho.	Romper una ley o un derecho.	agent ok
+y	lucir	verbo	1793	Muestra luz propia o la de otro.	Mostrar algo con gusto para que otros lo vean.	agent fix: Conjugated verb; "shine with another's light" is obscure; common sense is showing off/wearing something.
+y	ejecutar	verbo	1796	Realiza una acción o tarea planeada.	Realizar una acción o tarea que estaba planeada.	agent fix: Conjugated verb instead of infinitive.
+y	específico	adjetivo	1821	Que se nota por ser preciso y particular.	Que se refiere a una cosa concreta y no a otras.	agent fix: Unnatural and unclear ("se nota por ser preciso").
+y	efectuar	verbo	1832	Lleva a cabo una acción o proceso.	Realizar una acción o un proceso.	agent fix: Conjugated verb; "cabo" not in book.
+y	enseñar	verbo	1869	Transmite conocimiento o habilidad a alguien.	Hacer que alguien aprenda algo.	agent fix: Conjugated verb; simplified to basic sense.
+y	acoger	verbo	1874	Recibe con amabilidad o protección.	Recibir a alguien en su casa o grupo y cuidar de él.	agent fix: Conjugated verb; "amabilidad" not in book; object missing.
+y	conformar	verbo	1883	Forma parte de un grupo o conjunto.	Ser varias cosas o personas las partes de un todo.	agent fix: Conjugated verb; uses family word "forma".
+y	saltar	verbo	1884	Se impulsa desde el suelo hacia arriba.	Separarse del suelo con un impulso de las piernas.	agent fix: Conjugated verb.
+y	apostar	verbo	1888	Arriesga algo en un juego o pronóstico.	Poner dinero en un juego o resultado para intentar ganar más.	agent fix: Conjugated verb; "arriesga" not in book.
+y	tardar	verbo	1915	Emplear mucho tiempo en hacer algo.	Necesitar cierto tiempo para hacer algo o llegar.	agent fix: "Mucho tiempo" is wrong: tardar dos minutos; it means taking some amount of time.
+y	externo	adjetivo	1927	Que está o viene de fuera.	Que está o viene de fuera.	agent ok
+y	concentrar	verbo	1932	Reunir en un lugar o punto.	Reunir en un mismo lugar a personas o cosas.	agent fix: Missing object; says what is gathered.
+y	esconder	verbo	1946	Poner algo donde no se vea.	Poner algo donde no se vea.	agent ok
+y	inaugurar	verbo	1949	Empezar algo con un acto público.	Empezar algo con un acto público.	agent ok
+y	sustituir	verbo	1951	Ocupar el lugar de otra persona o cosa.	Ocupar el lugar de otra persona o cosa.	agent ok
+y	proporcionar	verbo	1955	Dar algo a alguien.	Dar a alguien lo que necesita o le sirve.	agent fix: "Dar algo a alguien" is just "dar"; too vague.
+y	invitar	verbo	1957	Pedir a alguien que vaya a un acto.	Pedir a alguien que venga a una fiesta, casa o comida.	agent fix: "Acto" is a formal/news word; basic sense is inviting to a party, home or meal.
+y	protagonizar	verbo	1958	Ser la figura principal de una película.	Ser la figura principal de una película.	agent ok
+y	repartir	verbo	1960	Dar partes de algo a varias personas.	Dar partes de algo a varias personas.	agent ok
+y	demandar	verbo	1967	Pedir algo de forma oficial o legal.	Pedir algo de forma oficial o legal.	agent ok
+y	rendir	verbo	1972	Entregar algo o someterse al enemigo.	Dejar de luchar y aceptar que el otro ha ganado.	agent fix: Vague mixed senses; learners meet rendirse (give up, surrender) first.
+y	casar	verbo	1980	Unir a dos personas en matrimonio.	Unirse en matrimonio con otra persona.	agent fix: Defined the officiant's act; main use is casarse (to get married).
+y	padecer	verbo	1983	Sufrir una enfermedad o problema.	Sufrir una enfermedad o problema.	agent ok
+y	limpio	adjetivo	1999	Sin cosas sucias ni restos.	Que no tiene basura ni restos de nada.	agent fix: Adjective must start "Que"; "sucias" not in book.
+y	programar	verbo	2022	Preparar un plan o actividad futura.	Decidir con tiempo cuándo y cómo se hará algo.	agent fix: Vague; scheduling sense stated precisely.
+y	reaccionar	verbo	2029	Responder ante una situación.	Responder ante una situación.	agent ok
+y	atribuir	verbo	2030	Dar una causa o autor a algo.	Dar una causa o autor a algo.	agent ok
+y	adaptar	verbo	2039	Modificar algo para nuevo uso o medio.	Cambiar algo para que sirva en una situación nueva.	agent fix: Missing article ("para nuevo uso") and unnatural.
+y	gritar	verbo	2042	Emitir con fuerza la voz para expresar algo.	Emitir con fuerza la voz para expresar algo.	agent ok
+y	administrativo	adjetivo	2047	Relativo a la gestión de organismos públicos.	Relativo a la gestión de organismos públicos.	agent ok
+y	despertar	verbo	2051	Dejar de dormir y volver a la conciencia.	Dejar de dormir y volver a la conciencia.	agent ok
+y	despedir	verbo	2056	Decir adiós a alguien que se marcha.	Saludar a alguien al separarse de él.	agent fix: "adiós" not in book.
+y	dañar	verbo	2057	Causar mal a algo o alguien.	Causar mal a algo o alguien.	agent ok
+y	practicar	verbo	2058	Hacer muchas veces una actividad para mejorarla.	Hacer una actividad con frecuencia para mejorar en ella.	agent fix: "mejorarla" not in book; also covers doing a sport regularly.
+y	bloquear	verbo	2063	Impedir el paso o el movimiento de algo.	Impedir el paso o el movimiento de algo.	agent ok
+y	consultar	verbo	2070	Pedir opinión o información a alguien.	Pedir opinión o información a alguien.	agent ok
+y	lesionar	verbo	2072	Causar daño físico a una persona.	Causar daño físico a una persona.	agent ok
+y	estratégico	adjetivo	2074	Que sirve para conseguir un objetivo importante.	Que sirve para conseguir un objetivo importante.	agent ok
+y	fabricar	verbo	2080	Hacer objetos en un lugar con máquinas.	Hacer objetos en un lugar con máquinas.	agent ok
+y	emplear	verbo	2087	Dar trabajo a alguien a cambio de dinero.	Usar algo para un fin, o dar trabajo a alguien.	agent fix: Most frequent sense is "usar"; added it alongside giving work.
+y	inspirar	verbo	2106	Provocar en alguien ideas o sentimientos positivos.	Hacer nacer en alguien una idea o un sentimiento.	agent fix: "Positivos" is wrong (inspirar miedo); made neutral.
+y	dividir	verbo	2118	Separar algo en partes o grupos distintos.	Separar algo en partes o grupos distintos.	agent ok
+y	transformar	verbo	2126	Cambiar algo para que sea diferente.	Cambiar mucho algo, hasta convertirlo en otra cosa.	agent fix: Too vague: fits any change; transformar means changing deeply.
+y	descender	verbo	2141	Moverse de un lugar alto hacia uno bajo.	Moverse de un lugar alto hacia uno bajo.	agent ok
+y	cuestionar	verbo	2153	Poner en duda algo que otros aceptan.	Poner en duda algo que otros aceptan.	agent ok
+y	componer	verbo	2161	Formar un todo con varias partes juntas.	Formar un todo con varias partes juntas.	agent ok
+y	brindar	verbo	2172	Ofrecer algo bueno a alguien de forma buena.	Ofrecer algo a alguien, o levantar la copa para celebrar.	agent fix: Unnatural "de forma buena"; missing the toast sense.
+y	amar	verbo	2175	Sentir amor por alguien o algo.	Querer mucho a alguien o algo.	agent fix: Uses family word "amor".
+y	exitoso	adjetivo	2185	Que logra los resultados que busca.	Que logra los resultados que busca.	agent ok
+y	estrenar	verbo	2186	Presentar por primera vez una obra.	Presentar por primera vez una obra.	agent ok
+y	marchar	verbo	2196	Caminar en grupo de forma correcta.	Irse de un lugar, o caminar en grupo con orden.	agent fix: Wrong sense; basic is marcharse (to leave), plus marching in order.
+y	gráfico	adjetivo	2198	Que muestra datos con dibujos.	Que muestra algo por medio de dibujos o imágenes.	agent fix: "Datos" narrows it to charts; the adjective means expressed through images.
+y	fundar	verbo	2208	Crear una entidad por primera vez.	Crear una entidad por primera vez.	agent ok
+y	respaldar	verbo	2215	Apoyar a alguien o algo.	Apoyar a alguien o algo.	agent ok
+y	legislativo	adjetivo	2221	Relativo a la creación de leyes.	Relativo a la creación de leyes.	agent ok
+y	avisar	verbo	2224	Decir algo a alguien para que lo sepa.	Decir algo a alguien para que lo sepa.	agent ok
+y	auténtico	adjetivo	2231	Que es verdadero y no falso.	Que es verdadero y no falso.	agent ok
+y	consolidar	verbo	2236	Hacer más fuerte o firme algo.	Hacer más fuerte o firme algo.	agent ok
+y	favorecer	verbo	2239	Ayudar a que algo o alguien mejore.	Ayudar a que algo o alguien mejore.	agent ok
+y	quejar	verbo	2240	Expresar que algo causa enfado o dolor.	Expresar uno que algo le duele o no le gusta.	agent fix: "enfado" not in book.
+y	sano	adjetivo	2246	Que tiene buena salud o está sin daño.	Que tiene buena salud o está sin daño.	agent ok
+y	perseguir	verbo	2251	Ir detrás de alguien para llegar a él.	Ir detrás de alguien para llegar a él.	agent ok
+y	pesado	adjetivo	2253	Que tiene mucho peso o resulta difícil.	Que cuesta mucho levantar o mover.	agent fix: Uses family word "peso"; "resulta difícil" is not the figurative sense.
+y	montar	verbo	2258	Colocar algo o a alguien sobre una superficie elevada.	Subir a un caballo o vehículo, o unir las piezas de algo.	agent fix: Odd sense; basic senses are riding a horse/vehicle and assembling.
+y	cancelar	verbo	2261	Dejar sin efecto un acuerdo o una reserva previa.	Dejar sin efecto un acuerdo o una reserva previa.	agent ok
+y	latino	adjetivo	2265	Relativo a países donde se habla español o portugués.	Relativo a países donde se habla español o portugués.	agent ok
+y	alejar	verbo	2269	Aumentar la distancia entre algo o alguien y un punto.	Aumentar la distancia entre algo o alguien y un punto.	agent ok
+y	entrenar	verbo	2283	Preparar a alguien para mejorar su rendimiento en una actividad.	Preparar a alguien para mejorar su rendimiento en una actividad.	agent ok
+y	inmobiliario	adjetivo	2305	Relativo a la compra o venta de casas y edificios.	Relativo a la compra o venta de casas y edificios.	agent ok
+y	atrapar	verbo	2306	Sujetar a alguien o algo que intenta huir.	Coger a alguien o algo que intenta escapar.	agent fix: "sujetar" not in book.
+y	fronterizo	adjetivo	2314	Relativo a la línea que separa dos países o regiones.	Relativo a la línea que separa dos países o regiones.	agent ok
+y	regalar	verbo	2319	Dar algo a alguien sin pedir nada a cambio.	Dar algo a alguien sin pedir nada a cambio.	agent ok
+y	ajeno	adjetivo	2320	Que no pertenece a uno mismo.	Que no pertenece a uno mismo.	agent ok
+y	desplegar	verbo	2345	Extender algo que estaba cerrado o junto.	Extender algo que estaba cerrado o junto.	agent ok
+y	clasificar	verbo	2351	Ordenar en grupos según características.	Ordenar en grupos según características.	agent ok
+y	defensivo	adjetivo	2361	Que sirve para defenderse del ataque.	Que sirve para proteger de un ataque.	agent fix: "defenderse" is a family word
+y	presupuestario	adjetivo	2375	Relativo al presupuesto de gastos e ingresos.	Relativo al plan de gastos e ingresos de un gobierno o empresa.	agent fix: "presupuesto" is a family word
+y	emprender	verbo	2386	Iniciar una acción o tarea difícil.	Iniciar una acción o tarea difícil.	agent ok
+y	moderado	adjetivo	2388	Ni excesivo ni escaso en grado.	Que está en un punto medio, sin ir a los extremos.	agent fix: "en grado" is unnatural Spanish
+y	productivo	adjetivo	2394	Que genera bienes o beneficios.	Que genera bienes o beneficios.	agent ok
+y	alegar	verbo	2400	Presentar razones para defender algo.	Presentar razones para defender algo.	agent ok
+y	oponer	verbo	2401	Poner una cosa o idea contra otra distinta.	Poner una cosa o idea contra otra distinta.	agent ok
+y	dudar	verbo	2402	No estar seguro de algo o de alguien.	No estar seguro de algo o de alguien.	agent ok
+y	alertar	verbo	2415	Avisar de un peligro o riesgo que viene pronto.	Avisar de un peligro o riesgo que viene pronto.	agent ok
+y	continuo	adjetivo	2418	Que no se para nunca ni se detiene nunca.	Que dura o sigue sin parar.	agent fix: redundant "nunca...nunca", unnatural
+y	percibir	verbo	2419	Darse cuenta de algo con los sentidos.	Darse cuenta de algo con los sentidos.	agent ok
+y	instar	verbo	2434	Pedir algo con fuerza y con rapidez.	Pedir a alguien con fuerza y urgencia que haga algo.	agent fix: "rapidez" not in book; urging someone to act, not speed
+y	vestir	verbo	2448	Cubrir el cuerpo con ropa o con ropa.	Poner ropa a alguien o llevar ropa puesta.	agent fix: duplicated "con ropa o con ropa"
+y	arrojar	verbo	2449	Lanzar algo con fuerza hacia un lugar.	Lanzar algo con fuerza hacia un lugar.	agent ok
+y	decisivo	adjetivo	2456	Que resuelve o determina algo de forma final.	Que resuelve o determina algo de forma final.	agent ok
+y	asociado	sustantivo	2461	Persona que forma parte de un grupo o empresa.	Persona que se une con otras para un negocio común.	agent fix: too vague: also fits employee or member
+y	contestar	verbo	2463	Responder a una pregunta o mensaje.	Responder a una pregunta o mensaje.	agent ok
+y	digno	adjetivo	2465	Que merece algo bueno por sus buenas acciones.	Que merece algo bueno por sus buenas acciones.	agent ok
+y	derivar	verbo	2473	Llegar de algo como resultado.	Salir una cosa de otra como consecuencia.	agent fix: "Llegar de algo" is unnatural Spanish
+y	comunitario	adjetivo	2478	Relativo a una comunidad o grupo de personas.	Relativo a los vecinos o miembros de un mismo grupo.	agent fix: "comunidad" is a family word
+y	millonario	sustantivo	2479	Persona que posee un millón o más de unidades monetarias.	Persona muy rica, que tiene muchísimo dinero.	agent fix: "millón" is a family word; stiff wording
+y	forzar	verbo	2480	Obligar a alguien a hacer algo contra su voluntad.	Obligar a alguien a hacer algo contra su voluntad.	agent ok
+y	competitivo	adjetivo	2487	Que compite bien con otros en precio o calidad.	Que puede luchar con éxito contra sus rivales.	agent fix: "compite" is a family word
+y	soñar	verbo	2498	Ver imágenes en la mente mientras se duerme.	Ver imágenes en la mente mientras se duerme.	agent ok
+y	tender	verbo	2499	Ir hacia cierta dirección o cierta acción.	Tener costumbre o facilidad de actuar de cierta manera.	agent fix: "Ir hacia cierta dirección o cierta acción" is unclear and unnatural
+y	islámico	adjetivo	2509	Relativo a la religión musulmana.	Relativo a la religión musulmana.	agent ok
+y	especializado	adjetivo	2514	Que se dedica a un área concreta.	Que se dedica a un área concreta.	agent ok
+y	apreciar	verbo	2517	Ver el valor o la belleza de algo.	Ver el valor o la belleza de algo.	agent ok
+y	migratorio	adjetivo	2524	Relativo al movimiento de personas.	Relativo al traslado de personas o animales a otro lugar para vivir.	agent fix: too vague: any movement of people
+y	alimentar	verbo	2525	Dar comida a personas o animales.	Dar comida a personas o animales.	agent ok
+y	maravilloso	adjetivo	2530	Que causa gran sorpresa o gran alegría.	Que es muy bueno o muy bonito, fuera de lo normal.	agent fix: "sorpresa o alegría" misses the meaning (extremely good)
+y	procesar	verbo	2531	Preparar algo mediante pasos concretos.	Tratar datos o materiales mediante una serie de operaciones.	agent fix: too vague: fits cooking or any procedure
+y	explotar	verbo	2541	Hacer estallar algo con fuerza.	Estallar algo con fuerza y ruido.	agent fix: basic sense is intransitive (a bomb explodes), not causative
+y	resistir	verbo	2556	Mantenerse firme ante algo sin ceder.	Mantenerse firme ante algo sin ceder.	agent ok
+y	combinar	verbo	2564	Junta cosas para formar un conjunto nuevo.	Unir cosas distintas para formar un conjunto nuevo.	agent fix: conjugated verb instead of infinitive; "juntar" not in book
+y	vigilar	verbo	2568	Observa con atención para evitar peligros.	Observar con atención algo o a alguien para evitar peligros.	agent fix: conjugated verb instead of infinitive
+y	notar	verbo	2574	Percibe o advierte algo con la vista.	Darse cuenta de algo por los sentidos o por una señal.	agent fix: conjugated verb; wrongly limited to sight
+y	enterar	verbo	2575	Hace saber algo a alguien.	Hacer saber algo a alguien, o llegar uno a saberlo.	agent fix: conjugated verb; misses enterarse (find out), the usual use
+y	bosque	sustantivo	2578	Terreno con muchos árboles juntos.	Terreno con muchos árboles juntos.	agent ok
+y	captar	verbo	2584	Consigue atraer la atención o apoyo.	Conseguir atraer la atención, el interés o el apoyo de alguien.	agent fix: conjugated verb instead of infinitive
+y	influir	verbo	2588	Produce efecto en algo o alguien.	Producir un efecto o cambio en algo o alguien.	agent fix: conjugated verb instead of infinitive
+y	castigar	verbo	2589	Imponer pena por una falta realizada.	Imponer una pena a alguien por una falta que ha cometido.	agent fix: "falta realizada" unnatural; missing article
+y	aislado	adjetivo	2591	Separado y lejos de otros elementos.	Separado y lejos de otros elementos.	agent ok
+y	conquistar	verbo	2596	Consigue algo con esfuerzo o habilidad.	Ganar por la fuerza un territorio o conseguir algo con esfuerzo.	agent fix: conjugated verb; misses basic sense of taking territory
+y	distribuir	verbo	2601	Dar cosas a varias personas o lugares.	Dar cosas a varias personas o lugares.	agent ok
+y	desatar	verbo	2606	Quitar las ataduras o nudos de algo.	Liberar algo o a alguien de lo que lo tenía sujeto.	agent fix: "ataduras", "nudos" not in book
+y	avanzado	adjetivo	2607	Que está más adelante o más desarrollado.	Que está más adelante o más desarrollado.	agent ok
+y	evacuar	verbo	2610	Sacar personas de un lugar por peligro.	Sacar personas de un lugar por peligro.	agent ok
+y	hermoso	adjetivo	2613	Que gusta mucho a la vista o al oído.	Que gusta mucho a la vista o al oído.	agent ok
+y	exhibir	verbo	2614	Mostrar algo al público para que lo vea.	Mostrar algo al público para que lo vea.	agent ok
+y	caracterizar	verbo	2616	Mostrar los rasgos propios de algo o alguien.	Ser propio de algo o alguien y hacerlo distinto de otros.	agent fix: "rasgos" not in book
+y	ratificar	verbo	2620	Confirmar algo ya dicho o acordado.	Confirmar algo ya dicho o acordado.	agent ok
+y	renovar	verbo	2622	Cambiar algo viejo por algo nuevo.	Cambiar algo viejo por algo nuevo.	agent ok
+y	cómodo	adjetivo	2623	Que resulta agradable o fácil de usar.	Que hace sentirse bien, sin esfuerzo ni dolor.	agent fix: "agradable" not in book
+y	presionar	verbo	2624	Ejercer fuerza sobre algo o alguien.	Ejercer fuerza sobre algo o alguien.	agent ok
+y	automático	adjetivo	2629	Que funciona solo sin intervención humana.	Que funciona solo sin intervención humana.	agent ok
+y	beber	verbo	2636		Tomar agua u otro líquido por la boca.	agent fix: no definition
+y	estrecho	adjetivo	2637	De poca anchura o espacio reducido.	Que mide poco de un lado al otro.	agent fix: "anchura" not in book
+y	remarcar	verbo	2638	Insistir en algo para que se note más.	Insistir en algo para que se note más.	agent ok
+y	revolucionario	adjetivo	2639	Que produce un cambio radical.	Que produce un cambio radical.	agent ok
+y	coger	verbo	2640	Tomar algo con la mano o los dedos.	Tomar algo con la mano o los dedos.	agent ok
+y	legítimo	adjetivo	2641	Conforme a la ley o la justicia.	Conforme a la ley o la justicia.	agent ok
+y	paralelo	adjetivo	2647	Que mantiene distancia constante sin tocarse.	Que va siempre a la misma distancia de otra línea.	agent fix: "tocarse" not in book
+y	agrícola	adjetivo	2654	Relativo al cultivo de la tierra.	Relativo al cultivo de la tierra.	agent ok
+y	relativo	adjetivo	2655	Que se relaciona con algo o alguien.	Que se refiere a algo o depende de otra cosa.	agent fix: "relaciona" is a family word; misses "depends" sense
+y	severo	adjetivo	2656	Que castiga o juzga con mucha fuerza.	Que es muy duro y estricto al juzgar o castigar.	agent fix: "juzga con mucha fuerza" is unnatural
+y	reportero	sustantivo	2660	Persona que informa noticias en un medio.	Persona que busca noticias y las cuenta en un medio.	agent fix: "informa noticias" ungrammatical (informar de)
+y	motivar	verbo	2664	Provocar interés o deseo de actuar.	Provocar interés o deseo de actuar.	agent ok
+y	barra	sustantivo	2668	Pieza larga y estrecha de material sólido.	Pieza larga y estrecha de material sólido.	agent ok
+y	sancionar	verbo	2669	Imponer castigo por una falta.	Imponer castigo por una falta.	agent ok
+y	creativo	adjetivo	2671	Que tiene capacidad para crear ideas nuevas.	Que tiene facilidad para imaginar ideas nuevas.	agent fix: "crear" is a family word
+y	especulación	sustantivo	2673	Opinión sin base firme sobre algo.	Opinión sin base firme sobre algo.	agent ok
+y	tableta	sustantivo	2674	Dispositivo plano para usar internet.	Ordenador pequeño y plano que se usa tocando la pantalla.	agent fix: too vague: also fits a phone
+y	seco	adjetivo	2680	Que no tiene agua.	Que no tiene agua.	agent ok
+y	risa	sustantivo	2688	Sonido que se hace al mostrar alegría.	Sonido que se hace con la boca cuando algo resulta divertido.	agent fix: too vague: fits any sound of joy
+y	escoger	verbo	2689	Tomar una cosa entre varias.	Tomar una cosa entre varias.	agent ok
+y	igualar	verbo	2691	Hacer que dos cosas sean iguales.	Hacer que dos cosas tengan el mismo valor o nivel.	agent fix: "iguales" is a family word
+y	frecuente	adjetivo	2704	Que ocurre muchas veces.	Que ocurre muchas veces.	agent ok
+y	mediano	adjetivo	2706	Ni grande ni pequeño.	Ni grande ni pequeño.	agent ok
+y	agresivo	adjetivo	2709	Que ataca o amenaza a otros.	Que ataca o amenaza a otros.	agent ok
+y	excesivo	adjetivo	2713	Que supera lo normal o necesario.	Que supera lo normal o necesario.	agent ok
+y	animar	verbo	2714	Dar energía o alegría a alguien.	Dar energía o alegría a alguien.	agent ok
+y	restante	adjetivo	2721	Que queda de un conjunto después de quitar parte.	Que queda de un conjunto después de quitar parte.	agent ok
+y	buque	sustantivo	2722	Barco grande para transportar carga o pasajeros.	Barco grande para transportar carga o pasajeros.	agent ok
+y	cotidiano	adjetivo	2723	Que ocurre o se hace cada día.	Que ocurre o se hace cada día.	agent ok
+y	encender	verbo	2730	Hacer que algo empiece a arder o a dar luz.	Hacer que algo empiece a dar luz o fuego, o a funcionar.	agent fix: "arder" not in book; misses turning on devices
+y	ligar	verbo	2733	Unir una cosa con otra.	Unir una cosa con otra.	agent ok
+y	despido	sustantivo	2737	Acción de echar a alguien de su empleo.	Acción de echar a alguien de su empleo.	agent ok
+y	capitalino	adjetivo	2739	Relativo a la ciudad principal de un país.	Relativo a la ciudad principal de un país.	agent ok
+y	depósito	sustantivo	2740	Lugar donde se guarda algo de forma segura.	Lugar donde se guarda algo de forma segura.	agent ok
+y	nocturno	adjetivo	2744	Que ocurre o se hace durante la noche.	Que ocurre o se hace durante la noche.	agent ok
+y	eliminatoria	sustantivo	2746	Prueba que decide quién sigue en una competición.	Prueba que decide quién sigue en una competición.	agent ok
+y	instante	sustantivo	2749	Momento muy breve de tiempo.	Momento muy breve de tiempo.	agent ok
+y	encantar	verbo	2750	Causar gran gusto o alegría.	Causar gran gusto o alegría.	agent ok
+y	partir	verbo	2757	Irse de un lugar a otro.	Dividir algo, o salir de un lugar hacia otro.	agent fix: missing basic sense 'divide'; 'irse de un lugar a otro' is vague
+y	estricto	adjetivo	2758	Que sigue o exige reglas con fuerza.	Que exige cumplir las normas sin excepciones.	agent fix: 'seguir reglas con fuerza' is unnatural Spanish
+y	editor	sustantivo	2761	Persona que prepara textos para publicar.	Persona que prepara textos para publicar.	agent ok
+y	cultivo	sustantivo	2765	Acción de preparar la tierra para plantas.	Acción de cuidar plantas en la tierra para obtener sus productos.	agent fix: only covered preparing soil, not growing plants/crops
+y	polémico	adjetivo	2766	Que genera discusión.	Que genera discusión.	agent ok
+y	anticipar	verbo	2767	Prever o adelantar un suceso.	Prever o adelantar un suceso.	agent ok
+y	cohete	sustantivo	2769	Objeto que se lanza al espacio.	Nave que vuela echando fuego y gases, y puede llegar al espacio.	agent fix: too vague: fits a satellite or any launched object
+y	doméstico	adjetivo	2770	Relativo al hogar o la casa.	Relativo al hogar o la casa.	agent ok
+y	ala	sustantivo	2772	Parte lateral de un animal que le permite volar.	Parte lateral de un animal que le permite volar.	agent ok
+y	estándar	sustantivo	2773	Nivel o modelo que sirve de referencia.	Nivel o modelo que sirve de referencia.	agent ok
+y	culminar	verbo	2774	Llegar al punto más alto de algo.	Llegar al punto más alto de algo.	agent ok
+y	embarcación	sustantivo	2777	Vehículo que se usa para ir por el agua.	Vehículo que se usa para ir por el agua.	agent ok
+y	determinado	adjetivo	2781	Que se conoce con claridad y detalle.	Que es concreto y fijo, aunque no se diga cuál.	agent fix: wrong sense: it means certain/specific, not 'known clearly'
+y	hipoteca	sustantivo	2782	Préstamo que se garantiza con una vivienda.	Préstamo que se garantiza con una vivienda.	agent ok
+y	informático	adjetivo	2788	Relativo a las computadoras y sus usos.	Relativo a las computadoras y sus usos.	agent ok
+y	mediático	adjetivo	2789	Relativo a los medios de comunicación.	Relativo a los medios de comunicación.	agent ok
+y	absurdo	adjetivo	2795	Que carece totalmente de sentido o lógica.	Que carece totalmente de sentido o lógica.	agent ok
+y	colgar	verbo	2796	Poner algo suspendido de un punto alto.	Poner algo suspendido de un punto alto.	agent ok
+y	incidir	verbo	2808	Tener efecto o influencia sobre algo.	Tener efecto o influencia sobre algo.	agent ok
+y	fresco	adjetivo	2809	Que tiene temperatura buena y no muy alta.	Que está un poco frío, o que es reciente.	agent fix: vague ('temperatura buena'); misses the basic sense recent/fresh food
+y	privilegio	sustantivo	2811	Ventaja o derecho especial que alguien tiene.	Ventaja o derecho especial que alguien tiene.	agent ok
+y	botella	sustantivo	2815	Objeto alto y estrecho para líquidos.	Objeto de cuello estrecho para guardar líquidos.	agent fix: too vague: tall narrow objects for liquids include glasses; neck is the key
+y	apelar	verbo	2816	Pedir a un tribunal superior que revise una decisión.	Pedir a un tribunal superior que revise una decisión.	agent ok
+y	debutar	verbo	2818	Actuar o participar por primera vez.	Actuar o participar por primera vez.	agent ok
+y	vendedor	sustantivo	2821	Persona que ofrece productos a cambio de dinero.	Persona que ofrece productos a cambio de dinero.	agent ok
+y	desempeñar	verbo	2823	Cumplir una función o un cargo importante.	Realizar una función o ejercer un cargo.	agent fix: 'importante' wrongly restricts the meaning
+y	nacionalista	adjetivo	2828	Que defiende los intereses de su nación.	Que defiende la identidad y los derechos de su pueblo o país.	agent fix: uses family word 'nación'
+y	transportar	verbo	2829	Llevar personas o cosas de un lugar a otro.	Llevar personas o cosas de un lugar a otro.	agent ok
+y	empujar	verbo	2830	Hacer fuerza para mover algo hacia adelante.	Hacer fuerza para mover algo hacia adelante.	agent ok
+y	huella	sustantivo	2831	Marca que deja el pie en el suelo.	Marca que deja el pie en el suelo.	agent ok
+y	portar	verbo	2832	Llevar algo de un lugar a otro.	Llevar algo encima o en las manos.	agent fix: just repeated transportar's definition; portar is carrying on oneself
+y	albergar	verbo	2834	Dar casa o protección a alguien.	Acoger a personas en un lugar, o tener algo dentro.	agent fix: 'dar casa' unnatural; missing host/contain sense
+y	válido	adjetivo	2835	Que cumple las condiciones necesarias.	Que cumple las condiciones necesarias para ser aceptado.	agent fix: too vague: fits apto/adecuado
+y	corrupto	adjetivo	2839	Que acepta dinero para actuar mal.	Que acepta dinero para actuar mal.	agent ok
+y	figurar	verbo	2843	Aparecer en una lista o grupo.	Aparecer en una lista o grupo.	agent ok
+y	vulnerable	adjetivo	2844	Que puede sufrir daño o ataque con facilidad.	Que puede sufrir daño o ataque con facilidad.	agent ok
+y	exacto	adjetivo	2845	Que se acerca mucho a la realidad.	Que es correcto hasta el último detalle.	agent fix: wrong: exact is fully correct, not 'close to reality'; 'acerca' not in book
+y	pintar	verbo	2846	Cubrir una superficie con color usando un instrumento.	Dar color a una superficie, o hacer un cuadro.	agent fix: 'usando un instrumento' vague; missed painting a picture
+y	nieto	sustantivo	2849	Hijo del hijo o de la hija de alguien.	Hijo del hijo o de la hija de alguien.	agent ok
+y	donación	sustantivo	2852	Entrega gratuita de algo a otra persona.	Entrega gratuita de algo a otra persona.	agent ok
+y	remontar	verbo	2853	Superar una dificultad o situación negativa.	Superar una dificultad o situación negativa.	agent ok
+y	estallar	verbo	2855	Romperse de forma violenta y muy rápida.	Romperse de forma violenta y muy rápida.	agent ok
+y	químico	sustantivo	2857	Especialista que estudia las sustancias y sus cambios.	Especialista que estudia las sustancias y sus cambios.	agent ok
+y	delicado	adjetivo	2862	Que se daña o rompe con mucha facilidad.	Que se daña o rompe con mucha facilidad.	agent ok
+y	típico	adjetivo	2863	Que representa o caracteriza a un grupo o cosa.	Que representa o caracteriza a un grupo o cosa.	agent ok
+y	afirmación	sustantivo	2865	Frase que expresa algo como verdadero.	Frase que expresa algo como verdadero.	agent ok
+y	ilícito	adjetivo	2866	Que va contra la ley o las normas.	Que va contra la ley o las normas.	agent ok
+y	resumir	verbo	2875	Explicar algo largo en forma breve.	Explicar algo largo en forma breve.	agent ok
+y	literario	adjetivo	2879	Relacionado con la creación de obras artísticas.	Relacionado con la creación de obras artísticas.	agent ok
+y	coordinar	verbo	2886	Organizar elementos para que funcionen juntos.	Organizar elementos para que funcionen juntos.	agent ok
+y	agredir	verbo	2889	Atacar o golpear a alguien.	Atacar o golpear a alguien.	agent ok
+y	advertencia	sustantivo	2894	Aviso sobre un posible peligro o error.	Aviso sobre un posible peligro o error.	agent ok
+y	recaudar	verbo	2895	Juntar dinero de impuestos o pagos.	Reunir dinero de impuestos, pagos o donaciones.	agent fix: 'juntar' not in book
+y	amante	sustantivo	2897	Persona que siente amor por otra.	Persona con quien alguien tiene una relación sexual fuera del matrimonio.	agent fix: uses family word 'amor'; misses the lover sense
+y	ofensivo	adjetivo	2899	Que molesta o ataca a alguien.	Que falta al respeto a alguien, o que sirve para atacar.	agent fix: 'molesta' not in book
+y	atleta	sustantivo	2903	Persona que practica deporte de competición.	Persona que compite corriendo, saltando o lanzando objetos.	agent fix: too vague: fits any sportsperson; atleta is track and field
+y	subsidio	sustantivo	2906	Ayuda económica que da el estado.	Ayuda económica que da el estado.	agent ok
+y	homosexual	adjetivo	2907	Que siente atracción por el mismo sexo.	Que siente deseo por personas de su mismo sexo.	agent fix: 'atracción' not in book
+y	patrulla	sustantivo	2910	Grupo de agentes que vigila un lugar.	Grupo de agentes que vigila un lugar.	agent ok
+y	equivocado	adjetivo	2911	Que contiene un error.	Que tiene un error, o que cree algo falso.	agent fix: missed the common sense of a mistaken person
+y	nazi	adjetivo	2914	Relativo al partido alemán que gobernó en esa época.	Relativo al partido alemán que causó la Segunda Guerra Mundial.	agent fix: 'en esa época' refers to nothing
+y	traducir	verbo	2915	Expresar un texto en otra lengua.	Expresar un texto en otra lengua.	agent ok
+y	televisivo	adjetivo	2920	Relativo a la televisión o su emisión.	Relativo a la televisión o su emisión.	agent ok
+y	arrastrar	verbo	2921	Llevar algo por el suelo tirando de ello.	Llevar algo por el suelo tirando de ello.	agent ok
+y	preliminar	adjetivo	2927	Que ocurre antes de lo principal.	Que ocurre antes de lo principal.	agent ok
+y	saludo	sustantivo	2928	Frase o gesto que expresa buena educación al ver a alguien.	Frase o gesto que expresa buena educación al ver a alguien.	agent ok
+y	saludar	verbo	2931	Dirigir palabras o gestos de buena educación a alguien.	Dirigir palabras o gestos de buena educación a alguien al encontrarlo.	agent fix: too vague: did not say it is done on meeting someone
+y	charla	sustantivo	2942	Conversación sencilla y de amigos entre personas.	Conversación tranquila entre personas, o explicación breve ante un público.	agent fix: 'de amigos entre personas' awkward; misses talk/lecture sense
+y	portátil	adjetivo	2943	Que se puede llevar de un lugar a otro.	Que se puede llevar de un lugar a otro.	agent ok
+y	reemplazar	verbo	2944	Poner a alguien o algo en lugar de otro.	Poner a alguien o algo en lugar de otro.	agent ok
+y	especificar	verbo	2945	Indicar con detalle algo.	Indicar con detalle algo.	agent ok
+y	nervioso	adjetivo	2951	Que siente miedo o agitación ante algo.	Que no puede estar tranquilo por miedo o preocupación.	agent fix: 'agitación' not in book
+y	delictivo	adjetivo	2952	Que se relaciona con actos ilegales.	Que se relaciona con actos ilegales.	agent ok
+y	observación	sustantivo	2956	Nota que se hace sobre algo que se ve.	Acción de mirar algo con atención, o comentario sobre algo.	agent fix: missed basic sense of watching carefully
+y	olímpico	adjetivo	2957	Relativo a los juegos deportivos mundiales.	Relativo a los juegos que reúnen muchos deportes cada cuatro años.	agent fix: too vague: 'juegos deportivos mundiales' fits the World Cup
+y	asiento	sustantivo	2965	Lugar para sentarse una persona.	Lugar para sentarse una persona.	agent ok
+y	sensible	adjetivo	2970	Que siente con facilidad las emociones.	Que siente con facilidad las emociones.	agent ok
+y	fracasar	verbo	2971	No conseguir lo que se desea.	No conseguir lo que se desea.	agent ok
+y	panel	sustantivo	2974	Superficie plana que forma parte de algo.	Placa plana, o grupo de expertos que habla de un tema.	agent fix: too vague: fits any part of anything; missing panel of experts
+y	ambulancia	sustantivo	2975	Vehículo para llevar heridos al hospital.	Vehículo para llevar heridos al hospital.	agent ok
+y	torre	sustantivo	2976	Edificio alto y estrecho que se ve desde lejos.	Edificio alto y estrecho que se ve desde lejos.	agent ok
+y	comisaría	sustantivo	2979	Oficina donde trabajan los policías.	Oficina donde trabajan los policías.	agent ok
+y	bilateral	adjetivo	2980	Que afecta a dos partes o países.	Que afecta a dos partes o países.	agent ok
+y	proveniente	adjetivo	2982	Que procede o viene de un lugar.	Que procede o viene de un lugar.	agent ok
+y	experimento	sustantivo	2991	Prueba científica para comprobar algo.	Prueba científica para comprobar algo.	agent ok
+y	receta	sustantivo	2992	Instrucciones para preparar un plato.	Instrucciones para preparar un plato.	agent ok
+y	psicológico	adjetivo	2996	Relativo a la mente y sus procesos.	Relativo a la mente y sus procesos.	agent ok
+y	contemporáneo	adjetivo	2998	Que existe en la misma época.	Que es de nuestra época, o de la misma que otro.	agent fix: missing main sense 'of the present time'
+y	informativo	adjetivo	2646	Programa que da noticias actuales.	Que sirve para dar noticias o datos sobre algo.	agent headword: adjective, as its forms show
+y	concentrado	adjetivo	2805	Sustancia con mucha materia en poco espacio.	Que pone toda su atención en una sola cosa.	agent headword: adjective, as its forms show
+y	masculino	adjetivo	2934	Que pertenece al sexo varón.	Que es propio de los hombres y no de las mujeres.	agent fix, shortened to 12 words: 'sexo varón' was unnatural
+y	contaminar	verbo	2983	Introducir sustancias malas en el ambiente.	Dañar el aire, el agua o la tierra con basura o sustancias.	agent fix, shortened to 12 words

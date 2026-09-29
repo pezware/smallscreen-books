@@ -2643,7 +2643,7 @@
 {"lemma": "ladrón", "pos": "sustantivo", "rank": 2643, "forms": ["ladrones", "ladrón"]}
 {"lemma": "atacante", "pos": "sustantivo", "rank": 2644, "forms": ["atacante", "atacantes"]}
 {"lemma": "veterano", "pos": "sustantivo", "rank": 2645, "forms": ["veterano", "veteranos", "veterana"]}
-{"lemma": "informativo", "pos": "sustantivo", "rank": 2646, "forms": ["informativo", "informativa", "informativos", "informativas"]}
+{"lemma": "informativo", "pos": "adjetivo", "rank": 2646, "forms": ["informativo", "informativa", "informativos", "informativas"]}
 {"lemma": "paralelo", "pos": "adjetivo", "rank": 2647, "forms": ["paralelo", "paralela", "paralelas", "paralelos"]}
 {"lemma": "equilibrio", "pos": "sustantivo", "rank": 2648, "forms": ["equilibrio"]}
 {"lemma": "rodilla", "pos": "sustantivo", "rank": 2649, "forms": ["rodilla", "rodillas"]}
@@ -2802,7 +2802,7 @@
 {"lemma": "desfile", "pos": "sustantivo", "rank": 2802, "forms": ["desfile", "desfiles"]}
 {"lemma": "esquema", "pos": "sustantivo", "rank": 2803, "forms": ["esquema", "esquemas"]}
 {"lemma": "broma", "pos": "sustantivo", "rank": 2804, "forms": ["broma", "bromas"]}
-{"lemma": "concentrado", "pos": "sustantivo", "rank": 2805, "forms": ["concentrado", "concentrados", "concentrada"]}
+{"lemma": "concentrado", "pos": "adjetivo", "rank": 2805, "forms": ["concentrado", "concentrados", "concentrada"]}
 {"lemma": "renovación", "pos": "sustantivo", "rank": 2806, "forms": ["renovación"]}
 {"lemma": "aparentemente", "pos": "adverbio", "rank": 2807, "forms": ["aparentemente"]}
 {"lemma": "incidir", "pos": "verbo", "rank": 2808, "forms": ["incidido", "incide", "incidió", "incidir"]}
@@ -2961,40 +2961,40 @@
 {"lemma": "sabor", "pos": "sustantivo", "rank": 2961, "forms": ["sabor", "sabores"]}
 {"lemma": "consideración", "pos": "sustantivo", "rank": 2962, "forms": ["consideración", "consideraciones"]}
 {"lemma": "giro", "pos": "sustantivo", "rank": 2963, "forms": ["giro", "giros"]}
-{"lemma": "smartphone", "pos": "sustantivo", "rank": 2964, "forms": ["smartphones", "smartphone"]}
-{"lemma": "asiento", "pos": "sustantivo", "rank": 2965, "forms": ["asiento", "asientos"]}
-{"lemma": "semestre", "pos": "sustantivo", "rank": 2966, "forms": ["semestre"]}
-{"lemma": "diagnóstico", "pos": "sustantivo", "rank": 2967, "forms": ["diagnóstico", "diagnósticos"]}
-{"lemma": "sello", "pos": "sustantivo", "rank": 2968, "forms": ["sello", "sellos"]}
-{"lemma": "silla", "pos": "sustantivo", "rank": 2969, "forms": ["silla", "sillas"]}
-{"lemma": "sensible", "pos": "adjetivo", "rank": 2970, "forms": ["sensible", "sensibles"]}
-{"lemma": "fracasar", "pos": "verbo", "rank": 2971, "forms": ["fracasado", "fracasó", "fracasa", "fracasar", "fracasaron"]}
-{"lemma": "levantamiento", "pos": "sustantivo", "rank": 2972, "forms": ["levantamiento", "levantamientos"]}
-{"lemma": "paisaje", "pos": "sustantivo", "rank": 2973, "forms": ["paisaje", "paisajes"]}
-{"lemma": "panel", "pos": "sustantivo", "rank": 2974, "forms": ["panel", "paneles"]}
-{"lemma": "ambulancia", "pos": "sustantivo", "rank": 2975, "forms": ["ambulancia", "ambulancias"]}
-{"lemma": "torre", "pos": "sustantivo", "rank": 2976, "forms": ["torre", "torres"]}
-{"lemma": "rango", "pos": "sustantivo", "rank": 2977, "forms": ["rango"]}
-{"lemma": "claridad", "pos": "sustantivo", "rank": 2978, "forms": ["claridad"]}
-{"lemma": "comisaría", "pos": "sustantivo", "rank": 2979, "forms": ["comisaría", "comisaria", "comisarías"]}
-{"lemma": "bilateral", "pos": "adjetivo", "rank": 2980, "forms": ["bilateral", "bilaterales"]}
-{"lemma": "exhibición", "pos": "sustantivo", "rank": 2981, "forms": ["exhibición", "exhibiciones"]}
-{"lemma": "proveniente", "pos": "adjetivo", "rank": 2982, "forms": ["provenientes", "proveniente"]}
-{"lemma": "tunecino", "pos": "adjetivo", "rank": 2983, "forms": ["tunecino", "tunecinos", "tunecina"]}
-{"lemma": "contaminar", "pos": "verbo", "rank": 2984, "forms": ["contaminada", "contaminados", "contaminado", "contaminadas", "contamina"]}
-{"lemma": "comisario", "pos": "sustantivo", "rank": 2985, "forms": ["comisario", "comisarios"]}
-{"lemma": "docena", "pos": "sustantivo", "rank": 2986, "forms": ["docena", "docenas"]}
-{"lemma": "actualización", "pos": "sustantivo", "rank": 2987, "forms": ["actualización", "actualizaciones"]}
-{"lemma": "perdón", "pos": "sustantivo", "rank": 2988, "forms": ["perdón"]}
-{"lemma": "revés", "pos": "sustantivo", "rank": 2989, "forms": ["revés"]}
-{"lemma": "doler", "pos": "verbo", "rank": 2990, "forms": ["duele", "dolido", "duelen", "duela"]}
-{"lemma": "experimento", "pos": "sustantivo", "rank": 2991, "forms": ["experimento", "experimentos"]}
-{"lemma": "receta", "pos": "sustantivo", "rank": 2992, "forms": ["receta", "recetas"]}
-{"lemma": "rehabilitación", "pos": "sustantivo", "rank": 2993, "forms": ["rehabilitación"]}
-{"lemma": "navegador", "pos": "sustantivo", "rank": 2994, "forms": ["navegador", "navegadores"]}
-{"lemma": "preparado", "pos": "adjetivo", "rank": 2995, "forms": ["preparados", "preparadas"]}
-{"lemma": "psicológico", "pos": "adjetivo", "rank": 2996, "forms": ["psicológica", "psicológico", "psicológicos", "psicológicas"]}
-{"lemma": "comerciante", "pos": "sustantivo", "rank": 2997, "forms": ["comerciantes", "comerciante"]}
-{"lemma": "contemporáneo", "pos": "adjetivo", "rank": 2998, "forms": ["contemporáneo", "contemporánea", "contemporáneos"]}
-{"lemma": "conmigo", "pos": "pronombre", "rank": 2999, "forms": ["conmigo"]}
-{"lemma": "endeudamiento", "pos": "sustantivo", "rank": 3000, "forms": ["endeudamiento"]}
+{"lemma": "asiento", "pos": "sustantivo", "rank": 2964, "forms": ["asiento", "asientos"]}
+{"lemma": "semestre", "pos": "sustantivo", "rank": 2965, "forms": ["semestre"]}
+{"lemma": "diagnóstico", "pos": "sustantivo", "rank": 2966, "forms": ["diagnóstico", "diagnósticos"]}
+{"lemma": "sello", "pos": "sustantivo", "rank": 2967, "forms": ["sello", "sellos"]}
+{"lemma": "silla", "pos": "sustantivo", "rank": 2968, "forms": ["silla", "sillas"]}
+{"lemma": "sensible", "pos": "adjetivo", "rank": 2969, "forms": ["sensible", "sensibles"]}
+{"lemma": "fracasar", "pos": "verbo", "rank": 2970, "forms": ["fracasado", "fracasó", "fracasa", "fracasar", "fracasaron"]}
+{"lemma": "levantamiento", "pos": "sustantivo", "rank": 2971, "forms": ["levantamiento", "levantamientos"]}
+{"lemma": "paisaje", "pos": "sustantivo", "rank": 2972, "forms": ["paisaje", "paisajes"]}
+{"lemma": "panel", "pos": "sustantivo", "rank": 2973, "forms": ["panel", "paneles"]}
+{"lemma": "ambulancia", "pos": "sustantivo", "rank": 2974, "forms": ["ambulancia", "ambulancias"]}
+{"lemma": "torre", "pos": "sustantivo", "rank": 2975, "forms": ["torre", "torres"]}
+{"lemma": "rango", "pos": "sustantivo", "rank": 2976, "forms": ["rango"]}
+{"lemma": "claridad", "pos": "sustantivo", "rank": 2977, "forms": ["claridad"]}
+{"lemma": "comisaría", "pos": "sustantivo", "rank": 2978, "forms": ["comisaría", "comisaria", "comisarías"]}
+{"lemma": "bilateral", "pos": "adjetivo", "rank": 2979, "forms": ["bilateral", "bilaterales"]}
+{"lemma": "exhibición", "pos": "sustantivo", "rank": 2980, "forms": ["exhibición", "exhibiciones"]}
+{"lemma": "proveniente", "pos": "adjetivo", "rank": 2981, "forms": ["provenientes", "proveniente"]}
+{"lemma": "tunecino", "pos": "adjetivo", "rank": 2982, "forms": ["tunecino", "tunecinos", "tunecina"]}
+{"lemma": "contaminar", "pos": "verbo", "rank": 2983, "forms": ["contaminada", "contaminados", "contaminado", "contaminadas", "contamina"]}
+{"lemma": "comisario", "pos": "sustantivo", "rank": 2984, "forms": ["comisario", "comisarios"]}
+{"lemma": "docena", "pos": "sustantivo", "rank": 2985, "forms": ["docena", "docenas"]}
+{"lemma": "actualización", "pos": "sustantivo", "rank": 2986, "forms": ["actualización", "actualizaciones"]}
+{"lemma": "perdón", "pos": "sustantivo", "rank": 2987, "forms": ["perdón"]}
+{"lemma": "revés", "pos": "sustantivo", "rank": 2988, "forms": ["revés"]}
+{"lemma": "doler", "pos": "verbo", "rank": 2989, "forms": ["duele", "dolido", "duelen", "duela"]}
+{"lemma": "experimento", "pos": "sustantivo", "rank": 2990, "forms": ["experimento", "experimentos"]}
+{"lemma": "receta", "pos": "sustantivo", "rank": 2991, "forms": ["receta", "recetas"]}
+{"lemma": "rehabilitación", "pos": "sustantivo", "rank": 2992, "forms": ["rehabilitación"]}
+{"lemma": "navegador", "pos": "sustantivo", "rank": 2993, "forms": ["navegador", "navegadores"]}
+{"lemma": "preparado", "pos": "adjetivo", "rank": 2994, "forms": ["preparados", "preparadas"]}
+{"lemma": "psicológico", "pos": "adjetivo", "rank": 2995, "forms": ["psicológica", "psicológico", "psicológicos", "psicológicas"]}
+{"lemma": "comerciante", "pos": "sustantivo", "rank": 2996, "forms": ["comerciantes", "comerciante"]}
+{"lemma": "contemporáneo", "pos": "adjetivo", "rank": 2997, "forms": ["contemporáneo", "contemporánea", "contemporáneos"]}
+{"lemma": "conmigo", "pos": "pronombre", "rank": 2998, "forms": ["conmigo"]}
+{"lemma": "endeudamiento", "pos": "sustantivo", "rank": 2999, "forms": ["endeudamiento"]}
+{"lemma": "transformación", "pos": "sustantivo", "rank": 3000, "forms": ["transformación", "transformaciones"]}

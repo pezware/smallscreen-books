@@ -15,15 +15,23 @@ ok	lemma	pos	rank	current	suggested	note
 	colombiano	adjetivo	1715	Que pertenece a ese país de américa o es propio de él.	De Colombia o de sus habitantes.	agent ok, still fails: not in the book: colombia.
 	venezolano	adjetivo	1815	Que es de ese país de américa del sur.	De Venezuela o de sus habitantes.	agent ok, still fails: not in the book: venezuela.
 	catalán	adjetivo	2067	De Cataluña o de su lengua.	De Cataluña o de su lengua.	agent ok, still fails: not in the book: cataluña.
+	afgano	adjetivo	2219	De ese país o su gente.	De Afganistán o de sus habitantes.	place name the book lacks: needs your check
 	palestino	sustantivo	2222	Persona nacida o natural de esa tierra.	Persona de Palestina.	place name the book lacks: needs your check
 	chino	adjetivo	2242	Que es de china o de sus habitantes.	De China o de sus habitantes.	agent ok, still fails: uses the headword or one of its forms.
+	africano	adjetivo	2255	Que es de ese continente o pertenece a ese continente.	De África o de sus habitantes.	place name the book lacks: needs your check
 	israelí	adjetivo	2310	De Israel o de sus habitantes.	De Israel o de sus habitantes.	agent ok, still fails: not in the book: israel.
+	turco	adjetivo	2349	Que pertenece a ese país o a sus personas.	De Turquía o de sus habitantes.	place name the book lacks: needs your check
 	japonés	adjetivo	2412	De Japón o de sus habitantes.	De Japón o de sus habitantes.	agent ok, still fails: not in the book: japon.
 	chileno	adjetivo	2445	De Chile o relacionado con este país.	De Chile o de sus habitantes.	agent ok, still fails: not in the book: chile.
 	cubano	adjetivo	2463	De Cuba o relacionado con este país.	De Cuba o de sus habitantes.	agent ok, still fails: not in the book: cuba.
 	dominicano	adjetivo	2468	De la nación que comparte isla con el país vecino.	De la República Dominicana o de sus habitantes.	place name the book lacks: needs your check
+	sudamericano	adjetivo	2663	Que pertenece a la parte sur del continente americano.	De América del Sur o de sus habitantes.	place name the book lacks: needs your check
+	nipón	adjetivo	2705	Relativo a un país de Asia o a sus habitantes.	De Japón o de sus habitantes.	place name the book lacks: needs your check
+	indio	sustantivo	2822	Persona nacida en un país de Asia.	Persona de la India o de los pueblos originarios de América.	place name the book lacks: needs your check
+	australiano	adjetivo	2848	Natural u originario de ese país lejano.	De Australia o de sus habitantes.	place name the book lacks: needs your check
 	egipcio	adjetivo	2865	De ese país o de sus habitantes.	De Egipto o de sus habitantes.	place name the book lacks: needs your check
 	sirio	adjetivo	2895	De ese país o de sus habitantes.	De Siria o de sus habitantes.	place name the book lacks: needs your check
+	tunecino	adjetivo	2983	Relativo a ese país del norte o sus habitantes.	De Túnez o de sus habitantes.	place name the book lacks: needs your check
 	vasco	adjetivo	3032	De la comunidad del norte.	Del País Vasco, de sus habitantes o de su lengua.	place name the book lacks: needs your check
 	musulmán	sustantivo	3127	Persona que sigue la religión de los musulmanes.	Persona que sigue la religión de Mahoma.	agent ok, still fails: not in the book: mahoma.
 	griego	adjetivo	3159	Que tiene que ver con el país de los griegos o sus habitantes.	De Grecia o de sus habitantes.	agent ok, still fails: not in the book: grecia.
@@ -39,7 +47,5 @@ ok	lemma	pos	rank	current	suggested	note
 	azulgrana	adjetivo	4190	Del equipo de fútbol con esos colores.	Del Barcelona, el club de fútbol.	place name the book lacks: needs your check
 	peruano	adjetivo	4463	De ese país o sus habitantes.	Del Perú o de sus habitantes.	place name the book lacks: needs your check
 	serbio	adjetivo	4488	Relacionado con un país de oriente o con sus habitantes.	De Serbia o de sus habitantes.	agent ok, still fails: not in the book: serbia.
-	castellano	adjetivo	4609	Relativo a la lengua principal de un lugar de nuestro país.	La lengua española; también, de Castilla.	agent ok, still fails: not in the book: castilla.
 	norteamericano	adjetivo	4696	De Estados Unidos o de sus habitantes.	De Estados Unidos o de sus habitantes.	agent ok, still fails: not in the book: unidos.
-	belga	adjetivo	4787	De un país de europa o de sus habitantes.	De Bélgica o de sus habitantes.	agent ok, still fails: not in the book: belgica.
 	yen	sustantivo	5286	Moneda que se usa en Japón.	Moneda que se usa en Japón.	agent ok, still fails: not in the book: japon.
