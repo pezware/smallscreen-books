@@ -190,7 +190,12 @@ Each stage lands in the same branch and the same pull request.
    until then; without `--strict` a rejection is review work, not a failure.
 
 3. **Examples.** Mine Tatoeba. Prefer short sentences whose other words all sit
-   inside the top 3,000.
+   inside the top 3,000. `src/examples.py` matches a headword's own forms with
+   their accents, keeps sentences of 4-10 words and 70 characters (16 and 110
+   only when nothing shorter exists), uses each sentence once, and credits
+   each by its Tatoeba id and contributor. A reviewer chooses among the
+   candidates, because a form can carry another word's sense (`vino` from
+   venir under the noun). A reviewed entry is never refilled.
    Done when: every entry carries two examples, each with its Tatoeba id, and
    any entry Tatoeba cannot fill is listed in a report.
 

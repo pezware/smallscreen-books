@@ -52,6 +52,14 @@ run = [
   "uv run python src/definitions.py sync",
 ]
 
+[tasks.examples]
+description = "Fill each entry's missing examples from Tatoeba (data/es/raw/spa_sentences_detailed.tsv)"
+run = "uv run python src/examples.py pick"
+
+[tasks.examples-report]
+description = "List entries short of two examples, and examples to look at -> build/examples-report.tsv"
+run = "uv run python src/examples.py report"
+
 [tasks.headwords-check]
 description = "Compare the headwords with Wiktionary; writes build/headwords-review.tsv"
 run = "uv run python src/headwords.py check"

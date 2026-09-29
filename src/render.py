@@ -161,6 +161,9 @@ def sources_xhtml(sources: list[dict]) -> str:
             f"{escape(source['material'])}</a></p>",
             f"    <p>{escape(source['changes'])}</p>",
         ]
+        if source.get("contributors"):
+            names = ", ".join(escape(n) for n in source["contributors"])
+            parts.append(f"    <p>Colaboradores: {names}.</p>")
     body = "\n".join(parts)
     return (
         '<?xml version="1.0" encoding="utf-8"?>\n'
@@ -360,6 +363,11 @@ def main(argv: list[str] | None = None) -> int:
     # Added to the corpus, never instead of it: every book's vocabulary comes
     # from Leipzig, so a caller who forgets to repeat it must not drop it.
     source_files = [Path("data/es/frequency.source.json")]
+    # The examples come from Tatoeba once stage 3 has run, and every book that
+    # prints one must credit it, so it is added by itself rather than by flag.
+    examples_source = Path("data/es/examples.source.json")
+    if examples_source.exists():
+        source_files.append(examples_source)
     source_files += [p for p in args.source_json or [] if p not in source_files]
 
     # words.jsonl lists every headword while stage 2 is partial, so it needs

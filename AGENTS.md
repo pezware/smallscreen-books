@@ -27,6 +27,8 @@ mise run headwords-check  # compare with Wiktionary -> build/headwords-review.ts
 mise run headwords-refresh  # after frequency.txt changes: map, build, check, sync words.jsonl
 mise run definitions      # write missing or stale definitions via the LLM -> data/es/words.jsonl
 mise run definitions-check  # re-validate, no LLM -> build/definitions-review.tsv
+mise run examples           # fill missing examples from Tatoeba (needs the export in data/es/raw/)
+mise run examples-report    # entries short of two examples -> build/examples-report.tsv
 uv run python tools/pilot_definitions.py  # measure a prompt change on 50 headwords first
 uv run python tools/check_epub.py build/es-wordbook.epub   # structural EPUB check
 ```
@@ -45,6 +47,7 @@ src/headwords.py   forms -> lemmas (LLM) -> data/es/headwords.jsonl, the 3,000 e
 src/llm.py         the only way to call an LLM: xAI broker, Anthropic API or agent files
 src/wiktionary.py  Wiktionary lemma pairs, for checking only -> data/es/raw/ (local)
 src/definitions.py headwords -> definitions (LLM), repaired and cached -> words.jsonl
+src/examples.py    Tatoeba -> two examples per entry, credited -> words.jsonl
 src/render.py      entries -> EPUB, one XHTML file per word
 src/validate.py    accept_definition: the rule a definition must pass
 tools/check_epub.py  structural EPUB checks (no JVM here, so no epubcheck)
