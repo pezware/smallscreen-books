@@ -71,6 +71,8 @@ The LLM defaults to Grok through the devbox's xAI broker. Set
 `SMALLSCREEN_LLM=anthropic` (with `ANTHROPIC_API_KEY` in your shell) to use
 Claude instead, or `SMALLSCREEN_LLM=agent` to let a coding agent answer request
 files with no network at all. AGENTS.md, "Choosing the LLM", has the details.
+In Claude Code, the `build-smallbook` skill (`.claude/skills/`) runs the whole
+build that way: ask it to build the book or change a word.
 
 CI runs lint, the tests, and stage 2's gate (`definitions.py check --strict`)
 on every change, builds the book and publishes it as the `latest` release on

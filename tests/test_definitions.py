@@ -69,6 +69,13 @@ def generate(existing=None, chat=None, **kwargs):
     return entries, stale, chat
 
 
+EXAMPLES = {
+    "examples": ["Mi casa es grande."],
+    "examples_reviewed_by": "agent",
+    "source": {"examples": [{"id": 5, "by": "ana"}]},
+}
+
+
 def by_lemma(entries):
     return {e["lemma"]: e for e in entries}
 
@@ -118,6 +125,31 @@ class Generate(unittest.TestCase):
         definitions.generate(changed + HEADWORDS[1:], by_lemma(entries), chat, MODEL)
         self.assertEqual(len(chat.calls), 1)
         self.assertIn("casa (sustantivo)", chat.calls[0][1])
+
+    def test_a_lost_definition_is_regenerated_and_its_examples_kept(self):
+        existing = {"casa": {**HEADWORDS[0], **EXAMPLES}}
+        result, _ = definitions.generate(HEADWORDS, existing, Script(GOOD), MODEL)
+        casa = by_lemma(result)["casa"]
+        self.assertEqual(casa["definition"], GOOD["casa"])
+        self.assertEqual(casa["examples"], EXAMPLES["examples"])
+        self.assertEqual(casa["examples_reviewed_by"], "agent")
+        self.assertEqual(casa["source"]["examples"], [{"id": 5, "by": "ana"}])
+        self.assertEqual(casa["source"]["definition"], "llm:m")
+
+    def test_a_regenerated_definition_keeps_the_entry_s_examples(self):
+        entries, _, _ = generate()
+        existing = by_lemma(entries)
+        casa = existing["casa"]
+        existing["casa"] = {
+            **casa,
+            **EXAMPLES,
+            "source": {**casa["source"], **EXAMPLES["source"]},
+        }
+        changed = [dict(HEADWORDS[0], forms=["casa", "casas", "casita"])]
+        result, _ = definitions.generate(
+            changed + HEADWORDS[1:], existing, Script(GOOD), MODEL
+        )
+        self.assertEqual(by_lemma(result)["casa"]["examples"], EXAMPLES["examples"])
 
     def test_the_word_list_is_in_the_system_prompt_with_accents(self):
         headwords = HEADWORDS + [
@@ -288,6 +320,18 @@ class Retire(unittest.TestCase):
             definitions.main(argv)
         words = definitions.read_jsonl(tmp / "words.jsonl")
         self.assertEqual(words[0]["definition"], GOOD["casa"])
+
+    def test_sync_keeps_the_examples_of_an_entry_without_a_definition(self):
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        casa = {**HEADWORDS[0], **EXAMPLES}
+        definitions.write_jsonl(tmp / "words.jsonl", [casa])
+        text = json.dumps(HEADWORDS[0], ensure_ascii=False) + "\n"
+        (tmp / "headwords.jsonl").write_text(text, encoding="utf-8")
+        argv = ["sync", "--data", str(tmp), "--review", str(tmp / "r.tsv")]
+        with contextlib.redirect_stdout(io.StringIO()):
+            definitions.main(argv)
+        (words,) = definitions.read_jsonl(tmp / "words.jsonl")
+        self.assertEqual(words["examples"], EXAMPLES["examples"])
         self.assertEqual(definitions.read_jsonl(tmp / "words.retired.jsonl"), [])
 
 
