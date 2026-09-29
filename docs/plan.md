@@ -147,6 +147,11 @@ whose country the book lacks are left for Andy, defined as "De X o de sus
 habitantes": the agents' workarounds described countries instead of naming
 them, and some did so badly (`sirio` by a war).
 
+**A definition may name a place.** Andy took this on 2026-09-30: nationality
+and place words are defined as "De México o de sus habitantes." although the
+book has no entry for México. He approved all 49 such definitions, recorded as
+`reviewed_by: human`.
+
 **`través` leaves the headword list.** It lives only inside *a través de*, and
 every definition the pilot drew for it was wrong. It goes as an override
 (`través` → `-` in `forms.overrides.tsv`), so the next lemma takes its slot;

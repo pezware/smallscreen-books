@@ -31,6 +31,11 @@ jobs:
       - name: Test
         run: mise run test
 
+      # Stage 2's "done when": every headword has a definition that
+      # accept_definition admits (docs/plan.md).
+      - name: Every definition is accepted
+        run: uv run python src/definitions.py check --strict
+
   # The 3,000-section spine is the design's largest untested assumption, and it
   # cannot be tested here -- only on the device. So CI's job is to put a
   # current book within reach: download the artifact, upload it over the
