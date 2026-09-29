@@ -48,8 +48,11 @@ A form no entry lists, such as a rare conjugation, is still unknown.
 
 **Every entry carries two examples.** The second example may push an entry
 onto a continuation page, which the first decision already accepts. Examples
-come from Tatoeba only. When Tatoeba cannot supply two, the entry is reported,
-not padded with a generated sentence that has no source.
+come from Tatoeba, and, since 2026-09-30 (Andy), from the Leipzig news corpus
+for a word Tatoeba does not cover: the corpus is CC BY 4.0 and already
+credited, and a Tatoeba sentence always ranks first. When neither can supply
+two, the entry is reported, not padded with a generated sentence that has no
+source.
 
 **A lemma is ranked by the summed use of its forms.** Andy took this on
 2026-09-25, replacing "the entry's `rank` is the best rank among its forms".
@@ -200,9 +203,11 @@ Each stage lands in the same branch and the same pull request.
    rounds, the second with 40 candidates and leave to widen a definition
    whose sense the sentences never use (`clase` as a lesson, not only the
    group; `tarde` also as "late"); 141 definitions were widened that way.
-   2,911 entries have two examples, 59 one, and 30 none: news words Tatoeba
-   does not cover (`priísta`, `azulgrana`, `comparecencia`), listed by
-   `mise run examples-report`. They are candidates to leave the book.
+   The 30 left with none were news words Tatoeba does not cover
+   (`priísta`, `azulgrana`, `comparecencia`); they took examples from the
+   Leipzig corpus instead. 2,935 entries have two examples, 63 one, and 2
+   none (`puntualizar`, `apostillar`: every candidate is a quotation
+   fragment), listed by `mise run examples-report`.
    Done when: every entry carries two examples, each with its Tatoeba id, and
    any entry Tatoeba cannot fill is listed in a report.
 

@@ -230,7 +230,8 @@ CORPUS_LICENCE = {
     "changes": (
         "Modified: word counts were case-folded, non-words, proper nouns and "
         "English tokens removed, ranked by lowercase use, and cut to the top "
-        "entries. Only the word list is redistributed, not the sentences."
+        "entries. The word list is redistributed, and a few unmodified "
+        "sentences are used as examples for words Tatoeba does not cover."
     ),
 }
 

@@ -175,10 +175,10 @@ class ApplyAndChoose(unittest.TestCase):
 
     def test_choose_replaces_the_examples_and_records_the_reviewer(self):
         s = {
-            x.id: x for x in sentences((5, "Yo bebo agua fría."), (6, "Él bebe agua."))
+            x.key: x for x in sentences((5, "Yo bebo agua fría."), (6, "Él bebe agua."))
         }
         start = {**entry("beber", ["bebo"]), "examples": ["Otra frase."]}
-        (out,), problems = examples.choose([start], {"beber": [5]}, s, "agent")
+        (out,), problems = examples.choose([start], {"beber": ["5"]}, s, "agent")
         self.assertEqual(
             (out["examples"], out["examples_reviewed_by"], problems),
             (["Yo bebo agua fría."], "agent", []),
@@ -191,18 +191,53 @@ class ApplyAndChoose(unittest.TestCase):
 
     def test_choose_refuses_an_unknown_id(self):
         start = entry("beber", ["bebo"])
-        (out,), problems = examples.choose([start], {"beber": [99]}, {}, "agent")
+        (out,), problems = examples.choose([start], {"beber": ["99"]}, {}, "agent")
         self.assertEqual(out, start)
         self.assertIn("99", problems[0])
 
     def test_read_choices(self):
         tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
         (tmp / "c.tsv").write_text(
-            "# lemma\tids\tnote\nbeber\t5, 6\tok\nvino\t\tnone fits\n", "utf-8"
+            "# lemma\tids\tnote\nbeber\t5, leipzig:6\tok\nvino\t\tnone fits\n",
+            "utf-8",
         )
         self.assertEqual(
-            examples.read_choices(tmp / "c.tsv"), {"beber": [5, 6], "vino": []}
+            examples.read_choices(tmp / "c.tsv"),
+            {"beber": ["5", "leipzig:6"], "vino": []},
         )
+
+    def test_read_choices_refuses_an_id_that_is_not_one(self):
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        (tmp / "c.tsv").write_text("beber\tabc\t\n", "utf-8")
+        with self.assertRaisesRegex(ValueError, "not a sentence id"):
+            examples.read_choices(tmp / "c.tsv")
+
+
+class News(unittest.TestCase):
+    def test_a_leipzig_row_becomes_a_news_sentence(self):
+        s = examples.parse_news_line("42\tYo bebo agua de mi casa.\n")
+        self.assertEqual((s.corpus, s.id, s.key), ("leipzig", 42, "leipzig:42"))
+        self.assertEqual(s.ref(), {"corpus": "leipzig", "id": 42})
+
+    def test_tatoeba_ranks_above_any_news_sentence(self):
+        news = examples.parse_news_line("1\tYo bebo agua de mi casa.\n")
+        tat = sentences((2, "Yo bebo agua fría en la casa grande."))
+        pool = examples.candidates([entry("beber", ["bebo"])], [news, *tat], KNOWN)
+        self.assertEqual([s.corpus for s, _ in pool["beber"]], ["tatoeba", "leipzig"])
+
+    def test_a_news_sentence_fills_a_word_tatoeba_lacks(self):
+        news = examples.parse_news_line("7\tYo bebo agua de mi casa.\n")
+        chosen = examples.pick([entry("beber", ["bebo"])], [news], KNOWN)
+        self.assertEqual([s.key for s in chosen["beber"]], ["leipzig:7"])
+
+    def test_the_same_id_in_both_corpora_is_two_sentences(self):
+        news = examples.parse_news_line("5\tYo bebo agua de mi casa.\n")
+        (tat,) = sentences((5, "Él bebe agua de tu casa."))
+        self.assertNotEqual(news.key, tat.key)
+
+    def test_a_news_sentence_names_no_contributor(self):
+        rows = [{"source": {"examples": [{"corpus": "leipzig", "id": 1}]}}]
+        self.assertEqual(examples.contributors(rows), [])
 
 
 class Credits(unittest.TestCase):

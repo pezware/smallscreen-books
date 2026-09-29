@@ -1,8 +1,10 @@
 """Picks two example sentences from Tatoeba for every headword (stage 3).
 
-Tatoeba (CC BY 2.0 FR) is the only source of examples (docs/plan.md): a
-sentence with no source is never invented, and an entry Tatoeba cannot fill is
-reported, not padded. The Spanish export ships every sentence with its id and
+Tatoeba (CC BY 2.0 FR) is the source of examples, and the Leipzig news corpus
+(CC BY 4.0) the fallback for a word Tatoeba does not have: mostly news words
+such as `priísta` or `comparecencia` (docs/plan.md, 2026-09-30). A sentence
+with no source is never invented, and an entry neither can fill is reported,
+not padded. The Spanish export ships every sentence with its id and
 its contributor, which the licence asks us to credit:
 
     curl -O https://downloads.tatoeba.org/exports/per_language/spa/spa_sentences_detailed.tsv.bz2
@@ -91,6 +93,23 @@ class Sentence:
     tokens: tuple[str, ...]
     # Tokens normalised as the validator does: for the vocabulary check.
     words: tuple[str, ...]
+    corpus: str = "tatoeba"
+
+    @property
+    def key(self) -> str:
+        """How a sheet names this sentence: a Tatoeba id, or `leipzig:<id>`."""
+        return str(self.id) if self.corpus == "tatoeba" else f"{self.corpus}:{self.id}"
+
+    def ref(self) -> dict:
+        """The provenance an entry records: whom to credit, and where to look."""
+        if self.corpus == "tatoeba":
+            return {"id": self.id, "by": self.by}
+        return {"corpus": self.corpus, "id": self.id}
+
+
+def ref_key(ref: dict) -> str:
+    corpus = ref.get("corpus", "tatoeba")
+    return str(ref["id"]) if corpus == "tatoeba" else f"{corpus}:{ref['id']}"
 
 
 def _fold(word: str) -> str:
@@ -122,6 +141,32 @@ def parse_line(line: str) -> Sentence | None:
         tokens=tuple(_fold(w) for w in raw),
         words=tuple(validate.normalise(w) for w in raw),
     )
+
+
+def parse_news_line(line: str) -> Sentence | None:
+    """One row of the Leipzig `-sentences.txt` (`id<TAB>sentence`), same limits."""
+    sid, sep, text = line.rstrip("\n").partition("\t")
+    if not sep or not sid.isdigit():
+        return None
+    sentence = parse_line(f"{sid}\tspa\t{text}\tleipzig\n")
+    if sentence is None:
+        return None
+    return Sentence(
+        sentence.id, sentence.text, "", sentence.tokens, sentence.words, "leipzig"
+    )
+
+
+def read_news(path: Path) -> list[Sentence]:
+    """Usable Leipzig sentences, one per wording, lowest id first."""
+    best: dict[tuple[str, ...], Sentence] = {}
+    with path.open(encoding="utf-8") as handle:
+        for line in handle:
+            sentence = parse_news_line(line)
+            if sentence and (
+                sentence.words not in best or sentence.id < best[sentence.words].id
+            ):
+                best[sentence.words] = sentence
+    return sorted(best.values(), key=lambda s: s.id)
 
 
 def read_sentences(path: Path) -> list[Sentence]:
@@ -156,15 +201,15 @@ def candidates(
 ) -> dict[str, list[tuple[Sentence, str]]]:
     """Each entry's usable sentences, best first, with the form each one uses.
 
-    Best is a sentence within the strict limits, then fewest words the book
-    lacks, then shortest, then lowest id, so the choice is the same on every
-    run.
+    Best is a Tatoeba sentence before any news sentence, then one within the
+    strict limits, then fewest words the book lacks, then shortest, then
+    lowest id, so the choice is the same on every run.
     """
     owner: dict[str, str] = {}
     for entry in entries:
         for form in (entry["lemma"], *entry["forms"]):
             owner.setdefault(_fold(form), entry["lemma"])
-    found: dict[str, list[tuple[int, int, int, int, Sentence, str]]] = {
+    found: dict[str, list[tuple[int, int, int, int, int, Sentence, str]]] = {
         e["lemma"]: [] for e in entries
     }
     for sentence in sentences:
@@ -179,10 +224,18 @@ def candidates(
                 matched.setdefault(lemma, token)
         for lemma, form in matched.items():
             found[lemma].append(
-                (int(long), unknown, len(sentence.text), sentence.id, sentence, form)
+                (
+                    int(sentence.corpus != "tatoeba"),
+                    int(long),
+                    unknown,
+                    len(sentence.text),
+                    sentence.id,
+                    sentence,
+                    form,
+                )
             )
     return {
-        lemma: [(s, form) for *_, s, form in sorted(rows, key=lambda r: r[:4])]
+        lemma: [(s, form) for *_, s, form in sorted(rows, key=lambda r: r[:5])]
         for lemma, rows in found.items()
     }
 
@@ -198,7 +251,7 @@ def pick(
     """
     pool = candidates(entries, sentences, known)
     used = {
-        ref["id"]
+        ref_key(ref)
         for e in entries
         for ref in e.get("source", {}).get("examples", [])
         if isinstance(ref, dict)
@@ -211,9 +264,9 @@ def pick(
     todo.sort(key=lambda e: (len(pool[e["lemma"]]), e["rank"]))
     chosen: dict[str, list[Sentence]] = {}
     for entry in todo:
-        free = [(s, f) for s, f in pool[entry["lemma"]] if s.id not in used]
+        free = [(s, f) for s, f in pool[entry["lemma"]] if s.key not in used]
         picked = _choose(free, EXAMPLES - len(entry.get("examples", [])), known)
-        used.update(s.id for s in picked)
+        used.update(s.key for s in picked)
         chosen[entry["lemma"]] = picked
     return chosen
 
@@ -255,9 +308,7 @@ def apply(entries: list[dict], chosen: dict[str, list[Sentence]]) -> list[dict]:
             out.append(entry)
             continue
         source = dict(entry.get("source", {}))
-        source["examples"] = [*source.get("examples", [])] + [
-            {"id": s.id, "by": s.by} for s in new
-        ]
+        source["examples"] = [*source.get("examples", [])] + [s.ref() for s in new]
         out.append(
             {
                 **entry,
@@ -268,8 +319,13 @@ def apply(entries: list[dict], chosen: dict[str, list[Sentence]]) -> list[dict]:
     return out
 
 
-def read_choices(path: Path) -> dict[str, list[int]]:
-    """A reviewer's sheet: `lemma<TAB>id,id<TAB>note`, ids best first.
+_CHOICE = re.compile(r"^(\d+|leipzig:\d+)$")
+
+
+def read_choices(path: Path) -> dict[str, list[str]]:
+    """A reviewer's sheet: `lemma<TAB>id,id<TAB>note`, best first.
+
+    An id is a Tatoeba sentence id, or `leipzig:<id>` for a news sentence.
 
     An empty id cell means no candidate shows the word's sense: the entry keeps
     no example rather than a wrong one.
@@ -280,16 +336,16 @@ def read_choices(path: Path) -> dict[str, list[int]]:
             continue
         cells = line.split("\t")
         ids = [c.strip() for c in cells[1].split(",")] if len(cells) > 1 else []
-        if not all(i.isdigit() for i in ids if i):
-            raise ValueError(f"{path}:{number}: ids must be numbers: {cells[1]!r}")
-        choices[cells[0]] = [int(i) for i in ids if i][:EXAMPLES]
+        if not all(_CHOICE.match(i) for i in ids if i):
+            raise ValueError(f"{path}:{number}: not a sentence id: {cells[1]!r}")
+        choices[cells[0]] = [i for i in ids if i][:EXAMPLES]
     return choices
 
 
 def choose(
     entries: list[dict],
-    choices: dict[str, list[int]],
-    by_id: dict[int, Sentence],
+    choices: dict[str, list[str]],
+    by_key: dict[str, Sentence],
     reviewer: str,
 ) -> tuple[list[dict], list[str]]:
     """Set each chosen entry's examples to the reviewer's sentences.
@@ -305,17 +361,17 @@ def choose(
         if ids is None:
             out.append(entry)
             continue
-        missing = [i for i in ids if i not in by_id]
+        missing = [i for i in ids if i not in by_key]
         if missing:
             problems.append(f"{entry['lemma']}: no usable sentence {missing}")
             out.append(entry)
             continue
         source = {**entry.get("source", {})}
-        source["examples"] = [{"id": i, "by": by_id[i].by} for i in ids]
+        source["examples"] = [by_key[i].ref() for i in ids]
         out.append(
             {
                 **entry,
-                "examples": [by_id[i].text for i in ids],
+                "examples": [by_key[i].text for i in ids],
                 "source": source,
                 "examples_reviewed_by": reviewer,
             }
@@ -328,7 +384,7 @@ def contributors(entries: list[dict]) -> list[str]:
         ref["by"]
         for e in entries
         for ref in e.get("source", {}).get("examples", [])
-        if isinstance(ref, dict)
+        if isinstance(ref, dict) and ref.get("by")
     }
     return sorted(names, key=str.casefold)
 
@@ -379,6 +435,12 @@ def main(argv: list[str] | None = None) -> int:
         default=Path("data/es/raw/spa_sentences_detailed.tsv"),
     )
     parser.add_argument(
+        "--news",
+        type=Path,
+        default=Path("data/es/raw/spa_news_2011_1M-sentences.txt"),
+        help="the Leipzig sentences, the fallback for words Tatoeba lacks",
+    )
+    parser.add_argument(
         "--report", type=Path, default=Path("build/examples-report.tsv")
     )
     args = parser.parse_args(argv)
@@ -393,6 +455,8 @@ def main(argv: list[str] | None = None) -> int:
         if not args.tatoeba.exists():
             parser.error(f"missing {args.tatoeba}; see the module docstring")
         sentences = read_sentences(args.tatoeba)
+        if args.news.exists():
+            sentences += read_news(args.news)
         if args.step == "pick":
             chosen = pick(entries, sentences, known)
             entries = apply(entries, chosen)
@@ -401,9 +465,9 @@ def main(argv: list[str] | None = None) -> int:
         else:
             if args.sheet is None:
                 parser.error("choose needs the sheet")
-            by_id = {s.id: s for s in sentences}
+            by_key = {s.key: s for s in sentences}
             entries, problems = choose(
-                entries, read_choices(args.sheet), by_id, args.reviewer
+                entries, read_choices(args.sheet), by_key, args.reviewer
             )
             for problem in problems:
                 print(problem, file=sys.stderr)

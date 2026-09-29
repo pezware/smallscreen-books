@@ -44,7 +44,8 @@ person should read in `build/definitions-review.tsv`. Until it has run, entries
 read `(sin definición)`: the 3,000-item spine is the design's largest untested
 assumption, and it can be tested on the hardware before any content exists.
 `src/examples.py` gives each entry up to two example sentences from Tatoeba,
-credited to their contributors; 2,911 entries have two.
+or from the Leipzig corpus for news words Tatoeba lacks, credited to their
+sources; 2,935 entries have two.
 
 ```sh
 curl -O https://downloads.wortschatz-leipzig.de/corpora/spa_news_2011_1M.tar.gz
