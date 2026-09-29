@@ -43,6 +43,15 @@ run = "uv run python src/definitions.py check"
 description = "Apply the rows marked y in a review sheet: mise run definitions-apply -- data/es/review/<sheet>.tsv"
 run = "uv run python src/definitions.py apply"
 
+[tasks.headwords-refresh]
+description = "After frequency.txt changes: map new forms via the LLM, rebuild and check the headwords, sync words.jsonl"
+run = [
+  "uv run python src/headwords.py map",
+  "uv run python src/headwords.py build",
+  "uv run python src/headwords.py check",
+  "uv run python src/definitions.py sync",
+]
+
 [tasks.headwords-check]
 description = "Compare the headwords with Wiktionary; writes build/headwords-review.tsv"
 run = "uv run python src/headwords.py check"

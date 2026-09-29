@@ -24,6 +24,7 @@ mise run book      # build/es-wordbook.epub
 mise run build     # rebuild data/es/frequency.txt (needs the corpus in data/es/raw/)
 mise run headwords # map new forms to lemmas via the LLM, rebuild headwords.jsonl
 mise run headwords-check  # compare with Wiktionary -> build/headwords-review.tsv
+mise run headwords-refresh  # after frequency.txt changes: map, build, check, sync words.jsonl
 mise run definitions      # write missing or stale definitions via the LLM -> data/es/words.jsonl
 mise run definitions-check  # re-validate, no LLM -> build/definitions-review.tsv
 uv run python tools/pilot_definitions.py  # measure a prompt change on 50 headwords first
@@ -39,7 +40,7 @@ Both need `CROSSPOINT_ROOT` set to a crosspoint-reader checkout.
 ## Layout
 
 ```
-src/frequency.py   corpus -> data/es/frequency.txt, 8,000 ranked forms and counts (+ siblings)
+src/frequency.py   corpus -> data/es/frequency.txt, 20,000 ranked forms and counts (+ siblings)
 src/headwords.py   forms -> lemmas (LLM) -> data/es/headwords.jsonl, the 3,000 entries
 src/llm.py         the only way to call an LLM: xAI broker, Anthropic API or agent files
 src/wiktionary.py  Wiktionary lemma pairs, for checking only -> data/es/raw/ (local)
@@ -146,7 +147,7 @@ it. `SMALLSCREEN_LLM_MODEL` overrides the provider's default model.
 The model is part of every cache hash (`generation.input_hash`, and each
 mapping's hash in `forms.jsonl`). Switching provider or model therefore
 regenerates everything that command touches: `mise run headwords` with a new
-model re-maps all 8,000 forms. Pick one per stage and keep it.
+model re-maps all 20,000 forms. Pick one per stage and keep it.
 
 ### xai: the broker
 

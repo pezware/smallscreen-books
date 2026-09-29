@@ -58,9 +58,9 @@ Ranking on one form buried words whose use is spread over many forms:
 of its forms were in the list. `frequency.txt` now carries each form's count,
 `headwords.py` sums them per lemma, and `rank` is the lemma's position.
 
-Consequence: only forms in the frequency list are summed, so a verb whose
-conjugations fall below the list's end is still under-counted (`beber`: only
-the infinitive is in the top 8,000). A headword that leaves the list keeps its
+Consequence: only forms in the frequency list are summed, so the list runs
+to 20,000 forms (2026-09-29). At 8,000 a verb lost most of its conjugations
+(`beber`: only the infinitive made the list), and the ranking favoured nouns. A headword that leaves the list keeps its
 definition in `words.retired.jsonl`, and gets it back if it returns.
 
 **Frequency counts only lowercase uses.** A form that survives the proper-noun
@@ -158,9 +158,10 @@ Wiktionary table is. `set` is a candidate for the same treatment.
 Each stage lands in the same branch and the same pull request.
 
 1. **Frequency list.** Fetch a Leipzig or OpenSubtitles Spanish list. Write the
-   top 8,000 surface forms to `data/es/frequency.txt`, enough to fill 3,000
-   lemmas after merging (about 4,800 are needed).
-   Done when: the file holds 8,000 lines and the checks in `src/validate.py`
+   top 20,000 surface forms and their counts to `data/es/frequency.txt`:
+   enough to fill 3,000 lemmas, and to count most forms of each when stage 1b
+   sums them.
+   Done when: the file holds 20,000 lines and the checks in `src/validate.py`
    can load it.
 
 1b. **Headwords.** Map surface forms to lemmas and part of speech, merge ranks,

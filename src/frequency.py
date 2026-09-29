@@ -2,8 +2,11 @@
 
 The list ranks surface forms, and stage 1b turns them into the book's 3,000
 headwords (`headwords.py`). Merging forms into lemmas consumes forms -- `dijo`,
-`dice` and `decir` fill one entry -- so the list runs past 3,000: about 4,800
-forms fill 3,000 lemmas, and DEFAULT_LIMIT leaves room over that. Proper nouns
+`dice` and `decir` fill one entry -- so the list runs well past 3,000. It runs
+to DEFAULT_LIMIT because stage 1b ranks a lemma by the summed count of its
+forms, and only listed forms are summed: at 8,000 a verb lost most of its
+conjugations (`bebe`, `bebiendo` and `beben` sat below the cut), so the ranking
+favoured nouns. Proper nouns
 are removed here, because a slot spent on `Gadafi` is a slot lost.
 
 Input is a Leipzig Corpora Collection package (CC BY 4.0), which ships a
@@ -43,7 +46,7 @@ from pathlib import Path
 _WORD_ONLY = re.compile(r"^[^\W\d_]+$", re.UNICODE)
 _TOKEN = re.compile(r"[^\W\d_]+", re.UNICODE)
 
-DEFAULT_LIMIT = 8000
+DEFAULT_LIMIT = 20000
 
 # Spanish's only one-letter words. Every other single letter in a news corpus
 # is an initial, a list marker or a unit, and costs a slot in the book.
