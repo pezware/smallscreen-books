@@ -239,7 +239,7 @@ def build(
     mappings: dict[str, Mapping],
     overrides: dict[str, tuple[str, str] | None],
     counts: dict[str, int],
-    size: int = BOOK_SIZE,
+    size: int | None = None,
 ) -> list[dict]:
     """Merge ranked forms into lemmas, and keep the `size` most used lemmas.
 
@@ -253,6 +253,7 @@ def build(
     best-ranked form's, and forms are listed most used first. An override wins
     over the LLM; `None` drops the form.
     """
+    size = BOOK_SIZE if size is None else size
     grouped: dict[str, list[tuple[int, str, str]]] = collections.defaultdict(list)
     for rank, form in enumerate(forms, start=1):
         if form in overrides:
@@ -333,6 +334,18 @@ def load_mappings(path: Path) -> dict[str, Mapping]:
     with path.open(encoding="utf-8") as handle:
         rows = (Mapping(**json.loads(line)) for line in handle if line.strip())
         return {row.form: row for row in rows}
+
+
+def mapping_model(forms: list[str], mappings: dict[str, Mapping]) -> str:
+    """The one model that mapped these forms, for the provenance file.
+
+    Callers pass only forms that have a mapping: an overridden form may have
+    none, because the override decides it and it is never sent to the LLM.
+    """
+    models = {mappings[f].model for f in forms}
+    if len(models) != 1:
+        raise MappingError(f"forms.jsonl mixes models {sorted(models)}; rerun `map`")
+    return models.pop()
 
 
 def save_mappings(path: Path, forms: list[str], mappings: dict[str, Mapping]) -> None:
@@ -523,12 +536,12 @@ def main(argv: list[str] | None = None) -> int:
     source_path = args.data / "headwords.source.json"
     if args.step == "build":
         write_headwords(headwords_path, entries)
-        models = {mappings[f].model for f in forms}
-        if len(models) != 1:
-            parser.error(f"forms.jsonl mixes models {sorted(models)}; rerun `map`")
-        write_source(
-            source_path, models.pop(), len(forms), len(overrides), headwords_path
-        )
+        mapped = [f for f in forms if f in mappings]
+        try:
+            model = mapping_model(mapped, mappings)
+        except MappingError as error:
+            parser.error(str(error))
+        write_source(source_path, model, len(mapped), len(overrides), headwords_path)
         print(f"{len(entries)} headwords from {len(forms)} forms", file=sys.stderr)
         return 0
 

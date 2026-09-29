@@ -1,10 +1,13 @@
 """Checks how frequency-list forms become the book's headwords."""
 
+import contextlib
+import io
 import json
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
@@ -282,6 +285,44 @@ class Build(unittest.TestCase):
             headwords.build(
                 ["a", "b"], {"a": mapped("a", "a")}, {}, falling("ab"), size=1
             )
+
+
+class MappingModel(unittest.TestCase):
+    def test_names_the_one_model(self):
+        maps = {"a": mapped("a", "a"), "b": mapped("b", "b")}
+        self.assertEqual(headwords.mapping_model(["a", "b"], maps), "m")
+
+    def test_mixed_models_fail(self):
+        maps = {
+            "a": mapped("a", "a"),
+            "b": headwords.Mapping("b", "b", "verbo", False, "x", "other"),
+        }
+        with self.assertRaisesRegex(headwords.MappingError, "mixes models"):
+            headwords.mapping_model(["a", "b"], maps)
+
+
+class BuildStep(unittest.TestCase):
+    def test_a_form_with_only_an_override_does_not_break_the_build(self):
+        # osea is dropped by override and never sent to the LLM, so it has no
+        # mapping; the build step looked one up for it (2026-09-29).
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        (tmp / "frequency.txt").write_text("de\t10\nosea\t5\n", encoding="utf-8")
+        de = headwords.Mapping(
+            "de",
+            "de",
+            "preposición",
+            False,
+            headwords.form_hash("de", "m", headwords.PROMPT),
+            "m",
+        )
+        headwords.save_mappings(tmp / "forms.jsonl", ["de"], {"de": de})
+        (tmp / "forms.overrides.tsv").write_text("osea\t-\n", encoding="utf-8")
+        self.enterContext(mock.patch.object(headwords, "BOOK_SIZE", 1))
+        with contextlib.redirect_stderr(io.StringIO()):
+            code = headwords.main(["build", "--data", str(tmp)])
+        self.assertEqual(code, 0)
+        source = json.loads((tmp / "headwords.source.json").read_text("utf-8"))
+        self.assertEqual(source["lemmas"]["forms_mapped"], 1)
 
 
 class Stale(unittest.TestCase):
