@@ -188,6 +188,9 @@ answer file is the reply exactly as a model would give it: one JSON object.
 Answer the request as written, without running the validator on your own
 answer first, or the pilot measures the validator instead of the writer.
 
+`.claude/skills/build-smallbook/` walks an agent through this loop and every
+stage; its `scripts/pending.py` lists the requests still open.
+
 ## Conventions
 
 - Tests use `unittest` and import modules by putting `src/` on `sys.path` (see
