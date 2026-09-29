@@ -128,9 +128,9 @@
 {"lemma": "salir", "pos": "verbo", "rank": 128, "forms": ["salir", "salió", "sale", "salido", "salieron", "salen", "saldrá", "salga", "saliendo", "salía", "salgan", "saldrán", "salimos", "salí", "salían", "saliera", "saldría", "salgo", "salirse", "salieran", "saldremos", "salio"]}
 {"lemma": "ciento", "pos": "numeral", "rank": 129, "forms": ["ciento", "cientos"]}
 {"lemma": "antes", "pos": "adverbio", "rank": 130, "forms": ["antes"]}
-{"lemma": "parecer", "pos": "verbo", "rank": 131, "forms": ["parece", "parecer", "parecía", "parecen", "pareció", "parezca", "parecían", "pareciera", "parecería", "pare", "parecieron", "parezcan"]}
-{"lemma": "semana", "pos": "sustantivo", "rank": 132, "forms": ["semana", "semanas"]}
-{"lemma": "problema", "pos": "sustantivo", "rank": 133, "forms": ["problema", "problemas"]}
+{"lemma": "semana", "pos": "sustantivo", "rank": 131, "forms": ["semana", "semanas"]}
+{"lemma": "problema", "pos": "sustantivo", "rank": 132, "forms": ["problema", "problemas"]}
+{"lemma": "parecer", "pos": "verbo", "rank": 133, "forms": ["parece", "parecer", "parecía", "parecen", "pareció", "parezca", "parecían", "pareciera", "parecería", "parecieron", "parezcan"]}
 {"lemma": "final", "pos": "sustantivo", "rank": 134, "forms": ["final", "finales"]}
 {"lemma": "punto", "pos": "sustantivo", "rank": 135, "forms": ["puntos", "punto"]}
 {"lemma": "realizar", "pos": "verbo", "rank": 136, "forms": ["realizar", "realizado", "realizó", "realiza", "realizará", "realizada", "realizan", "realizaron", "realizadas", "realizando", "realizarán", "realizados", "realice", "realizarse", "realizaba", "realicen", "realizaban", "realizara", "realizaría", "realizamos"]}
@@ -274,8 +274,8 @@
 {"lemma": "elección", "pos": "sustantivo", "rank": 274, "forms": ["elecciones", "elección"]}
 {"lemma": "seis", "pos": "numeral", "rank": 275, "forms": ["seis"]}
 {"lemma": "aquí", "pos": "adverbio", "rank": 276, "forms": ["aquí", "aqui"]}
-{"lemma": "cambiar", "pos": "verbo", "rank": 277, "forms": ["cambiar", "cambiado", "cambió", "cambia", "cambiando", "cambie", "cambian", "cambiará", "cambiaron", "cambien", "cambiaría", "cambiarlo", "cambiarse", "cambiaba", "cambiarán", "cambiamos", "cambiarla", "cambiaria", "cambiara"]}
-{"lemma": "dinero", "pos": "sustantivo", "rank": 278, "forms": ["dinero", "dineros"]}
+{"lemma": "dinero", "pos": "sustantivo", "rank": 277, "forms": ["dinero", "dineros"]}
+{"lemma": "cambiar", "pos": "verbo", "rank": 278, "forms": ["cambiar", "cambiado", "cambió", "cambia", "cambiando", "cambie", "cambian", "cambiará", "cambiaron", "cambien", "cambiaría", "cambiarlo", "cambiarse", "cambiaba", "cambiarán", "cambiamos", "cambiarla", "cambiara"]}
 {"lemma": "historia", "pos": "sustantivo", "rank": 279, "forms": ["historia", "historias"]}
 {"lemma": "acción", "pos": "sustantivo", "rank": 280, "forms": ["acciones", "acción"]}
 {"lemma": "ministro", "pos": "sustantivo", "rank": 281, "forms": ["ministro", "ministros", "ministra"]}
@@ -351,22 +351,22 @@
 {"lemma": "europeo", "pos": "adjetivo", "rank": 351, "forms": ["europeos", "europea", "europeo", "europeas"]}
 {"lemma": "comunicado", "pos": "sustantivo", "rank": 352, "forms": ["comunicado", "comunicados"]}
 {"lemma": "necesitar", "pos": "verbo", "rank": 353, "forms": ["necesita", "necesitan", "necesitamos", "necesitaba", "necesitas", "necesito", "necesite", "necesitar", "necesitó", "necesitará", "necesitaban", "necesiten", "necesitado", "necesitados", "necesitarán", "necesitaría"]}
-{"lemma": "enero", "pos": "sustantivo", "rank": 354, "forms": ["enero", "ene"]}
-{"lemma": "registrar", "pos": "verbo", "rank": 355, "forms": ["registrado", "registró", "registraron", "registrados", "regístrate", "registra", "registrada", "registrar", "registradas", "registran", "registrarse", "registrando", "registraba", "registraban"]}
-{"lemma": "tal", "pos": "determinante", "rank": 356, "forms": ["tal", "tales"]}
-{"lemma": "destacar", "pos": "verbo", "rank": 357, "forms": ["destacó", "destacado", "destaca", "destacan", "destacar", "destacados", "destacaron", "destacando", "destacaba"]}
-{"lemma": "sentir", "pos": "verbo", "rank": 358, "forms": ["siente", "siento", "sentir", "sentirse", "sienten", "sintió", "sentía", "sienta", "sientes", "sentimos", "sentí", "sintieron", "sintiendo", "sentían", "sentirá"]}
-{"lemma": "personal", "pos": "adjetivo", "rank": 359, "forms": ["personal", "personales"]}
-{"lemma": "oficial", "pos": "adjetivo", "rank": 360, "forms": ["oficial", "oficiales"]}
-{"lemma": "ayuda", "pos": "sustantivo", "rank": 361, "forms": ["ayuda", "ayudas"]}
-{"lemma": "obtener", "pos": "verbo", "rank": 362, "forms": ["obtener", "obtuvo", "obtenido", "obtiene", "obtenidos", "obtuvieron", "obtienen", "obtenida", "obtendrá", "obtenidas", "obtendría", "obtenga", "obtengan", "obteniendo", "obtendrán"]}
-{"lemma": "funcionario", "pos": "sustantivo", "rank": 363, "forms": ["funcionarios", "funcionario", "funcionaria"]}
-{"lemma": "operación", "pos": "sustantivo", "rank": 364, "forms": ["operación", "operaciones"]}
-{"lemma": "deuda", "pos": "sustantivo", "rank": 365, "forms": ["deuda", "deudas"]}
-{"lemma": "morir", "pos": "verbo", "rank": 366, "forms": ["murió", "murieron", "morir", "muere", "mueren", "muriendo", "muera", "morirá", "moría", "muriera", "mueran"]}
-{"lemma": "celebrar", "pos": "verbo", "rank": 367, "forms": ["celebra", "celebrar", "celebrará", "celebró", "celebrado", "celebrada", "celebran", "celebrarán", "celebraron", "celebrarse", "celebrando", "celebraba", "celebramos", "celebrarlo", "celebrados", "celebraban", "celebren", "celebro"]}
-{"lemma": "declaración", "pos": "sustantivo", "rank": 368, "forms": ["declaraciones", "declaración"]}
-{"lemma": "falta", "pos": "sustantivo", "rank": 369, "forms": ["falta", "faltas"]}
+{"lemma": "registrar", "pos": "verbo", "rank": 354, "forms": ["registrado", "registró", "registraron", "registrados", "regístrate", "registra", "registrada", "registrar", "registradas", "registran", "registrarse", "registrando", "registraba", "registraban"]}
+{"lemma": "tal", "pos": "determinante", "rank": 355, "forms": ["tal", "tales"]}
+{"lemma": "destacar", "pos": "verbo", "rank": 356, "forms": ["destacó", "destacado", "destaca", "destacan", "destacar", "destacados", "destacaron", "destacando", "destacaba"]}
+{"lemma": "sentir", "pos": "verbo", "rank": 357, "forms": ["siente", "siento", "sentir", "sentirse", "sienten", "sintió", "sentía", "sienta", "sientes", "sentimos", "sentí", "sintieron", "sintiendo", "sentían", "sentirá"]}
+{"lemma": "personal", "pos": "adjetivo", "rank": 358, "forms": ["personal", "personales"]}
+{"lemma": "oficial", "pos": "adjetivo", "rank": 359, "forms": ["oficial", "oficiales"]}
+{"lemma": "ayuda", "pos": "sustantivo", "rank": 360, "forms": ["ayuda", "ayudas"]}
+{"lemma": "obtener", "pos": "verbo", "rank": 361, "forms": ["obtener", "obtuvo", "obtenido", "obtiene", "obtenidos", "obtuvieron", "obtienen", "obtenida", "obtendrá", "obtenidas", "obtendría", "obtenga", "obtengan", "obteniendo", "obtendrán"]}
+{"lemma": "funcionario", "pos": "sustantivo", "rank": 362, "forms": ["funcionarios", "funcionario", "funcionaria"]}
+{"lemma": "operación", "pos": "sustantivo", "rank": 363, "forms": ["operación", "operaciones"]}
+{"lemma": "deuda", "pos": "sustantivo", "rank": 364, "forms": ["deuda", "deudas"]}
+{"lemma": "morir", "pos": "verbo", "rank": 365, "forms": ["murió", "murieron", "morir", "muere", "mueren", "muriendo", "muera", "morirá", "moría", "muriera", "mueran"]}
+{"lemma": "celebrar", "pos": "verbo", "rank": 366, "forms": ["celebra", "celebrar", "celebrará", "celebró", "celebrado", "celebrada", "celebran", "celebrarán", "celebraron", "celebrarse", "celebrando", "celebraba", "celebramos", "celebrarlo", "celebrados", "celebraban", "celebren", "celebro"]}
+{"lemma": "declaración", "pos": "sustantivo", "rank": 367, "forms": ["declaraciones", "declaración"]}
+{"lemma": "falta", "pos": "sustantivo", "rank": 368, "forms": ["falta", "faltas"]}
+{"lemma": "enero", "pos": "sustantivo", "rank": 369, "forms": ["enero"]}
 {"lemma": "cerrar", "pos": "verbo", "rank": 370, "forms": ["cerrar", "cerró", "cerrado", "cierra", "cerraron", "cerradas", "cerrará", "cierran", "cerrando", "cerrarse", "cerrarán", "cierren", "cerraba", "cerramos"]}
 {"lemma": "diario", "pos": "sustantivo", "rank": 371, "forms": ["diario", "diarios", "diaria", "diarias"]}
 {"lemma": "víctima", "pos": "sustantivo", "rank": 372, "forms": ["víctimas", "víctima", "victimas"]}
@@ -499,12 +499,12 @@
 {"lemma": "acusar", "pos": "verbo", "rank": 499, "forms": ["acusado", "acusó", "acusa", "acusada", "acusan", "acusar", "acusaron", "acusadas", "acusaba", "acusando"]}
 {"lemma": "edad", "pos": "sustantivo", "rank": 500, "forms": ["edad", "edades"]}
 {"lemma": "mensaje", "pos": "sustantivo", "rank": 501, "forms": ["mensaje", "mensajes"]}
-{"lemma": "causa", "pos": "sustantivo", "rank": 502, "forms": ["causa", "causas", "cause"]}
-{"lemma": "fecha", "pos": "sustantivo", "rank": 503, "forms": ["fecha", "fechas"]}
-{"lemma": "noviembre", "pos": "sustantivo", "rank": 504, "forms": ["noviembre"]}
-{"lemma": "noticia", "pos": "sustantivo", "rank": 505, "forms": ["noticia", "noticias"]}
-{"lemma": "voto", "pos": "sustantivo", "rank": 506, "forms": ["votos", "voto"]}
-{"lemma": "abril", "pos": "sustantivo", "rank": 507, "forms": ["abril"]}
+{"lemma": "fecha", "pos": "sustantivo", "rank": 502, "forms": ["fecha", "fechas"]}
+{"lemma": "noviembre", "pos": "sustantivo", "rank": 503, "forms": ["noviembre"]}
+{"lemma": "noticia", "pos": "sustantivo", "rank": 504, "forms": ["noticia", "noticias"]}
+{"lemma": "voto", "pos": "sustantivo", "rank": 505, "forms": ["votos", "voto"]}
+{"lemma": "abril", "pos": "sustantivo", "rank": 506, "forms": ["abril"]}
+{"lemma": "causa", "pos": "sustantivo", "rank": 507, "forms": ["causa", "causas"]}
 {"lemma": "allí", "pos": "adverbio", "rank": 508, "forms": ["allí", "alli"]}
 {"lemma": "apuntar", "pos": "verbo", "rank": 509, "forms": ["apuntó", "apunta", "apuntado", "apuntan", "apuntar", "apuntando", "apuntaba", "apuntaron", "apuntarse", "apuntaban"]}
 {"lemma": "siete", "pos": "numeral", "rank": 510, "forms": ["siete"]}
@@ -817,26 +817,26 @@
 {"lemma": "mencionar", "pos": "verbo", "rank": 817, "forms": ["mencionó", "mencionar", "mencionado", "menciona", "mencionada", "mencionaron", "mencionadas", "mencionan"]}
 {"lemma": "detalle", "pos": "sustantivo", "rank": 818, "forms": ["detalles", "detalle"]}
 {"lemma": "cuestión", "pos": "sustantivo", "rank": 819, "forms": ["cuestión", "cuestiones"]}
-{"lemma": "italiano", "pos": "adjetivo", "rank": 820, "forms": ["italiano", "italiana", "italianos", "italianas"]}
-{"lemma": "retirar", "pos": "verbo", "rank": 821, "forms": ["retirar", "retiró", "retirado", "retirarse", "retira", "retiraron", "retire", "retirados", "retiren", "retiran", "retirando", "retirara"]}
-{"lemma": "color", "pos": "sustantivo", "rank": 822, "forms": ["color", "colores"]}
-{"lemma": "justicia", "pos": "sustantivo", "rank": 823, "forms": ["justicia"]}
-{"lemma": "accidente", "pos": "sustantivo", "rank": 824, "forms": ["accidente", "accidentes"]}
-{"lemma": "cadena", "pos": "sustantivo", "rank": 825, "forms": ["cadena", "cadenas"]}
-{"lemma": "coche", "pos": "sustantivo", "rank": 826, "forms": ["coche", "coches"]}
-{"lemma": "mitad", "pos": "sustantivo", "rank": 827, "forms": ["mitad"]}
-{"lemma": "ojo", "pos": "sustantivo", "rank": 828, "forms": ["ojos", "ojo"]}
-{"lemma": "secretario", "pos": "sustantivo", "rank": 829, "forms": ["secretario", "secretarios"]}
-{"lemma": "manifestante", "pos": "sustantivo", "rank": 830, "forms": ["manifestantes", "manifestante"]}
-{"lemma": "planta", "pos": "sustantivo", "rank": 831, "forms": ["planta", "plantas"]}
-{"lemma": "pie", "pos": "sustantivo", "rank": 832, "forms": ["pie", "pies"]}
-{"lemma": "completo", "pos": "adjetivo", "rank": 833, "forms": ["completo", "completa", "completos", "completas"]}
-{"lemma": "pena", "pos": "sustantivo", "rank": 834, "forms": ["pena", "penas"]}
-{"lemma": "directo", "pos": "adjetivo", "rank": 835, "forms": ["directo", "directa", "directos", "directas"]}
-{"lemma": "material", "pos": "sustantivo", "rank": 836, "forms": ["material", "materiales"]}
-{"lemma": "debate", "pos": "sustantivo", "rank": 837, "forms": ["debate", "debates"]}
-{"lemma": "usted", "pos": "pronombre", "rank": 838, "forms": ["usted", "ustedes"]}
-{"lemma": "causar", "pos": "verbo", "rank": 839, "forms": ["causó", "causado", "causar", "causaron", "causando", "causan", "causada"]}
+{"lemma": "causar", "pos": "verbo", "rank": 820, "forms": ["causó", "causado", "causar", "causaron", "causando", "causan", "causada", "cause"]}
+{"lemma": "italiano", "pos": "adjetivo", "rank": 821, "forms": ["italiano", "italiana", "italianos", "italianas"]}
+{"lemma": "retirar", "pos": "verbo", "rank": 822, "forms": ["retirar", "retiró", "retirado", "retirarse", "retira", "retiraron", "retire", "retirados", "retiren", "retiran", "retirando", "retirara"]}
+{"lemma": "color", "pos": "sustantivo", "rank": 823, "forms": ["color", "colores"]}
+{"lemma": "justicia", "pos": "sustantivo", "rank": 824, "forms": ["justicia"]}
+{"lemma": "accidente", "pos": "sustantivo", "rank": 825, "forms": ["accidente", "accidentes"]}
+{"lemma": "cadena", "pos": "sustantivo", "rank": 826, "forms": ["cadena", "cadenas"]}
+{"lemma": "coche", "pos": "sustantivo", "rank": 827, "forms": ["coche", "coches"]}
+{"lemma": "mitad", "pos": "sustantivo", "rank": 828, "forms": ["mitad"]}
+{"lemma": "ojo", "pos": "sustantivo", "rank": 829, "forms": ["ojos", "ojo"]}
+{"lemma": "secretario", "pos": "sustantivo", "rank": 830, "forms": ["secretario", "secretarios"]}
+{"lemma": "manifestante", "pos": "sustantivo", "rank": 831, "forms": ["manifestantes", "manifestante"]}
+{"lemma": "planta", "pos": "sustantivo", "rank": 832, "forms": ["planta", "plantas"]}
+{"lemma": "pie", "pos": "sustantivo", "rank": 833, "forms": ["pie", "pies"]}
+{"lemma": "completo", "pos": "adjetivo", "rank": 834, "forms": ["completo", "completa", "completos", "completas"]}
+{"lemma": "pena", "pos": "sustantivo", "rank": 835, "forms": ["pena", "penas"]}
+{"lemma": "directo", "pos": "adjetivo", "rank": 836, "forms": ["directo", "directa", "directos", "directas"]}
+{"lemma": "material", "pos": "sustantivo", "rank": 837, "forms": ["material", "materiales"]}
+{"lemma": "debate", "pos": "sustantivo", "rank": 838, "forms": ["debate", "debates"]}
+{"lemma": "usted", "pos": "pronombre", "rank": 839, "forms": ["usted", "ustedes"]}
 {"lemma": "cine", "pos": "sustantivo", "rank": 840, "forms": ["cine", "cines"]}
 {"lemma": "bastante", "pos": "adverbio", "rank": 841, "forms": ["bastante", "bastantes"]}
 {"lemma": "reciente", "pos": "adjetivo", "rank": 842, "forms": ["reciente", "recientes"]}
@@ -1193,82 +1193,82 @@
 {"lemma": "recuerdo", "pos": "sustantivo", "rank": 1193, "forms": ["recuerdo", "recuerdos"]}
 {"lemma": "relacionar", "pos": "verbo", "rank": 1194, "forms": ["relacionadas", "relacionado", "relacionada", "relaciona", "relacionan", "relacionarse", "relacionó", "relacionar"]}
 {"lemma": "tráfico", "pos": "sustantivo", "rank": 1195, "forms": ["tráfico", "trafico"]}
-{"lemma": "respetar", "pos": "verbo", "rank": 1196, "forms": ["respetar", "respeta", "respetado", "respeten", "respecta", "respete", "respetando", "respetan", "respetados", "respetamos", "respetará", "respetada"]}
-{"lemma": "acercar", "pos": "verbo", "rank": 1197, "forms": ["acercarse", "acercó", "acercar", "acercan", "acercaron", "acercado", "acercaba", "acerque", "acercando", "acerquen", "acercarnos", "acercándose"]}
-{"lemma": "cubano", "pos": "adjetivo", "rank": 1198, "forms": ["cubano", "cubanos", "cubana", "cubanas"]}
-{"lemma": "acceder", "pos": "verbo", "rank": 1199, "forms": ["acceder", "accedió", "accede", "accedido", "accedieron", "acceden"]}
-{"lemma": "auto", "pos": "sustantivo", "rank": 1200, "forms": ["auto", "autos"]}
-{"lemma": "inmigrante", "pos": "sustantivo", "rank": 1201, "forms": ["inmigrantes", "inmigrante"]}
-{"lemma": "complicado", "pos": "adjetivo", "rank": 1202, "forms": ["complicado", "complicada", "complicados", "complicadas"]}
-{"lemma": "exterior", "pos": "sustantivo", "rank": 1203, "forms": ["exterior", "exteriores"]}
-{"lemma": "promedio", "pos": "sustantivo", "rank": 1204, "forms": ["promedio", "promedios"]}
-{"lemma": "récord", "pos": "sustantivo", "rank": 1205, "forms": ["récord", "récords", "record"]}
-{"lemma": "combate", "pos": "sustantivo", "rank": 1206, "forms": ["combate", "combates"]}
-{"lemma": "profundo", "pos": "adjetivo", "rank": 1207, "forms": ["profunda", "profundo", "profundas", "profundos"]}
-{"lemma": "quizá", "pos": "adverbio", "rank": 1208, "forms": ["quizá"]}
-{"lemma": "adelantar", "pos": "verbo", "rank": 1209, "forms": ["adelantó", "adelantado", "adelantar", "adelanta", "adelantarse", "adelantada", "adelantaron", "adelantan"]}
-{"lemma": "comprometer", "pos": "verbo", "rank": 1210, "forms": ["comprometido", "comprometió", "comprometida", "comprometidos", "compromete", "comprometieron", "comprometer", "comprometen", "comprometidas"]}
-{"lemma": "clásico", "pos": "adjetivo", "rank": 1211, "forms": ["clásico", "clásicos", "clásica", "clásicas"]}
-{"lemma": "memoria", "pos": "sustantivo", "rank": 1212, "forms": ["memoria", "memorias"]}
-{"lemma": "detectar", "pos": "verbo", "rank": 1213, "forms": ["detectar", "detectado", "detectó", "detectaron", "detecta", "detectados", "detectan", "detectadas", "detectada"]}
-{"lemma": "presentación", "pos": "sustantivo", "rank": 1214, "forms": ["presentación", "presentaciones"]}
-{"lemma": "secreto", "pos": "sustantivo", "rank": 1215, "forms": ["secreto", "secretos", "secreta", "secretas"]}
-{"lemma": "acordar", "pos": "verbo", "rank": 1216, "forms": ["acordado", "acordó", "acordaron", "acordar", "acuerda", "acuerdan", "acordada", "acordadas"]}
-{"lemma": "palestino", "pos": "sustantivo", "rank": 1217, "forms": ["palestinos", "palestino", "palestina", "palestinas"]}
-{"lemma": "quinto", "pos": "numeral", "rank": 1218, "forms": ["quinto", "quinta"]}
-{"lemma": "bolsa", "pos": "sustantivo", "rank": 1219, "forms": ["bolsa", "bolsas"]}
-{"lemma": "senador", "pos": "sustantivo", "rank": 1220, "forms": ["senador", "senadores", "senadora"]}
-{"lemma": "girar", "pos": "verbo", "rank": 1221, "forms": ["gira", "girar", "giró", "giran"]}
-{"lemma": "suerte", "pos": "sustantivo", "rank": 1222, "forms": ["suerte"]}
-{"lemma": "tiro", "pos": "sustantivo", "rank": 1223, "forms": ["tiro", "tiros"]}
-{"lemma": "rico", "pos": "adjetivo", "rank": 1224, "forms": ["ricos", "rico", "rica", "ricas"]}
-{"lemma": "eléctrico", "pos": "adjetivo", "rank": 1225, "forms": ["eléctrica", "eléctrico", "eléctricas", "eléctricos"]}
-{"lemma": "sindicato", "pos": "sustantivo", "rank": 1226, "forms": ["sindicatos", "sindicato"]}
-{"lemma": "incrementar", "pos": "verbo", "rank": 1227, "forms": ["incrementar", "incrementado", "incrementó", "incrementa", "incrementaron", "incrementando", "incrementará", "incrementan", "incremente", "incrementarse"]}
-{"lemma": "absoluto", "pos": "adjetivo", "rank": 1228, "forms": ["absoluta", "absoluto", "absolutas", "absolutos"]}
-{"lemma": "instalar", "pos": "verbo", "rank": 1229, "forms": ["instalar", "instalado", "instaló", "instalados", "instalaron", "instalarse", "instala", "instalará", "instalarán", "instalan"]}
-{"lemma": "socio", "pos": "sustantivo", "rank": 1230, "forms": ["socios", "socio"]}
-{"lemma": "señal", "pos": "sustantivo", "rank": 1231, "forms": ["señal", "señales"]}
-{"lemma": "consumidor", "pos": "sustantivo", "rank": 1232, "forms": ["consumidores", "consumidor"]}
-{"lemma": "ambiente", "pos": "sustantivo", "rank": 1233, "forms": ["ambiente", "ambientes"]}
-{"lemma": "musical", "pos": "adjetivo", "rank": 1234, "forms": ["musical", "musicales"]}
-{"lemma": "río", "pos": "sustantivo", "rank": 1235, "forms": ["río", "ríos", "rio"]}
-{"lemma": "petróleo", "pos": "sustantivo", "rank": 1236, "forms": ["petróleo", "petroleo"]}
-{"lemma": "reducción", "pos": "sustantivo", "rank": 1237, "forms": ["reducción", "reducciones"]}
-{"lemma": "entrega", "pos": "sustantivo", "rank": 1238, "forms": ["entrega", "entregas"]}
-{"lemma": "importar", "pos": "verbo", "rank": 1239, "forms": ["importa", "importar", "importan", "importó", "importado", "importados", "importaba"]}
-{"lemma": "tú", "pos": "pronombre", "rank": 1240, "forms": ["tú", "ti", "tí"]}
-{"lemma": "disponible", "pos": "adjetivo", "rank": 1241, "forms": ["disponible", "disponibles"]}
-{"lemma": "limitar", "pos": "verbo", "rank": 1242, "forms": ["limitado", "limitar", "limita", "limitada", "limitó", "limitan", "limitarse"]}
-{"lemma": "mar", "pos": "sustantivo", "rank": 1243, "forms": ["mar", "mares"]}
-{"lemma": "señor", "pos": "sustantivo", "rank": 1244, "forms": ["señor", "señores"]}
-{"lemma": "transporte", "pos": "sustantivo", "rank": 1245, "forms": ["transporte", "transportes"]}
-{"lemma": "escena", "pos": "sustantivo", "rank": 1246, "forms": ["escena", "escenas"]}
-{"lemma": "sorpresa", "pos": "sustantivo", "rank": 1247, "forms": ["sorpresa", "sorpresas"]}
-{"lemma": "radio", "pos": "sustantivo", "rank": 1248, "forms": ["radio", "radios"]}
-{"lemma": "dificultad", "pos": "sustantivo", "rank": 1249, "forms": ["dificultades", "dificultad"]}
-{"lemma": "deportivo", "pos": "adjetivo", "rank": 1250, "forms": ["deportivo", "deportiva", "deportivos", "deportivas"]}
-{"lemma": "digital", "pos": "adjetivo", "rank": 1251, "forms": ["digital", "digitales"]}
-{"lemma": "griego", "pos": "adjetivo", "rank": 1252, "forms": ["griego", "griega", "griegos", "griegas"]}
-{"lemma": "explosión", "pos": "sustantivo", "rank": 1253, "forms": ["explosión", "explosiones"]}
-{"lemma": "piso", "pos": "sustantivo", "rank": 1254, "forms": ["piso", "pisos"]}
-{"lemma": "surgir", "pos": "verbo", "rank": 1255, "forms": ["surgió", "surge", "surgido", "surgen", "surgieron", "surgir", "surja"]}
-{"lemma": "distancia", "pos": "sustantivo", "rank": 1256, "forms": ["distancia", "distancias"]}
-{"lemma": "correo", "pos": "sustantivo", "rank": 1257, "forms": ["correo", "correos"]}
-{"lemma": "revolución", "pos": "sustantivo", "rank": 1258, "forms": ["revolución", "revoluciones"]}
-{"lemma": "extremo", "pos": "sustantivo", "rank": 1259, "forms": ["extremo", "extrema", "extremos", "extremas"]}
-{"lemma": "prohibir", "pos": "verbo", "rank": 1260, "forms": ["prohibido", "prohíbe", "prohibir", "prohibió", "prohibida", "prohibidos", "prohíben", "prohíba", "prohibe"]}
-{"lemma": "ejecutivo", "pos": "sustantivo", "rank": 1261, "forms": ["ejecutivo", "ejecutivos", "ejecutiva"]}
-{"lemma": "dolor", "pos": "sustantivo", "rank": 1262, "forms": ["dolor", "dolores"]}
-{"lemma": "escritor", "pos": "sustantivo", "rank": 1263, "forms": ["escritor", "escritores", "escritora"]}
-{"lemma": "favorito", "pos": "adjetivo", "rank": 1264, "forms": ["favorito", "favoritos", "favorita", "favoritas"]}
-{"lemma": "terremoto", "pos": "sustantivo", "rank": 1265, "forms": ["terremoto", "terremotos"]}
-{"lemma": "feliz", "pos": "adjetivo", "rank": 1266, "forms": ["feliz", "felices"]}
-{"lemma": "comercio", "pos": "sustantivo", "rank": 1267, "forms": ["comercio", "comercios"]}
-{"lemma": "universidad", "pos": "sustantivo", "rank": 1268, "forms": ["universidad", "universidades"]}
-{"lemma": "emergencia", "pos": "sustantivo", "rank": 1269, "forms": ["emergencia", "emergencias"]}
-{"lemma": "salario", "pos": "sustantivo", "rank": 1270, "forms": ["salarios", "salario"]}
-{"lemma": "quitar", "pos": "verbo", "rank": 1271, "forms": ["quita", "quitar", "quitó", "quitarle", "quitado", "quitan", "quitaron", "quite", "quiten", "quitando", "quitarles"]}
+{"lemma": "acercar", "pos": "verbo", "rank": 1196, "forms": ["acercarse", "acercó", "acercar", "acercan", "acercaron", "acercado", "acercaba", "acerque", "acercando", "acerquen", "acercarnos", "acercándose"]}
+{"lemma": "cubano", "pos": "adjetivo", "rank": 1197, "forms": ["cubano", "cubanos", "cubana", "cubanas"]}
+{"lemma": "acceder", "pos": "verbo", "rank": 1198, "forms": ["acceder", "accedió", "accede", "accedido", "accedieron", "acceden"]}
+{"lemma": "auto", "pos": "sustantivo", "rank": 1199, "forms": ["auto", "autos"]}
+{"lemma": "inmigrante", "pos": "sustantivo", "rank": 1200, "forms": ["inmigrantes", "inmigrante"]}
+{"lemma": "complicado", "pos": "adjetivo", "rank": 1201, "forms": ["complicado", "complicada", "complicados", "complicadas"]}
+{"lemma": "exterior", "pos": "sustantivo", "rank": 1202, "forms": ["exterior", "exteriores"]}
+{"lemma": "promedio", "pos": "sustantivo", "rank": 1203, "forms": ["promedio", "promedios"]}
+{"lemma": "récord", "pos": "sustantivo", "rank": 1204, "forms": ["récord", "récords", "record"]}
+{"lemma": "combate", "pos": "sustantivo", "rank": 1205, "forms": ["combate", "combates"]}
+{"lemma": "profundo", "pos": "adjetivo", "rank": 1206, "forms": ["profunda", "profundo", "profundas", "profundos"]}
+{"lemma": "quizá", "pos": "adverbio", "rank": 1207, "forms": ["quizá"]}
+{"lemma": "adelantar", "pos": "verbo", "rank": 1208, "forms": ["adelantó", "adelantado", "adelantar", "adelanta", "adelantarse", "adelantada", "adelantaron", "adelantan"]}
+{"lemma": "comprometer", "pos": "verbo", "rank": 1209, "forms": ["comprometido", "comprometió", "comprometida", "comprometidos", "compromete", "comprometieron", "comprometer", "comprometen", "comprometidas"]}
+{"lemma": "clásico", "pos": "adjetivo", "rank": 1210, "forms": ["clásico", "clásicos", "clásica", "clásicas"]}
+{"lemma": "memoria", "pos": "sustantivo", "rank": 1211, "forms": ["memoria", "memorias"]}
+{"lemma": "detectar", "pos": "verbo", "rank": 1212, "forms": ["detectar", "detectado", "detectó", "detectaron", "detecta", "detectados", "detectan", "detectadas", "detectada"]}
+{"lemma": "presentación", "pos": "sustantivo", "rank": 1213, "forms": ["presentación", "presentaciones"]}
+{"lemma": "secreto", "pos": "sustantivo", "rank": 1214, "forms": ["secreto", "secretos", "secreta", "secretas"]}
+{"lemma": "acordar", "pos": "verbo", "rank": 1215, "forms": ["acordado", "acordó", "acordaron", "acordar", "acuerda", "acuerdan", "acordada", "acordadas"]}
+{"lemma": "palestino", "pos": "sustantivo", "rank": 1216, "forms": ["palestinos", "palestino", "palestina", "palestinas"]}
+{"lemma": "quinto", "pos": "numeral", "rank": 1217, "forms": ["quinto", "quinta"]}
+{"lemma": "bolsa", "pos": "sustantivo", "rank": 1218, "forms": ["bolsa", "bolsas"]}
+{"lemma": "senador", "pos": "sustantivo", "rank": 1219, "forms": ["senador", "senadores", "senadora"]}
+{"lemma": "girar", "pos": "verbo", "rank": 1220, "forms": ["gira", "girar", "giró", "giran"]}
+{"lemma": "suerte", "pos": "sustantivo", "rank": 1221, "forms": ["suerte"]}
+{"lemma": "tiro", "pos": "sustantivo", "rank": 1222, "forms": ["tiro", "tiros"]}
+{"lemma": "rico", "pos": "adjetivo", "rank": 1223, "forms": ["ricos", "rico", "rica", "ricas"]}
+{"lemma": "eléctrico", "pos": "adjetivo", "rank": 1224, "forms": ["eléctrica", "eléctrico", "eléctricas", "eléctricos"]}
+{"lemma": "sindicato", "pos": "sustantivo", "rank": 1225, "forms": ["sindicatos", "sindicato"]}
+{"lemma": "incrementar", "pos": "verbo", "rank": 1226, "forms": ["incrementar", "incrementado", "incrementó", "incrementa", "incrementaron", "incrementando", "incrementará", "incrementan", "incremente", "incrementarse"]}
+{"lemma": "absoluto", "pos": "adjetivo", "rank": 1227, "forms": ["absoluta", "absoluto", "absolutas", "absolutos"]}
+{"lemma": "instalar", "pos": "verbo", "rank": 1228, "forms": ["instalar", "instalado", "instaló", "instalados", "instalaron", "instalarse", "instala", "instalará", "instalarán", "instalan"]}
+{"lemma": "socio", "pos": "sustantivo", "rank": 1229, "forms": ["socios", "socio"]}
+{"lemma": "señal", "pos": "sustantivo", "rank": 1230, "forms": ["señal", "señales"]}
+{"lemma": "consumidor", "pos": "sustantivo", "rank": 1231, "forms": ["consumidores", "consumidor"]}
+{"lemma": "ambiente", "pos": "sustantivo", "rank": 1232, "forms": ["ambiente", "ambientes"]}
+{"lemma": "musical", "pos": "adjetivo", "rank": 1233, "forms": ["musical", "musicales"]}
+{"lemma": "río", "pos": "sustantivo", "rank": 1234, "forms": ["río", "ríos", "rio"]}
+{"lemma": "petróleo", "pos": "sustantivo", "rank": 1235, "forms": ["petróleo", "petroleo"]}
+{"lemma": "reducción", "pos": "sustantivo", "rank": 1236, "forms": ["reducción", "reducciones"]}
+{"lemma": "entrega", "pos": "sustantivo", "rank": 1237, "forms": ["entrega", "entregas"]}
+{"lemma": "importar", "pos": "verbo", "rank": 1238, "forms": ["importa", "importar", "importan", "importó", "importado", "importados", "importaba"]}
+{"lemma": "tú", "pos": "pronombre", "rank": 1239, "forms": ["tú", "ti", "tí"]}
+{"lemma": "disponible", "pos": "adjetivo", "rank": 1240, "forms": ["disponible", "disponibles"]}
+{"lemma": "limitar", "pos": "verbo", "rank": 1241, "forms": ["limitado", "limitar", "limita", "limitada", "limitó", "limitan", "limitarse"]}
+{"lemma": "mar", "pos": "sustantivo", "rank": 1242, "forms": ["mar", "mares"]}
+{"lemma": "señor", "pos": "sustantivo", "rank": 1243, "forms": ["señor", "señores"]}
+{"lemma": "transporte", "pos": "sustantivo", "rank": 1244, "forms": ["transporte", "transportes"]}
+{"lemma": "escena", "pos": "sustantivo", "rank": 1245, "forms": ["escena", "escenas"]}
+{"lemma": "sorpresa", "pos": "sustantivo", "rank": 1246, "forms": ["sorpresa", "sorpresas"]}
+{"lemma": "radio", "pos": "sustantivo", "rank": 1247, "forms": ["radio", "radios"]}
+{"lemma": "dificultad", "pos": "sustantivo", "rank": 1248, "forms": ["dificultades", "dificultad"]}
+{"lemma": "deportivo", "pos": "adjetivo", "rank": 1249, "forms": ["deportivo", "deportiva", "deportivos", "deportivas"]}
+{"lemma": "digital", "pos": "adjetivo", "rank": 1250, "forms": ["digital", "digitales"]}
+{"lemma": "griego", "pos": "adjetivo", "rank": 1251, "forms": ["griego", "griega", "griegos", "griegas"]}
+{"lemma": "explosión", "pos": "sustantivo", "rank": 1252, "forms": ["explosión", "explosiones"]}
+{"lemma": "piso", "pos": "sustantivo", "rank": 1253, "forms": ["piso", "pisos"]}
+{"lemma": "surgir", "pos": "verbo", "rank": 1254, "forms": ["surgió", "surge", "surgido", "surgen", "surgieron", "surgir", "surja"]}
+{"lemma": "distancia", "pos": "sustantivo", "rank": 1255, "forms": ["distancia", "distancias"]}
+{"lemma": "correo", "pos": "sustantivo", "rank": 1256, "forms": ["correo", "correos"]}
+{"lemma": "revolución", "pos": "sustantivo", "rank": 1257, "forms": ["revolución", "revoluciones"]}
+{"lemma": "extremo", "pos": "sustantivo", "rank": 1258, "forms": ["extremo", "extrema", "extremos", "extremas"]}
+{"lemma": "prohibir", "pos": "verbo", "rank": 1259, "forms": ["prohibido", "prohíbe", "prohibir", "prohibió", "prohibida", "prohibidos", "prohíben", "prohíba", "prohibe"]}
+{"lemma": "ejecutivo", "pos": "sustantivo", "rank": 1260, "forms": ["ejecutivo", "ejecutivos", "ejecutiva"]}
+{"lemma": "dolor", "pos": "sustantivo", "rank": 1261, "forms": ["dolor", "dolores"]}
+{"lemma": "escritor", "pos": "sustantivo", "rank": 1262, "forms": ["escritor", "escritores", "escritora"]}
+{"lemma": "favorito", "pos": "adjetivo", "rank": 1263, "forms": ["favorito", "favoritos", "favorita", "favoritas"]}
+{"lemma": "terremoto", "pos": "sustantivo", "rank": 1264, "forms": ["terremoto", "terremotos"]}
+{"lemma": "feliz", "pos": "adjetivo", "rank": 1265, "forms": ["feliz", "felices"]}
+{"lemma": "comercio", "pos": "sustantivo", "rank": 1266, "forms": ["comercio", "comercios"]}
+{"lemma": "universidad", "pos": "sustantivo", "rank": 1267, "forms": ["universidad", "universidades"]}
+{"lemma": "emergencia", "pos": "sustantivo", "rank": 1268, "forms": ["emergencia", "emergencias"]}
+{"lemma": "salario", "pos": "sustantivo", "rank": 1269, "forms": ["salarios", "salario"]}
+{"lemma": "quitar", "pos": "verbo", "rank": 1270, "forms": ["quita", "quitar", "quitó", "quitarle", "quitado", "quitan", "quitaron", "quite", "quiten", "quitando", "quitarles"]}
+{"lemma": "respetar", "pos": "verbo", "rank": 1271, "forms": ["respetar", "respeta", "respetado", "respeten", "respete", "respetando", "respetan", "respetados", "respetamos", "respetará", "respetada"]}
 {"lemma": "llenar", "pos": "verbo", "rank": 1272, "forms": ["llena", "llenar", "llenó", "llenado", "llenan", "llenaron", "llenando", "llenarse"]}
 {"lemma": "quizás", "pos": "adverbio", "rank": 1273, "forms": ["quizás", "quizas"]}
 {"lemma": "candidatura", "pos": "sustantivo", "rank": 1274, "forms": ["candidatura", "candidaturas"]}
@@ -1297,55 +1297,55 @@
 {"lemma": "merecer", "pos": "verbo", "rank": 1297, "forms": ["merece", "merecen", "merecido", "merecía", "merecemos", "mereció"]}
 {"lemma": "descenso", "pos": "sustantivo", "rank": 1298, "forms": ["descenso", "descensos"]}
 {"lemma": "salvar", "pos": "verbo", "rank": 1299, "forms": ["salvar", "salvó", "salvado", "salvarse", "salvaron", "salvan", "salve"]}
-{"lemma": "debajo", "pos": "adverbio", "rank": 1300, "forms": ["debajo"]}
-{"lemma": "costo", "pos": "sustantivo", "rank": 1301, "forms": ["costo", "costos"]}
-{"lemma": "estructura", "pos": "sustantivo", "rank": 1302, "forms": ["estructura", "estructuras"]}
-{"lemma": "ordenar", "pos": "verbo", "rank": 1303, "forms": ["ordenó", "ordenado", "ordenar", "ordena", "ordenaron"]}
-{"lemma": "ronda", "pos": "sustantivo", "rank": 1304, "forms": ["ronda", "rondas"]}
-{"lemma": "religioso", "pos": "adjetivo", "rank": 1305, "forms": ["religiosa", "religioso", "religiosos", "religiosas"]}
-{"lemma": "verde", "pos": "adjetivo", "rank": 1306, "forms": ["verde", "verdes"]}
-{"lemma": "petición", "pos": "sustantivo", "rank": 1307, "forms": ["petición", "peticiones"]}
-{"lemma": "tradicional", "pos": "adjetivo", "rank": 1308, "forms": ["tradicional", "tradicionales"]}
-{"lemma": "defensor", "pos": "sustantivo", "rank": 1309, "forms": ["defensor", "defensores", "defensora", "defensoras"]}
-{"lemma": "arriba", "pos": "adverbio", "rank": 1310, "forms": ["arriba"]}
-{"lemma": "ritmo", "pos": "sustantivo", "rank": 1311, "forms": ["ritmo", "ritmos"]}
-{"lemma": "promover", "pos": "verbo", "rank": 1312, "forms": ["promover", "promueve", "promovido", "promueven", "promovió", "promoviendo", "promovida", "promoverá"]}
-{"lemma": "reserva", "pos": "sustantivo", "rank": 1313, "forms": ["reservas", "reserva"]}
-{"lemma": "novela", "pos": "sustantivo", "rank": 1314, "forms": ["novela", "novelas"]}
-{"lemma": "legislador", "pos": "sustantivo", "rank": 1315, "forms": ["legisladores", "legislador", "legisladora"]}
-{"lemma": "corte", "pos": "sustantivo", "rank": 1316, "forms": ["corte", "cortes"]}
-{"lemma": "opinar", "pos": "verbo", "rank": 1317, "forms": ["opina", "opinó", "opinar", "opinado", "opinan", "opino"]}
-{"lemma": "suspender", "pos": "verbo", "rank": 1318, "forms": ["suspendido", "suspender", "suspendió", "suspende", "suspendida", "suspendieron", "suspendidas", "suspenden"]}
-{"lemma": "criminal", "pos": "sustantivo", "rank": 1319, "forms": ["criminales", "criminal"]}
-{"lemma": "planeta", "pos": "sustantivo", "rank": 1320, "forms": ["planeta", "planetas"]}
-{"lemma": "probable", "pos": "adjetivo", "rank": 1321, "forms": ["probable", "probables"]}
-{"lemma": "recorrido", "pos": "sustantivo", "rank": 1322, "forms": ["recorrido", "recorridos"]}
-{"lemma": "pertenecer", "pos": "verbo", "rank": 1323, "forms": ["pertenece", "pertenecen", "pertenecer", "pertenecía", "pertenecían", "perteneció"]}
-{"lemma": "encargar", "pos": "verbo", "rank": 1324, "forms": ["encargada", "encargó", "encarga", "encargará", "encargan", "encargaron", "encargaba", "encargar", "encargarán"]}
-{"lemma": "simple", "pos": "adjetivo", "rank": 1325, "forms": ["simple", "simples"]}
-{"lemma": "consecutivo", "pos": "adjetivo", "rank": 1326, "forms": ["consecutivo", "consecutiva", "consecutivos", "consecutivas"]}
-{"lemma": "directamente", "pos": "adverbio", "rank": 1327, "forms": ["directamente"]}
-{"lemma": "sirio", "pos": "adjetivo", "rank": 1328, "forms": ["sirio", "sirios", "siria", "sirias"]}
-{"lemma": "voluntad", "pos": "sustantivo", "rank": 1329, "forms": ["voluntad", "voluntades"]}
-{"lemma": "carga", "pos": "sustantivo", "rank": 1330, "forms": ["carga", "cargas"]}
-{"lemma": "bomba", "pos": "sustantivo", "rank": 1331, "forms": ["bomba", "bombas"]}
-{"lemma": "peligroso", "pos": "adjetivo", "rank": 1332, "forms": ["peligroso", "peligrosa", "peligrosos", "peligrosas"]}
-{"lemma": "totalmente", "pos": "adverbio", "rank": 1333, "forms": ["totalmente"]}
-{"lemma": "encargado", "pos": "sustantivo", "rank": 1334, "forms": ["encargado", "encargados", "encargadas"]}
-{"lemma": "prometer", "pos": "verbo", "rank": 1335, "forms": ["prometió", "prometido", "promete", "prometen", "prometieron", "prometer"]}
-{"lemma": "cadáver", "pos": "sustantivo", "rank": 1336, "forms": ["cadáveres", "cadáver"]}
-{"lemma": "coalición", "pos": "sustantivo", "rank": 1337, "forms": ["coalición", "coaliciones"]}
-{"lemma": "contener", "pos": "verbo", "rank": 1338, "forms": ["contiene", "contener", "contienen", "contenía", "contenían", "contenida", "contenga"]}
-{"lemma": "margen", "pos": "sustantivo", "rank": 1339, "forms": ["margen", "márgenes"]}
-{"lemma": "testigo", "pos": "sustantivo", "rank": 1340, "forms": ["testigos", "testigo"]}
-{"lemma": "vino", "pos": "sustantivo", "rank": 1341, "forms": ["vino", "vinos"]}
-{"lemma": "parque", "pos": "sustantivo", "rank": 1342, "forms": ["parque", "parques"]}
-{"lemma": "chico", "pos": "sustantivo", "rank": 1343, "forms": ["chicos", "chico"]}
-{"lemma": "medir", "pos": "verbo", "rank": 1344, "forms": ["medir", "mide", "medirá", "miden", "medirse", "medido", "medirán", "midió", "medía"]}
-{"lemma": "carácter", "pos": "sustantivo", "rank": 1345, "forms": ["carácter", "caracteres"]}
-{"lemma": "enfrentamiento", "pos": "sustantivo", "rank": 1346, "forms": ["enfrentamientos", "enfrentamiento"]}
-{"lemma": "trimestre", "pos": "sustantivo", "rank": 1347, "forms": ["trimestre", "trimestres"]}
-{"lemma": "parar", "pos": "verbo", "rank": 1348, "forms": ["parar", "parado", "paró", "paran", "pararon", "pararse"]}
+{"lemma": "parar", "pos": "verbo", "rank": 1300, "forms": ["parar", "parado", "paró", "paran", "pare", "pararon", "pararse"]}
+{"lemma": "debajo", "pos": "adverbio", "rank": 1301, "forms": ["debajo"]}
+{"lemma": "costo", "pos": "sustantivo", "rank": 1302, "forms": ["costo", "costos"]}
+{"lemma": "estructura", "pos": "sustantivo", "rank": 1303, "forms": ["estructura", "estructuras"]}
+{"lemma": "ordenar", "pos": "verbo", "rank": 1304, "forms": ["ordenó", "ordenado", "ordenar", "ordena", "ordenaron"]}
+{"lemma": "ronda", "pos": "sustantivo", "rank": 1305, "forms": ["ronda", "rondas"]}
+{"lemma": "religioso", "pos": "adjetivo", "rank": 1306, "forms": ["religiosa", "religioso", "religiosos", "religiosas"]}
+{"lemma": "verde", "pos": "adjetivo", "rank": 1307, "forms": ["verde", "verdes"]}
+{"lemma": "petición", "pos": "sustantivo", "rank": 1308, "forms": ["petición", "peticiones"]}
+{"lemma": "tradicional", "pos": "adjetivo", "rank": 1309, "forms": ["tradicional", "tradicionales"]}
+{"lemma": "defensor", "pos": "sustantivo", "rank": 1310, "forms": ["defensor", "defensores", "defensora", "defensoras"]}
+{"lemma": "arriba", "pos": "adverbio", "rank": 1311, "forms": ["arriba"]}
+{"lemma": "ritmo", "pos": "sustantivo", "rank": 1312, "forms": ["ritmo", "ritmos"]}
+{"lemma": "promover", "pos": "verbo", "rank": 1313, "forms": ["promover", "promueve", "promovido", "promueven", "promovió", "promoviendo", "promovida", "promoverá"]}
+{"lemma": "reserva", "pos": "sustantivo", "rank": 1314, "forms": ["reservas", "reserva"]}
+{"lemma": "novela", "pos": "sustantivo", "rank": 1315, "forms": ["novela", "novelas"]}
+{"lemma": "legislador", "pos": "sustantivo", "rank": 1316, "forms": ["legisladores", "legislador", "legisladora"]}
+{"lemma": "corte", "pos": "sustantivo", "rank": 1317, "forms": ["corte", "cortes"]}
+{"lemma": "opinar", "pos": "verbo", "rank": 1318, "forms": ["opina", "opinó", "opinar", "opinado", "opinan", "opino"]}
+{"lemma": "suspender", "pos": "verbo", "rank": 1319, "forms": ["suspendido", "suspender", "suspendió", "suspende", "suspendida", "suspendieron", "suspendidas", "suspenden"]}
+{"lemma": "criminal", "pos": "sustantivo", "rank": 1320, "forms": ["criminales", "criminal"]}
+{"lemma": "planeta", "pos": "sustantivo", "rank": 1321, "forms": ["planeta", "planetas"]}
+{"lemma": "probable", "pos": "adjetivo", "rank": 1322, "forms": ["probable", "probables"]}
+{"lemma": "recorrido", "pos": "sustantivo", "rank": 1323, "forms": ["recorrido", "recorridos"]}
+{"lemma": "pertenecer", "pos": "verbo", "rank": 1324, "forms": ["pertenece", "pertenecen", "pertenecer", "pertenecía", "pertenecían", "perteneció"]}
+{"lemma": "encargar", "pos": "verbo", "rank": 1325, "forms": ["encargada", "encargó", "encarga", "encargará", "encargan", "encargaron", "encargaba", "encargar", "encargarán"]}
+{"lemma": "simple", "pos": "adjetivo", "rank": 1326, "forms": ["simple", "simples"]}
+{"lemma": "consecutivo", "pos": "adjetivo", "rank": 1327, "forms": ["consecutivo", "consecutiva", "consecutivos", "consecutivas"]}
+{"lemma": "directamente", "pos": "adverbio", "rank": 1328, "forms": ["directamente"]}
+{"lemma": "sirio", "pos": "adjetivo", "rank": 1329, "forms": ["sirio", "sirios", "siria", "sirias"]}
+{"lemma": "voluntad", "pos": "sustantivo", "rank": 1330, "forms": ["voluntad", "voluntades"]}
+{"lemma": "carga", "pos": "sustantivo", "rank": 1331, "forms": ["carga", "cargas"]}
+{"lemma": "bomba", "pos": "sustantivo", "rank": 1332, "forms": ["bomba", "bombas"]}
+{"lemma": "peligroso", "pos": "adjetivo", "rank": 1333, "forms": ["peligroso", "peligrosa", "peligrosos", "peligrosas"]}
+{"lemma": "totalmente", "pos": "adverbio", "rank": 1334, "forms": ["totalmente"]}
+{"lemma": "encargado", "pos": "sustantivo", "rank": 1335, "forms": ["encargado", "encargados", "encargadas"]}
+{"lemma": "prometer", "pos": "verbo", "rank": 1336, "forms": ["prometió", "prometido", "promete", "prometen", "prometieron", "prometer"]}
+{"lemma": "cadáver", "pos": "sustantivo", "rank": 1337, "forms": ["cadáveres", "cadáver"]}
+{"lemma": "coalición", "pos": "sustantivo", "rank": 1338, "forms": ["coalición", "coaliciones"]}
+{"lemma": "contener", "pos": "verbo", "rank": 1339, "forms": ["contiene", "contener", "contienen", "contenía", "contenían", "contenida", "contenga"]}
+{"lemma": "margen", "pos": "sustantivo", "rank": 1340, "forms": ["margen", "márgenes"]}
+{"lemma": "testigo", "pos": "sustantivo", "rank": 1341, "forms": ["testigos", "testigo"]}
+{"lemma": "vino", "pos": "sustantivo", "rank": 1342, "forms": ["vino", "vinos"]}
+{"lemma": "parque", "pos": "sustantivo", "rank": 1343, "forms": ["parque", "parques"]}
+{"lemma": "chico", "pos": "sustantivo", "rank": 1344, "forms": ["chicos", "chico"]}
+{"lemma": "medir", "pos": "verbo", "rank": 1345, "forms": ["medir", "mide", "medirá", "miden", "medirse", "medido", "medirán", "midió", "medía"]}
+{"lemma": "carácter", "pos": "sustantivo", "rank": 1346, "forms": ["carácter", "caracteres"]}
+{"lemma": "enfrentamiento", "pos": "sustantivo", "rank": 1347, "forms": ["enfrentamientos", "enfrentamiento"]}
+{"lemma": "trimestre", "pos": "sustantivo", "rank": 1348, "forms": ["trimestre", "trimestres"]}
 {"lemma": "hogar", "pos": "sustantivo", "rank": 1349, "forms": ["hogar", "hogares"]}
 {"lemma": "contribuir", "pos": "verbo", "rank": 1350, "forms": ["contribuir", "contribuyó", "contribuido", "contribuye", "contribuyen", "contribuyeron", "contribuirá", "contribuyan", "contribuyendo"]}
 {"lemma": "delante", "pos": "adverbio", "rank": 1351, "forms": ["delante"]}
@@ -1399,157 +1399,157 @@
 {"lemma": "incorporar", "pos": "verbo", "rank": 1399, "forms": ["incorporar", "incorpora", "incorporado", "incorporó", "incorporarse", "incorporan", "incorporando", "incorpore", "incorporará", "incorporaron"]}
 {"lemma": "herida", "pos": "sustantivo", "rank": 1400, "forms": ["heridas"]}
 {"lemma": "apuesta", "pos": "sustantivo", "rank": 1401, "forms": ["apuesta", "apuestas"]}
-{"lemma": "competir", "pos": "verbo", "rank": 1402, "forms": ["competir", "compite", "compiten", "competirá", "compitiendo", "compete", "competirán", "compitió"]}
-{"lemma": "inicial", "pos": "adjetivo", "rank": 1403, "forms": ["inicial", "iniciales"]}
-{"lemma": "rey", "pos": "sustantivo", "rank": 1404, "forms": ["rey", "reyes"]}
-{"lemma": "probar", "pos": "verbo", "rank": 1405, "forms": ["probar", "probado", "probó", "probarlo", "probaron", "probando", "prueban", "probada"]}
-{"lemma": "interpretar", "pos": "verbo", "rank": 1406, "forms": ["interpretar", "interpreta", "interpretó", "interpretado", "interpretada", "interpretará", "interpretando", "interpretan", "interpretaron"]}
-{"lemma": "violento", "pos": "adjetivo", "rank": 1407, "forms": ["violentos", "violenta", "violento", "violentas"]}
-{"lemma": "huir", "pos": "verbo", "rank": 1408, "forms": ["huir", "huyó", "huyeron", "huyendo", "huido", "huyen", "huye"]}
-{"lemma": "tendencia", "pos": "sustantivo", "rank": 1409, "forms": ["tendencia", "tendencias"]}
-{"lemma": "durar", "pos": "verbo", "rank": 1410, "forms": ["duró", "durar", "durará", "durado", "dure", "duran", "duraron"]}
-{"lemma": "espectáculo", "pos": "sustantivo", "rank": 1411, "forms": ["espectáculo", "espectáculos"]}
-{"lemma": "meta", "pos": "sustantivo", "rank": 1412, "forms": ["meta", "metas"]}
-{"lemma": "convencer", "pos": "verbo", "rank": 1413, "forms": ["convencido", "convencer", "convencida", "convenció", "convence"]}
-{"lemma": "culpa", "pos": "sustantivo", "rank": 1414, "forms": ["culpa", "culpas"]}
-{"lemma": "presidencia", "pos": "sustantivo", "rank": 1415, "forms": ["presidencia"]}
-{"lemma": "culpable", "pos": "adjetivo", "rank": 1416, "forms": ["culpable", "culpables"]}
-{"lemma": "prestar", "pos": "verbo", "rank": 1417, "forms": ["prestar", "prestado", "presta", "prestan", "prestó", "prestando", "prestaron", "prestará", "presten", "preste"]}
-{"lemma": "israelí", "pos": "adjetivo", "rank": 1418, "forms": ["israelí", "israelíes"]}
-{"lemma": "liga", "pos": "sustantivo", "rank": 1419, "forms": ["liga", "ligas"]}
-{"lemma": "episodio", "pos": "sustantivo", "rank": 1420, "forms": ["episodio", "episodios"]}
-{"lemma": "tropa", "pos": "sustantivo", "rank": 1421, "forms": ["tropas", "tropa"]}
-{"lemma": "parlamentario", "pos": "adjetivo", "rank": 1422, "forms": ["parlamentario", "parlamentarios", "parlamentaria", "parlamentarias"]}
-{"lemma": "adecuado", "pos": "adjetivo", "rank": 1423, "forms": ["adecuada", "adecuado", "adecuadas", "adecuados"]}
-{"lemma": "manejar", "pos": "verbo", "rank": 1424, "forms": ["manejar", "maneja", "manejan", "manejado", "manejando", "manejó", "manejaba"]}
-{"lemma": "división", "pos": "sustantivo", "rank": 1425, "forms": ["división", "divisiones"]}
-{"lemma": "puerto", "pos": "sustantivo", "rank": 1426, "forms": ["puerto", "puertos"]}
-{"lemma": "barco", "pos": "sustantivo", "rank": 1427, "forms": ["barco", "barcos"]}
-{"lemma": "chileno", "pos": "adjetivo", "rank": 1428, "forms": ["chileno", "chilena", "chilenos"]}
-{"lemma": "ganancia", "pos": "sustantivo", "rank": 1429, "forms": ["ganancias", "ganancia"]}
-{"lemma": "habitual", "pos": "adjetivo", "rank": 1430, "forms": ["habitual", "habituales"]}
-{"lemma": "violación", "pos": "sustantivo", "rank": 1431, "forms": ["violación", "violaciones"]}
-{"lemma": "ejército", "pos": "sustantivo", "rank": 1432, "forms": ["ejército", "ejércitos", "ejercito"]}
-{"lemma": "tarjeta", "pos": "sustantivo", "rank": 1433, "forms": ["tarjeta", "tarjetas"]}
-{"lemma": "expresión", "pos": "sustantivo", "rank": 1434, "forms": ["expresión", "expresiones"]}
-{"lemma": "difundir", "pos": "verbo", "rank": 1435, "forms": ["difundido", "difundir", "difundida", "difundió", "difundidas", "difunde", "difundidos", "difundieron"]}
-{"lemma": "ámbito", "pos": "sustantivo", "rank": 1436, "forms": ["ámbito", "ámbitos"]}
-{"lemma": "caber", "pos": "verbo", "rank": 1437, "forms": ["cabe", "caben", "cabía", "cabría"]}
-{"lemma": "bebé", "pos": "sustantivo", "rank": 1438, "forms": ["bebé", "bebés", "bebe"]}
-{"lemma": "perfecto", "pos": "adjetivo", "rank": 1439, "forms": ["perfecto", "perfecta", "perfectos", "perfectas"]}
-{"lemma": "infraestructura", "pos": "sustantivo", "rank": 1440, "forms": ["infraestructura", "infraestructuras"]}
-{"lemma": "sanitario", "pos": "adjetivo", "rank": 1441, "forms": ["sanitario", "sanitarios", "sanitaria", "sanitarias"]}
-{"lemma": "tono", "pos": "sustantivo", "rank": 1442, "forms": ["tono", "tonos"]}
-{"lemma": "frío", "pos": "sustantivo", "rank": 1443, "forms": ["frío", "fría", "fríos", "frías", "frio"]}
-{"lemma": "perfil", "pos": "sustantivo", "rank": 1444, "forms": ["perfil", "perfiles"]}
-{"lemma": "emisión", "pos": "sustantivo", "rank": 1445, "forms": ["emisión", "emisiones"]}
-{"lemma": "herramienta", "pos": "sustantivo", "rank": 1446, "forms": ["herramientas", "herramienta"]}
-{"lemma": "localizar", "pos": "verbo", "rank": 1447, "forms": ["localizado", "localizar", "localizados", "localizaron", "localizó", "localizada", "localiza", "localizadas"]}
-{"lemma": "departamento", "pos": "sustantivo", "rank": 1448, "forms": ["departamento", "departamentos"]}
-{"lemma": "colonia", "pos": "sustantivo", "rank": 1449, "forms": ["colonia", "colonias"]}
-{"lemma": "negociar", "pos": "verbo", "rank": 1450, "forms": ["negociar", "negociando", "negociado", "negocia", "negoció", "negocian", "negociada"]}
-{"lemma": "os", "pos": "pronombre", "rank": 1451, "forms": ["os"]}
-{"lemma": "contratar", "pos": "verbo", "rank": 1452, "forms": ["contratar", "contratado", "contrató", "contratados", "contrata", "contratada", "contraten", "contratan", "contrataron"]}
-{"lemma": "alianza", "pos": "sustantivo", "rank": 1453, "forms": ["alianza", "alianzas"]}
-{"lemma": "ampliar", "pos": "verbo", "rank": 1454, "forms": ["ampliar", "amplió", "ampliado", "amplía", "ampliará", "ampliando", "ampliaron"]}
-{"lemma": "faltar", "pos": "verbo", "rank": 1455, "forms": ["faltan", "faltó", "faltar", "faltaba", "faltado", "faltaban", "faltando", "faltaron", "falto"]}
-{"lemma": "fijar", "pos": "verbo", "rank": 1456, "forms": ["fijado", "fijar", "fijó", "fijada", "fijan", "fijarse", "fijados", "fije", "fijará", "fijaron"]}
-{"lemma": "conclusión", "pos": "sustantivo", "rank": 1457, "forms": ["conclusión", "conclusiones"]}
-{"lemma": "reforzar", "pos": "verbo", "rank": 1458, "forms": ["reforzar", "reforzado", "refuerza", "reforzará", "reforzó", "reforzada", "refuerzan", "reforzando"]}
-{"lemma": "andaluz", "pos": "adjetivo", "rank": 1459, "forms": ["andaluz", "andaluces", "andaluza", "andaluzas"]}
-{"lemma": "facilitar", "pos": "verbo", "rank": 1460, "forms": ["facilitar", "facilita", "facilitado", "facilitó", "facilitan", "facilite", "facilitará", "facilitados", "facilitando", "facilitada"]}
-{"lemma": "empate", "pos": "sustantivo", "rank": 1461, "forms": ["empate", "empates"]}
-{"lemma": "huelga", "pos": "sustantivo", "rank": 1462, "forms": ["huelga", "huelgas"]}
-{"lemma": "operador", "pos": "sustantivo", "rank": 1463, "forms": ["operadores", "operador", "operadora"]}
-{"lemma": "cualquiera", "pos": "pronombre", "rank": 1464, "forms": ["cualquiera"]}
-{"lemma": "probablemente", "pos": "adverbio", "rank": 1465, "forms": ["probablemente"]}
-{"lemma": "fallo", "pos": "sustantivo", "rank": 1466, "forms": ["fallo", "fallos"]}
-{"lemma": "aliado", "pos": "sustantivo", "rank": 1467, "forms": ["aliados", "aliado", "aliada", "aliadas"]}
-{"lemma": "regreso", "pos": "sustantivo", "rank": 1468, "forms": ["regreso"]}
-{"lemma": "entorno", "pos": "sustantivo", "rank": 1469, "forms": ["entorno", "entornos"]}
-{"lemma": "encuesta", "pos": "sustantivo", "rank": 1470, "forms": ["encuestas", "encuesta"]}
-{"lemma": "delegado", "pos": "sustantivo", "rank": 1471, "forms": ["delegado", "delegados", "delegada"]}
-{"lemma": "abuso", "pos": "sustantivo", "rank": 1472, "forms": ["abuso", "abusos"]}
-{"lemma": "grabar", "pos": "verbo", "rank": 1473, "forms": ["grabar", "grabado", "grabó", "grabada", "graba", "grabaron", "grabadas", "grabando"]}
-{"lemma": "poseer", "pos": "verbo", "rank": 1474, "forms": ["posee", "poseen", "poseer", "poseía"]}
-{"lemma": "sentar", "pos": "verbo", "rank": 1475, "forms": ["sentado", "sentarse", "sientan", "sentada", "sentar", "sentó", "sentados", "sentadas"]}
-{"lemma": "perro", "pos": "sustantivo", "rank": 1476, "forms": ["perro", "perros"]}
-{"lemma": "intenso", "pos": "adjetivo", "rank": 1477, "forms": ["intenso", "intensa", "intensas", "intensos"]}
-{"lemma": "ropa", "pos": "sustantivo", "rank": 1478, "forms": ["ropa", "ropas"]}
-{"lemma": "teatro", "pos": "sustantivo", "rank": 1479, "forms": ["teatro", "teatros"]}
-{"lemma": "escándalo", "pos": "sustantivo", "rank": 1480, "forms": ["escándalo", "escándalos"]}
-{"lemma": "interesar", "pos": "verbo", "rank": 1481, "forms": ["interesa", "interesar", "interesó", "interesan", "interesaba", "interese", "interesarse"]}
-{"lemma": "moneda", "pos": "sustantivo", "rank": 1482, "forms": ["moneda", "monedas"]}
-{"lemma": "otorgar", "pos": "verbo", "rank": 1483, "forms": ["otorga", "otorgado", "otorgó", "otorgar", "otorgan", "otorgados", "otorgada", "otorgaron", "otorgará"]}
-{"lemma": "centrar", "pos": "verbo", "rank": 1484, "forms": ["centrado", "centra", "centrarse", "centró", "centrada", "centrará", "centran", "centrar", "centraron", "centradas"]}
-{"lemma": "cantar", "pos": "verbo", "rank": 1485, "forms": ["cantar", "canta", "cantando", "cantó", "cantan", "cantaba", "cante", "cantado", "cantaron"]}
-{"lemma": "confesar", "pos": "verbo", "rank": 1486, "forms": ["confesó", "confiesa", "confesado", "confesar", "confesaron"]}
-{"lemma": "conectar", "pos": "verbo", "rank": 1487, "forms": ["conectó", "conectar", "conectado", "conecta", "conectarse", "conectan", "conectaron"]}
-{"lemma": "jamás", "pos": "adverbio", "rank": 1488, "forms": ["jamás", "jamas"]}
-{"lemma": "obligación", "pos": "sustantivo", "rank": 1489, "forms": ["obligación", "obligaciones"]}
-{"lemma": "describir", "pos": "verbo", "rank": 1490, "forms": ["describe", "describió", "describir", "descrito", "describen", "descrita", "describieron"]}
-{"lemma": "matrimonio", "pos": "sustantivo", "rank": 1491, "forms": ["matrimonio", "matrimonios"]}
-{"lemma": "concurso", "pos": "sustantivo", "rank": 1492, "forms": ["concurso", "concursos"]}
-{"lemma": "celebración", "pos": "sustantivo", "rank": 1493, "forms": ["celebración", "celebraciones"]}
-{"lemma": "preso", "pos": "sustantivo", "rank": 1494, "forms": ["presos", "preso"]}
-{"lemma": "regla", "pos": "sustantivo", "rank": 1495, "forms": ["reglas", "regla"]}
-{"lemma": "cuidado", "pos": "sustantivo", "rank": 1496, "forms": ["cuidado", "cuidados"]}
-{"lemma": "comparar", "pos": "verbo", "rank": 1497, "forms": ["comparado", "comparar", "compara", "comparó", "comparan", "comparada", "comparando", "comparamos", "comparados"]}
-{"lemma": "vocero", "pos": "sustantivo", "rank": 1498, "forms": ["vocero", "vocera", "voceros"]}
-{"lemma": "fenómeno", "pos": "sustantivo", "rank": 1499, "forms": ["fenómeno", "fenómenos"]}
-{"lemma": "sensación", "pos": "sustantivo", "rank": 1500, "forms": ["sensación", "sensaciones"]}
-{"lemma": "aficionado", "pos": "sustantivo", "rank": 1501, "forms": ["aficionados", "aficionado"]}
-{"lemma": "diseñar", "pos": "verbo", "rank": 1502, "forms": ["diseñado", "diseñar", "diseñada", "diseñó", "diseñados", "diseñadas"]}
-{"lemma": "concepto", "pos": "sustantivo", "rank": 1503, "forms": ["concepto", "conceptos"]}
-{"lemma": "tamaño", "pos": "sustantivo", "rank": 1504, "forms": ["tamaño", "tamaños"]}
-{"lemma": "pegar", "pos": "verbo", "rank": 1505, "forms": ["pegó", "pega", "pegado", "pegar", "pegada", "pegaron", "pegados", "pegan", "pegarle", "pegando"]}
-{"lemma": "imaginar", "pos": "verbo", "rank": 1506, "forms": ["imaginar", "imagino", "imagina", "imaginado", "imaginaba", "imaginé", "imaginó", "imaginan", "imaginarse"]}
-{"lemma": "identidad", "pos": "sustantivo", "rank": 1507, "forms": ["identidad", "identidades"]}
-{"lemma": "pasajero", "pos": "sustantivo", "rank": 1508, "forms": ["pasajeros", "pasajero"]}
-{"lemma": "vasco", "pos": "adjetivo", "rank": 1509, "forms": ["vasco", "vasca", "vascos", "vascas"]}
-{"lemma": "playa", "pos": "sustantivo", "rank": 1510, "forms": ["playa", "playas"]}
-{"lemma": "educativo", "pos": "adjetivo", "rank": 1511, "forms": ["educativo", "educativos", "educativa", "educativas"]}
-{"lemma": "condena", "pos": "sustantivo", "rank": 1512, "forms": ["condena", "condenas"]}
-{"lemma": "golpear", "pos": "verbo", "rank": 1513, "forms": ["golpeó", "golpeado", "golpear", "golpearon", "golpea", "golpeada", "golpeados", "golpeando", "golpean"]}
-{"lemma": "volumen", "pos": "sustantivo", "rank": 1514, "forms": ["volumen", "volúmenes"]}
-{"lemma": "conductor", "pos": "sustantivo", "rank": 1515, "forms": ["conductor", "conductores", "conductora"]}
-{"lemma": "embajador", "pos": "sustantivo", "rank": 1516, "forms": ["embajador", "embajadores", "embajadora"]}
-{"lemma": "campeonato", "pos": "sustantivo", "rank": 1517, "forms": ["campeonato", "campeonatos"]}
-{"lemma": "elaborar", "pos": "verbo", "rank": 1518, "forms": ["elaborado", "elaborar", "elaborada", "elabora", "elaborados", "elaboró", "elaboradas", "elaboran"]}
-{"lemma": "recientemente", "pos": "adverbio", "rank": 1519, "forms": ["recientemente"]}
-{"lemma": "músico", "pos": "sustantivo", "rank": 1520, "forms": ["músicos", "músico"]}
-{"lemma": "choque", "pos": "sustantivo", "rank": 1521, "forms": ["choque", "choques"]}
-{"lemma": "destruir", "pos": "verbo", "rank": 1522, "forms": ["destruir", "destruido", "destruyó", "destruidos", "destruidas", "destruyeron", "destruye", "destruyendo", "destruyen"]}
-{"lemma": "nombrar", "pos": "verbo", "rank": 1523, "forms": ["nombrado", "nombrar", "nombró", "nombrada", "nombrados", "nombra"]}
-{"lemma": "mando", "pos": "sustantivo", "rank": 1524, "forms": ["mando", "mandos"]}
-{"lemma": "ahorro", "pos": "sustantivo", "rank": 1525, "forms": ["ahorro", "ahorros"]}
-{"lemma": "bandera", "pos": "sustantivo", "rank": 1526, "forms": ["bandera", "banderas"]}
-{"lemma": "inversor", "pos": "sustantivo", "rank": 1527, "forms": ["inversores", "inversor"]}
-{"lemma": "liderar", "pos": "verbo", "rank": 1528, "forms": ["lidera", "liderado", "liderar", "liderada", "lideró", "liderando", "liderados", "lideran"]}
-{"lemma": "kilo", "pos": "sustantivo", "rank": 1529, "forms": ["kilos", "kilo"]}
-{"lemma": "publicación", "pos": "sustantivo", "rank": 1530, "forms": ["publicación", "publicaciones"]}
-{"lemma": "ciencia", "pos": "sustantivo", "rank": 1531, "forms": ["ciencia", "ciencias"]}
-{"lemma": "desplazar", "pos": "verbo", "rank": 1532, "forms": ["desplazados", "desplazado", "desplazarse", "desplazó", "desplazar", "desplazaron", "desplaza", "desplazadas", "desplazaba", "desplazan", "desplazaban"]}
-{"lemma": "calcular", "pos": "verbo", "rank": 1533, "forms": ["calcula", "calcular", "calculado", "calculó", "calculan", "calculada"]}
-{"lemma": "tirar", "pos": "verbo", "rank": 1534, "forms": ["tirar", "tiró", "tira", "tirado", "tirando", "tiran", "tiraron", "tirarse"]}
-{"lemma": "marcador", "pos": "sustantivo", "rank": 1535, "forms": ["marcador", "marcadores"]}
-{"lemma": "publicidad", "pos": "sustantivo", "rank": 1536, "forms": ["publicidad"]}
-{"lemma": "comprobar", "pos": "verbo", "rank": 1537, "forms": ["comprobar", "comprobado", "comprobó", "comprobaron", "comprueba", "comprobarlo"]}
-{"lemma": "género", "pos": "sustantivo", "rank": 1538, "forms": ["género", "géneros"]}
-{"lemma": "vicepresidente", "pos": "sustantivo", "rank": 1539, "forms": ["vicepresidente"]}
-{"lemma": "pobreza", "pos": "sustantivo", "rank": 1540, "forms": ["pobreza"]}
-{"lemma": "sexo", "pos": "sustantivo", "rank": 1541, "forms": ["sexo", "sexos"]}
-{"lemma": "jurídico", "pos": "adjetivo", "rank": 1542, "forms": ["jurídica", "jurídico", "jurídicos", "jurídicas"]}
-{"lemma": "andar", "pos": "verbo", "rank": 1543, "forms": ["anda", "andar", "andan", "andaba", "andando", "ando", "anduvo"]}
-{"lemma": "conexión", "pos": "sustantivo", "rank": 1544, "forms": ["conexión", "conexiones"]}
-{"lemma": "prioridad", "pos": "sustantivo", "rank": 1545, "forms": ["prioridad", "prioridades"]}
-{"lemma": "comicio", "pos": "sustantivo", "rank": 1546, "forms": ["comicios"]}
-{"lemma": "semifinal", "pos": "sustantivo", "rank": 1547, "forms": ["semifinales", "semifinal"]}
-{"lemma": "enemigo", "pos": "sustantivo", "rank": 1548, "forms": ["enemigo", "enemigos"]}
-{"lemma": "archivo", "pos": "sustantivo", "rank": 1549, "forms": ["archivos", "archivo"]}
-{"lemma": "apertura", "pos": "sustantivo", "rank": 1550, "forms": ["apertura", "aperturas"]}
-{"lemma": "sospechoso", "pos": "adjetivo", "rank": 1551, "forms": ["sospechoso", "sospechosos", "sospechosa", "sospechosas"]}
-{"lemma": "autorizar", "pos": "verbo", "rank": 1552, "forms": ["autorizado", "autorizó", "autorizados", "autorizada", "autoriza", "autorizar", "autorizadas", "autorice"]}
+{"lemma": "inicial", "pos": "adjetivo", "rank": 1402, "forms": ["inicial", "iniciales"]}
+{"lemma": "rey", "pos": "sustantivo", "rank": 1403, "forms": ["rey", "reyes"]}
+{"lemma": "probar", "pos": "verbo", "rank": 1404, "forms": ["probar", "probado", "probó", "probarlo", "probaron", "probando", "prueban", "probada"]}
+{"lemma": "interpretar", "pos": "verbo", "rank": 1405, "forms": ["interpretar", "interpreta", "interpretó", "interpretado", "interpretada", "interpretará", "interpretando", "interpretan", "interpretaron"]}
+{"lemma": "violento", "pos": "adjetivo", "rank": 1406, "forms": ["violentos", "violenta", "violento", "violentas"]}
+{"lemma": "huir", "pos": "verbo", "rank": 1407, "forms": ["huir", "huyó", "huyeron", "huyendo", "huido", "huyen", "huye"]}
+{"lemma": "tendencia", "pos": "sustantivo", "rank": 1408, "forms": ["tendencia", "tendencias"]}
+{"lemma": "durar", "pos": "verbo", "rank": 1409, "forms": ["duró", "durar", "durará", "durado", "dure", "duran", "duraron"]}
+{"lemma": "espectáculo", "pos": "sustantivo", "rank": 1410, "forms": ["espectáculo", "espectáculos"]}
+{"lemma": "meta", "pos": "sustantivo", "rank": 1411, "forms": ["meta", "metas"]}
+{"lemma": "convencer", "pos": "verbo", "rank": 1412, "forms": ["convencido", "convencer", "convencida", "convenció", "convence"]}
+{"lemma": "culpa", "pos": "sustantivo", "rank": 1413, "forms": ["culpa", "culpas"]}
+{"lemma": "presidencia", "pos": "sustantivo", "rank": 1414, "forms": ["presidencia"]}
+{"lemma": "culpable", "pos": "adjetivo", "rank": 1415, "forms": ["culpable", "culpables"]}
+{"lemma": "prestar", "pos": "verbo", "rank": 1416, "forms": ["prestar", "prestado", "presta", "prestan", "prestó", "prestando", "prestaron", "prestará", "presten", "preste"]}
+{"lemma": "israelí", "pos": "adjetivo", "rank": 1417, "forms": ["israelí", "israelíes"]}
+{"lemma": "liga", "pos": "sustantivo", "rank": 1418, "forms": ["liga", "ligas"]}
+{"lemma": "episodio", "pos": "sustantivo", "rank": 1419, "forms": ["episodio", "episodios"]}
+{"lemma": "tropa", "pos": "sustantivo", "rank": 1420, "forms": ["tropas", "tropa"]}
+{"lemma": "parlamentario", "pos": "adjetivo", "rank": 1421, "forms": ["parlamentario", "parlamentarios", "parlamentaria", "parlamentarias"]}
+{"lemma": "adecuado", "pos": "adjetivo", "rank": 1422, "forms": ["adecuada", "adecuado", "adecuadas", "adecuados"]}
+{"lemma": "manejar", "pos": "verbo", "rank": 1423, "forms": ["manejar", "maneja", "manejan", "manejado", "manejando", "manejó", "manejaba"]}
+{"lemma": "división", "pos": "sustantivo", "rank": 1424, "forms": ["división", "divisiones"]}
+{"lemma": "puerto", "pos": "sustantivo", "rank": 1425, "forms": ["puerto", "puertos"]}
+{"lemma": "barco", "pos": "sustantivo", "rank": 1426, "forms": ["barco", "barcos"]}
+{"lemma": "chileno", "pos": "adjetivo", "rank": 1427, "forms": ["chileno", "chilena", "chilenos"]}
+{"lemma": "ganancia", "pos": "sustantivo", "rank": 1428, "forms": ["ganancias", "ganancia"]}
+{"lemma": "habitual", "pos": "adjetivo", "rank": 1429, "forms": ["habitual", "habituales"]}
+{"lemma": "violación", "pos": "sustantivo", "rank": 1430, "forms": ["violación", "violaciones"]}
+{"lemma": "ejército", "pos": "sustantivo", "rank": 1431, "forms": ["ejército", "ejércitos", "ejercito"]}
+{"lemma": "tarjeta", "pos": "sustantivo", "rank": 1432, "forms": ["tarjeta", "tarjetas"]}
+{"lemma": "expresión", "pos": "sustantivo", "rank": 1433, "forms": ["expresión", "expresiones"]}
+{"lemma": "difundir", "pos": "verbo", "rank": 1434, "forms": ["difundido", "difundir", "difundida", "difundió", "difundidas", "difunde", "difundidos", "difundieron"]}
+{"lemma": "ámbito", "pos": "sustantivo", "rank": 1435, "forms": ["ámbito", "ámbitos"]}
+{"lemma": "caber", "pos": "verbo", "rank": 1436, "forms": ["cabe", "caben", "cabía", "cabría"]}
+{"lemma": "perfecto", "pos": "adjetivo", "rank": 1437, "forms": ["perfecto", "perfecta", "perfectos", "perfectas"]}
+{"lemma": "infraestructura", "pos": "sustantivo", "rank": 1438, "forms": ["infraestructura", "infraestructuras"]}
+{"lemma": "sanitario", "pos": "adjetivo", "rank": 1439, "forms": ["sanitario", "sanitarios", "sanitaria", "sanitarias"]}
+{"lemma": "tono", "pos": "sustantivo", "rank": 1440, "forms": ["tono", "tonos"]}
+{"lemma": "frío", "pos": "sustantivo", "rank": 1441, "forms": ["frío", "fría", "fríos", "frías", "frio"]}
+{"lemma": "perfil", "pos": "sustantivo", "rank": 1442, "forms": ["perfil", "perfiles"]}
+{"lemma": "emisión", "pos": "sustantivo", "rank": 1443, "forms": ["emisión", "emisiones"]}
+{"lemma": "herramienta", "pos": "sustantivo", "rank": 1444, "forms": ["herramientas", "herramienta"]}
+{"lemma": "localizar", "pos": "verbo", "rank": 1445, "forms": ["localizado", "localizar", "localizados", "localizaron", "localizó", "localizada", "localiza", "localizadas"]}
+{"lemma": "departamento", "pos": "sustantivo", "rank": 1446, "forms": ["departamento", "departamentos"]}
+{"lemma": "colonia", "pos": "sustantivo", "rank": 1447, "forms": ["colonia", "colonias"]}
+{"lemma": "negociar", "pos": "verbo", "rank": 1448, "forms": ["negociar", "negociando", "negociado", "negocia", "negoció", "negocian", "negociada"]}
+{"lemma": "os", "pos": "pronombre", "rank": 1449, "forms": ["os"]}
+{"lemma": "contratar", "pos": "verbo", "rank": 1450, "forms": ["contratar", "contratado", "contrató", "contratados", "contrata", "contratada", "contraten", "contratan", "contrataron"]}
+{"lemma": "alianza", "pos": "sustantivo", "rank": 1451, "forms": ["alianza", "alianzas"]}
+{"lemma": "ampliar", "pos": "verbo", "rank": 1452, "forms": ["ampliar", "amplió", "ampliado", "amplía", "ampliará", "ampliando", "ampliaron"]}
+{"lemma": "faltar", "pos": "verbo", "rank": 1453, "forms": ["faltan", "faltó", "faltar", "faltaba", "faltado", "faltaban", "faltando", "faltaron", "falto"]}
+{"lemma": "fijar", "pos": "verbo", "rank": 1454, "forms": ["fijado", "fijar", "fijó", "fijada", "fijan", "fijarse", "fijados", "fije", "fijará", "fijaron"]}
+{"lemma": "conclusión", "pos": "sustantivo", "rank": 1455, "forms": ["conclusión", "conclusiones"]}
+{"lemma": "reforzar", "pos": "verbo", "rank": 1456, "forms": ["reforzar", "reforzado", "refuerza", "reforzará", "reforzó", "reforzada", "refuerzan", "reforzando"]}
+{"lemma": "andaluz", "pos": "adjetivo", "rank": 1457, "forms": ["andaluz", "andaluces", "andaluza", "andaluzas"]}
+{"lemma": "facilitar", "pos": "verbo", "rank": 1458, "forms": ["facilitar", "facilita", "facilitado", "facilitó", "facilitan", "facilite", "facilitará", "facilitados", "facilitando", "facilitada"]}
+{"lemma": "competir", "pos": "verbo", "rank": 1459, "forms": ["competir", "compite", "compiten", "competirá", "compitiendo", "competirán", "compitió"]}
+{"lemma": "empate", "pos": "sustantivo", "rank": 1460, "forms": ["empate", "empates"]}
+{"lemma": "huelga", "pos": "sustantivo", "rank": 1461, "forms": ["huelga", "huelgas"]}
+{"lemma": "operador", "pos": "sustantivo", "rank": 1462, "forms": ["operadores", "operador", "operadora"]}
+{"lemma": "cualquiera", "pos": "pronombre", "rank": 1463, "forms": ["cualquiera"]}
+{"lemma": "probablemente", "pos": "adverbio", "rank": 1464, "forms": ["probablemente"]}
+{"lemma": "fallo", "pos": "sustantivo", "rank": 1465, "forms": ["fallo", "fallos"]}
+{"lemma": "aliado", "pos": "sustantivo", "rank": 1466, "forms": ["aliados", "aliado", "aliada", "aliadas"]}
+{"lemma": "regreso", "pos": "sustantivo", "rank": 1467, "forms": ["regreso"]}
+{"lemma": "entorno", "pos": "sustantivo", "rank": 1468, "forms": ["entorno", "entornos"]}
+{"lemma": "encuesta", "pos": "sustantivo", "rank": 1469, "forms": ["encuestas", "encuesta"]}
+{"lemma": "delegado", "pos": "sustantivo", "rank": 1470, "forms": ["delegado", "delegados", "delegada"]}
+{"lemma": "abuso", "pos": "sustantivo", "rank": 1471, "forms": ["abuso", "abusos"]}
+{"lemma": "grabar", "pos": "verbo", "rank": 1472, "forms": ["grabar", "grabado", "grabó", "grabada", "graba", "grabaron", "grabadas", "grabando"]}
+{"lemma": "poseer", "pos": "verbo", "rank": 1473, "forms": ["posee", "poseen", "poseer", "poseía"]}
+{"lemma": "sentar", "pos": "verbo", "rank": 1474, "forms": ["sentado", "sentarse", "sientan", "sentada", "sentar", "sentó", "sentados", "sentadas"]}
+{"lemma": "perro", "pos": "sustantivo", "rank": 1475, "forms": ["perro", "perros"]}
+{"lemma": "intenso", "pos": "adjetivo", "rank": 1476, "forms": ["intenso", "intensa", "intensas", "intensos"]}
+{"lemma": "ropa", "pos": "sustantivo", "rank": 1477, "forms": ["ropa", "ropas"]}
+{"lemma": "teatro", "pos": "sustantivo", "rank": 1478, "forms": ["teatro", "teatros"]}
+{"lemma": "escándalo", "pos": "sustantivo", "rank": 1479, "forms": ["escándalo", "escándalos"]}
+{"lemma": "interesar", "pos": "verbo", "rank": 1480, "forms": ["interesa", "interesar", "interesó", "interesan", "interesaba", "interese", "interesarse"]}
+{"lemma": "moneda", "pos": "sustantivo", "rank": 1481, "forms": ["moneda", "monedas"]}
+{"lemma": "otorgar", "pos": "verbo", "rank": 1482, "forms": ["otorga", "otorgado", "otorgó", "otorgar", "otorgan", "otorgados", "otorgada", "otorgaron", "otorgará"]}
+{"lemma": "centrar", "pos": "verbo", "rank": 1483, "forms": ["centrado", "centra", "centrarse", "centró", "centrada", "centrará", "centran", "centrar", "centraron", "centradas"]}
+{"lemma": "cantar", "pos": "verbo", "rank": 1484, "forms": ["cantar", "canta", "cantando", "cantó", "cantan", "cantaba", "cante", "cantado", "cantaron"]}
+{"lemma": "confesar", "pos": "verbo", "rank": 1485, "forms": ["confesó", "confiesa", "confesado", "confesar", "confesaron"]}
+{"lemma": "conectar", "pos": "verbo", "rank": 1486, "forms": ["conectó", "conectar", "conectado", "conecta", "conectarse", "conectan", "conectaron"]}
+{"lemma": "jamás", "pos": "adverbio", "rank": 1487, "forms": ["jamás", "jamas"]}
+{"lemma": "obligación", "pos": "sustantivo", "rank": 1488, "forms": ["obligación", "obligaciones"]}
+{"lemma": "describir", "pos": "verbo", "rank": 1489, "forms": ["describe", "describió", "describir", "descrito", "describen", "descrita", "describieron"]}
+{"lemma": "matrimonio", "pos": "sustantivo", "rank": 1490, "forms": ["matrimonio", "matrimonios"]}
+{"lemma": "concurso", "pos": "sustantivo", "rank": 1491, "forms": ["concurso", "concursos"]}
+{"lemma": "celebración", "pos": "sustantivo", "rank": 1492, "forms": ["celebración", "celebraciones"]}
+{"lemma": "preso", "pos": "sustantivo", "rank": 1493, "forms": ["presos", "preso"]}
+{"lemma": "regla", "pos": "sustantivo", "rank": 1494, "forms": ["reglas", "regla"]}
+{"lemma": "cuidado", "pos": "sustantivo", "rank": 1495, "forms": ["cuidado", "cuidados"]}
+{"lemma": "comparar", "pos": "verbo", "rank": 1496, "forms": ["comparado", "comparar", "compara", "comparó", "comparan", "comparada", "comparando", "comparamos", "comparados"]}
+{"lemma": "vocero", "pos": "sustantivo", "rank": 1497, "forms": ["vocero", "vocera", "voceros"]}
+{"lemma": "fenómeno", "pos": "sustantivo", "rank": 1498, "forms": ["fenómeno", "fenómenos"]}
+{"lemma": "sensación", "pos": "sustantivo", "rank": 1499, "forms": ["sensación", "sensaciones"]}
+{"lemma": "aficionado", "pos": "sustantivo", "rank": 1500, "forms": ["aficionados", "aficionado"]}
+{"lemma": "diseñar", "pos": "verbo", "rank": 1501, "forms": ["diseñado", "diseñar", "diseñada", "diseñó", "diseñados", "diseñadas"]}
+{"lemma": "concepto", "pos": "sustantivo", "rank": 1502, "forms": ["concepto", "conceptos"]}
+{"lemma": "tamaño", "pos": "sustantivo", "rank": 1503, "forms": ["tamaño", "tamaños"]}
+{"lemma": "pegar", "pos": "verbo", "rank": 1504, "forms": ["pegó", "pega", "pegado", "pegar", "pegada", "pegaron", "pegados", "pegan", "pegarle", "pegando"]}
+{"lemma": "imaginar", "pos": "verbo", "rank": 1505, "forms": ["imaginar", "imagino", "imagina", "imaginado", "imaginaba", "imaginé", "imaginó", "imaginan", "imaginarse"]}
+{"lemma": "identidad", "pos": "sustantivo", "rank": 1506, "forms": ["identidad", "identidades"]}
+{"lemma": "pasajero", "pos": "sustantivo", "rank": 1507, "forms": ["pasajeros", "pasajero"]}
+{"lemma": "vasco", "pos": "adjetivo", "rank": 1508, "forms": ["vasco", "vasca", "vascos", "vascas"]}
+{"lemma": "playa", "pos": "sustantivo", "rank": 1509, "forms": ["playa", "playas"]}
+{"lemma": "educativo", "pos": "adjetivo", "rank": 1510, "forms": ["educativo", "educativos", "educativa", "educativas"]}
+{"lemma": "condena", "pos": "sustantivo", "rank": 1511, "forms": ["condena", "condenas"]}
+{"lemma": "golpear", "pos": "verbo", "rank": 1512, "forms": ["golpeó", "golpeado", "golpear", "golpearon", "golpea", "golpeada", "golpeados", "golpeando", "golpean"]}
+{"lemma": "volumen", "pos": "sustantivo", "rank": 1513, "forms": ["volumen", "volúmenes"]}
+{"lemma": "conductor", "pos": "sustantivo", "rank": 1514, "forms": ["conductor", "conductores", "conductora"]}
+{"lemma": "embajador", "pos": "sustantivo", "rank": 1515, "forms": ["embajador", "embajadores", "embajadora"]}
+{"lemma": "campeonato", "pos": "sustantivo", "rank": 1516, "forms": ["campeonato", "campeonatos"]}
+{"lemma": "elaborar", "pos": "verbo", "rank": 1517, "forms": ["elaborado", "elaborar", "elaborada", "elabora", "elaborados", "elaboró", "elaboradas", "elaboran"]}
+{"lemma": "recientemente", "pos": "adverbio", "rank": 1518, "forms": ["recientemente"]}
+{"lemma": "músico", "pos": "sustantivo", "rank": 1519, "forms": ["músicos", "músico"]}
+{"lemma": "choque", "pos": "sustantivo", "rank": 1520, "forms": ["choque", "choques"]}
+{"lemma": "destruir", "pos": "verbo", "rank": 1521, "forms": ["destruir", "destruido", "destruyó", "destruidos", "destruidas", "destruyeron", "destruye", "destruyendo", "destruyen"]}
+{"lemma": "nombrar", "pos": "verbo", "rank": 1522, "forms": ["nombrado", "nombrar", "nombró", "nombrada", "nombrados", "nombra"]}
+{"lemma": "mando", "pos": "sustantivo", "rank": 1523, "forms": ["mando", "mandos"]}
+{"lemma": "ahorro", "pos": "sustantivo", "rank": 1524, "forms": ["ahorro", "ahorros"]}
+{"lemma": "bandera", "pos": "sustantivo", "rank": 1525, "forms": ["bandera", "banderas"]}
+{"lemma": "inversor", "pos": "sustantivo", "rank": 1526, "forms": ["inversores", "inversor"]}
+{"lemma": "liderar", "pos": "verbo", "rank": 1527, "forms": ["lidera", "liderado", "liderar", "liderada", "lideró", "liderando", "liderados", "lideran"]}
+{"lemma": "kilo", "pos": "sustantivo", "rank": 1528, "forms": ["kilos", "kilo"]}
+{"lemma": "publicación", "pos": "sustantivo", "rank": 1529, "forms": ["publicación", "publicaciones"]}
+{"lemma": "ciencia", "pos": "sustantivo", "rank": 1530, "forms": ["ciencia", "ciencias"]}
+{"lemma": "desplazar", "pos": "verbo", "rank": 1531, "forms": ["desplazados", "desplazado", "desplazarse", "desplazó", "desplazar", "desplazaron", "desplaza", "desplazadas", "desplazaba", "desplazan", "desplazaban"]}
+{"lemma": "calcular", "pos": "verbo", "rank": 1532, "forms": ["calcula", "calcular", "calculado", "calculó", "calculan", "calculada"]}
+{"lemma": "tirar", "pos": "verbo", "rank": 1533, "forms": ["tirar", "tiró", "tira", "tirado", "tirando", "tiran", "tiraron", "tirarse"]}
+{"lemma": "marcador", "pos": "sustantivo", "rank": 1534, "forms": ["marcador", "marcadores"]}
+{"lemma": "publicidad", "pos": "sustantivo", "rank": 1535, "forms": ["publicidad"]}
+{"lemma": "comprobar", "pos": "verbo", "rank": 1536, "forms": ["comprobar", "comprobado", "comprobó", "comprobaron", "comprueba", "comprobarlo"]}
+{"lemma": "género", "pos": "sustantivo", "rank": 1537, "forms": ["género", "géneros"]}
+{"lemma": "vicepresidente", "pos": "sustantivo", "rank": 1538, "forms": ["vicepresidente"]}
+{"lemma": "pobreza", "pos": "sustantivo", "rank": 1539, "forms": ["pobreza"]}
+{"lemma": "sexo", "pos": "sustantivo", "rank": 1540, "forms": ["sexo", "sexos"]}
+{"lemma": "jurídico", "pos": "adjetivo", "rank": 1541, "forms": ["jurídica", "jurídico", "jurídicos", "jurídicas"]}
+{"lemma": "andar", "pos": "verbo", "rank": 1542, "forms": ["anda", "andar", "andan", "andaba", "andando", "ando", "anduvo"]}
+{"lemma": "conexión", "pos": "sustantivo", "rank": 1543, "forms": ["conexión", "conexiones"]}
+{"lemma": "prioridad", "pos": "sustantivo", "rank": 1544, "forms": ["prioridad", "prioridades"]}
+{"lemma": "comicio", "pos": "sustantivo", "rank": 1545, "forms": ["comicios"]}
+{"lemma": "semifinal", "pos": "sustantivo", "rank": 1546, "forms": ["semifinales", "semifinal"]}
+{"lemma": "enemigo", "pos": "sustantivo", "rank": 1547, "forms": ["enemigo", "enemigos"]}
+{"lemma": "archivo", "pos": "sustantivo", "rank": 1548, "forms": ["archivos", "archivo"]}
+{"lemma": "apertura", "pos": "sustantivo", "rank": 1549, "forms": ["apertura", "aperturas"]}
+{"lemma": "sospechoso", "pos": "adjetivo", "rank": 1550, "forms": ["sospechoso", "sospechosos", "sospechosa", "sospechosas"]}
+{"lemma": "autorizar", "pos": "verbo", "rank": 1551, "forms": ["autorizado", "autorizó", "autorizados", "autorizada", "autoriza", "autorizar", "autorizadas", "autorice"]}
+{"lemma": "bebé", "pos": "sustantivo", "rank": 1552, "forms": ["bebé", "bebés"]}
 {"lemma": "reto", "pos": "sustantivo", "rank": 1553, "forms": ["reto", "retos"]}
 {"lemma": "invitado", "pos": "sustantivo", "rank": 1554, "forms": ["invitados", "invitado", "invitada"]}
 {"lemma": "discusión", "pos": "sustantivo", "rank": 1555, "forms": ["discusión", "discusiones"]}
@@ -2633,49 +2633,49 @@
 {"lemma": "viajero", "pos": "sustantivo", "rank": 2633, "forms": ["viajeros", "viajero"]}
 {"lemma": "irregularidad", "pos": "sustantivo", "rank": 2634, "forms": ["irregularidades", "irregularidad"]}
 {"lemma": "climático", "pos": "adjetivo", "rank": 2635, "forms": ["climático", "climáticas", "climáticos"]}
-{"lemma": "estrecho", "pos": "adjetivo", "rank": 2636, "forms": ["estrecha", "estrecho", "estrechos", "estrechas"]}
-{"lemma": "remarcar", "pos": "verbo", "rank": 2637, "forms": ["remarcado", "remarcó", "remarca"]}
-{"lemma": "revolucionario", "pos": "adjetivo", "rank": 2638, "forms": ["revolucionario", "revolucionarios", "revolucionaria", "revolucionarias"]}
-{"lemma": "coger", "pos": "verbo", "rank": 2639, "forms": ["coger", "cogió", "cogido", "coge", "coja"]}
-{"lemma": "legítimo", "pos": "adjetivo", "rank": 2640, "forms": ["legítimo", "legítima", "legítimas", "legítimos"]}
-{"lemma": "incidencia", "pos": "sustantivo", "rank": 2641, "forms": ["incidencia", "incidencias"]}
-{"lemma": "ladrón", "pos": "sustantivo", "rank": 2642, "forms": ["ladrones", "ladrón"]}
-{"lemma": "atacante", "pos": "sustantivo", "rank": 2643, "forms": ["atacante", "atacantes"]}
-{"lemma": "veterano", "pos": "sustantivo", "rank": 2644, "forms": ["veterano", "veteranos", "veterana"]}
-{"lemma": "informativo", "pos": "sustantivo", "rank": 2645, "forms": ["informativo", "informativa", "informativos", "informativas"]}
-{"lemma": "paralelo", "pos": "adjetivo", "rank": 2646, "forms": ["paralelo", "paralela", "paralelas", "paralelos"]}
-{"lemma": "equilibrio", "pos": "sustantivo", "rank": 2647, "forms": ["equilibrio"]}
-{"lemma": "rodilla", "pos": "sustantivo", "rank": 2648, "forms": ["rodilla", "rodillas"]}
-{"lemma": "foco", "pos": "sustantivo", "rank": 2649, "forms": ["foco", "focos"]}
-{"lemma": "indocumentado", "pos": "adjetivo", "rank": 2650, "forms": ["indocumentados", "indocumentado", "indocumentada"]}
-{"lemma": "triple", "pos": "adjetivo", "rank": 2651, "forms": ["triple", "triples"]}
-{"lemma": "docente", "pos": "sustantivo", "rank": 2652, "forms": ["docentes", "docente"]}
-{"lemma": "agrícola", "pos": "adjetivo", "rank": 2653, "forms": ["agrícola", "agrícolas"]}
-{"lemma": "relativo", "pos": "adjetivo", "rank": 2654, "forms": ["relativa", "relativo", "relativas", "relativos"]}
-{"lemma": "severo", "pos": "adjetivo", "rank": 2655, "forms": ["severa", "severas", "severo", "severos"]}
-{"lemma": "primavera", "pos": "sustantivo", "rank": 2656, "forms": ["primavera"]}
-{"lemma": "igualmente", "pos": "adverbio", "rank": 2657, "forms": ["igualmente"]}
-{"lemma": "regulación", "pos": "sustantivo", "rank": 2658, "forms": ["regulación", "regulaciones"]}
-{"lemma": "reportero", "pos": "sustantivo", "rank": 2659, "forms": ["reporteros", "reportero", "reportera"]}
-{"lemma": "guía", "pos": "sustantivo", "rank": 2660, "forms": ["guía", "guías"]}
-{"lemma": "facilidad", "pos": "sustantivo", "rank": 2661, "forms": ["facilidad", "facilidades"]}
-{"lemma": "sudamericano", "pos": "adjetivo", "rank": 2662, "forms": ["sudamericano", "sudamericanos", "sudamericana", "sudamericanas"]}
-{"lemma": "motivar", "pos": "verbo", "rank": 2663, "forms": ["motivado", "motivó", "motiva", "motivada", "motivar", "motivados"]}
-{"lemma": "valoración", "pos": "sustantivo", "rank": 2664, "forms": ["valoración", "valoraciones"]}
-{"lemma": "abuelo", "pos": "sustantivo", "rank": 2665, "forms": ["abuelo", "abuelos"]}
-{"lemma": "leve", "pos": "adjetivo", "rank": 2666, "forms": ["leve", "leves"]}
-{"lemma": "barra", "pos": "sustantivo", "rank": 2667, "forms": ["barra", "barras"]}
-{"lemma": "sancionar", "pos": "verbo", "rank": 2668, "forms": ["sancionado", "sancionar", "sancionados", "sancionada", "sancionó"]}
-{"lemma": "disturbio", "pos": "sustantivo", "rank": 2669, "forms": ["disturbios"]}
-{"lemma": "creativo", "pos": "adjetivo", "rank": 2670, "forms": ["creativo", "creativa", "creativos", "creativas"]}
-{"lemma": "provisional", "pos": "adjetivo", "rank": 2671, "forms": ["provisional", "provisionales"]}
-{"lemma": "especulación", "pos": "sustantivo", "rank": 2672, "forms": ["especulación", "especulaciones"]}
-{"lemma": "tableta", "pos": "sustantivo", "rank": 2673, "forms": ["tableta", "tabletas"]}
-{"lemma": "públicamente", "pos": "adverbio", "rank": 2674, "forms": ["públicamente"]}
-{"lemma": "cuello", "pos": "sustantivo", "rank": 2675, "forms": ["cuello"]}
-{"lemma": "subasta", "pos": "sustantivo", "rank": 2676, "forms": ["subasta", "subastas"]}
-{"lemma": "contaminación", "pos": "sustantivo", "rank": 2677, "forms": ["contaminación"]}
-{"lemma": "convenir", "pos": "verbo", "rank": 2678, "forms": ["conviene", "conviven", "convenga"]}
+{"lemma": "beber", "pos": "verbo", "rank": 2636, "forms": ["beber", "bebe", "bebiendo", "beben", "bebido"]}
+{"lemma": "estrecho", "pos": "adjetivo", "rank": 2637, "forms": ["estrecha", "estrecho", "estrechos", "estrechas"]}
+{"lemma": "remarcar", "pos": "verbo", "rank": 2638, "forms": ["remarcado", "remarcó", "remarca"]}
+{"lemma": "revolucionario", "pos": "adjetivo", "rank": 2639, "forms": ["revolucionario", "revolucionarios", "revolucionaria", "revolucionarias"]}
+{"lemma": "coger", "pos": "verbo", "rank": 2640, "forms": ["coger", "cogió", "cogido", "coge", "coja"]}
+{"lemma": "legítimo", "pos": "adjetivo", "rank": 2641, "forms": ["legítimo", "legítima", "legítimas", "legítimos"]}
+{"lemma": "incidencia", "pos": "sustantivo", "rank": 2642, "forms": ["incidencia", "incidencias"]}
+{"lemma": "ladrón", "pos": "sustantivo", "rank": 2643, "forms": ["ladrones", "ladrón"]}
+{"lemma": "atacante", "pos": "sustantivo", "rank": 2644, "forms": ["atacante", "atacantes"]}
+{"lemma": "veterano", "pos": "sustantivo", "rank": 2645, "forms": ["veterano", "veteranos", "veterana"]}
+{"lemma": "informativo", "pos": "sustantivo", "rank": 2646, "forms": ["informativo", "informativa", "informativos", "informativas"]}
+{"lemma": "paralelo", "pos": "adjetivo", "rank": 2647, "forms": ["paralelo", "paralela", "paralelas", "paralelos"]}
+{"lemma": "equilibrio", "pos": "sustantivo", "rank": 2648, "forms": ["equilibrio"]}
+{"lemma": "rodilla", "pos": "sustantivo", "rank": 2649, "forms": ["rodilla", "rodillas"]}
+{"lemma": "foco", "pos": "sustantivo", "rank": 2650, "forms": ["foco", "focos"]}
+{"lemma": "indocumentado", "pos": "adjetivo", "rank": 2651, "forms": ["indocumentados", "indocumentado", "indocumentada"]}
+{"lemma": "triple", "pos": "adjetivo", "rank": 2652, "forms": ["triple", "triples"]}
+{"lemma": "docente", "pos": "sustantivo", "rank": 2653, "forms": ["docentes", "docente"]}
+{"lemma": "agrícola", "pos": "adjetivo", "rank": 2654, "forms": ["agrícola", "agrícolas"]}
+{"lemma": "relativo", "pos": "adjetivo", "rank": 2655, "forms": ["relativa", "relativo", "relativas", "relativos"]}
+{"lemma": "severo", "pos": "adjetivo", "rank": 2656, "forms": ["severa", "severas", "severo", "severos"]}
+{"lemma": "primavera", "pos": "sustantivo", "rank": 2657, "forms": ["primavera"]}
+{"lemma": "igualmente", "pos": "adverbio", "rank": 2658, "forms": ["igualmente"]}
+{"lemma": "regulación", "pos": "sustantivo", "rank": 2659, "forms": ["regulación", "regulaciones"]}
+{"lemma": "reportero", "pos": "sustantivo", "rank": 2660, "forms": ["reporteros", "reportero", "reportera"]}
+{"lemma": "guía", "pos": "sustantivo", "rank": 2661, "forms": ["guía", "guías"]}
+{"lemma": "facilidad", "pos": "sustantivo", "rank": 2662, "forms": ["facilidad", "facilidades"]}
+{"lemma": "sudamericano", "pos": "adjetivo", "rank": 2663, "forms": ["sudamericano", "sudamericanos", "sudamericana", "sudamericanas"]}
+{"lemma": "motivar", "pos": "verbo", "rank": 2664, "forms": ["motivado", "motivó", "motiva", "motivada", "motivar", "motivados"]}
+{"lemma": "valoración", "pos": "sustantivo", "rank": 2665, "forms": ["valoración", "valoraciones"]}
+{"lemma": "abuelo", "pos": "sustantivo", "rank": 2666, "forms": ["abuelo", "abuelos"]}
+{"lemma": "leve", "pos": "adjetivo", "rank": 2667, "forms": ["leve", "leves"]}
+{"lemma": "barra", "pos": "sustantivo", "rank": 2668, "forms": ["barra", "barras"]}
+{"lemma": "sancionar", "pos": "verbo", "rank": 2669, "forms": ["sancionado", "sancionar", "sancionados", "sancionada", "sancionó"]}
+{"lemma": "disturbio", "pos": "sustantivo", "rank": 2670, "forms": ["disturbios"]}
+{"lemma": "creativo", "pos": "adjetivo", "rank": 2671, "forms": ["creativo", "creativa", "creativos", "creativas"]}
+{"lemma": "provisional", "pos": "adjetivo", "rank": 2672, "forms": ["provisional", "provisionales"]}
+{"lemma": "especulación", "pos": "sustantivo", "rank": 2673, "forms": ["especulación", "especulaciones"]}
+{"lemma": "tableta", "pos": "sustantivo", "rank": 2674, "forms": ["tableta", "tabletas"]}
+{"lemma": "públicamente", "pos": "adverbio", "rank": 2675, "forms": ["públicamente"]}
+{"lemma": "cuello", "pos": "sustantivo", "rank": 2676, "forms": ["cuello"]}
+{"lemma": "subasta", "pos": "sustantivo", "rank": 2677, "forms": ["subasta", "subastas"]}
+{"lemma": "contaminación", "pos": "sustantivo", "rank": 2678, "forms": ["contaminación"]}
 {"lemma": "rato", "pos": "sustantivo", "rank": 2679, "forms": ["rato", "ratos"]}
 {"lemma": "seco", "pos": "adjetivo", "rank": 2680, "forms": ["seco", "seca", "secas", "secos"]}
 {"lemma": "ampliación", "pos": "sustantivo", "rank": 2681, "forms": ["ampliación"]}
@@ -2994,7 +2994,7 @@
 {"lemma": "navegador", "pos": "sustantivo", "rank": 2994, "forms": ["navegador", "navegadores"]}
 {"lemma": "preparado", "pos": "adjetivo", "rank": 2995, "forms": ["preparados", "preparadas"]}
 {"lemma": "psicológico", "pos": "adjetivo", "rank": 2996, "forms": ["psicológica", "psicológico", "psicológicos", "psicológicas"]}
-{"lemma": "televisor", "pos": "sustantivo", "rank": 2997, "forms": ["televisores", "televisor", "televisora"]}
-{"lemma": "comerciante", "pos": "sustantivo", "rank": 2998, "forms": ["comerciantes", "comerciante"]}
-{"lemma": "contemporáneo", "pos": "adjetivo", "rank": 2999, "forms": ["contemporáneo", "contemporánea", "contemporáneos"]}
-{"lemma": "conmigo", "pos": "pronombre", "rank": 3000, "forms": ["conmigo"]}
+{"lemma": "comerciante", "pos": "sustantivo", "rank": 2997, "forms": ["comerciantes", "comerciante"]}
+{"lemma": "contemporáneo", "pos": "adjetivo", "rank": 2998, "forms": ["contemporáneo", "contemporánea", "contemporáneos"]}
+{"lemma": "conmigo", "pos": "pronombre", "rank": 2999, "forms": ["conmigo"]}
+{"lemma": "endeudamiento", "pos": "sustantivo", "rank": 3000, "forms": ["endeudamiento"]}

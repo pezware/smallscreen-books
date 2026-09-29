@@ -52,3 +52,15 @@ turco	turco	adjetivo
 puesta	poner	verbo
 # Spellings of a two-word phrase: a headword is one word.
 osea	-
+# 2026-09-29, from the Wiktionary check of the 20,000-form list: the LLM
+# picked the wrong verb or word for these.
+conviven	convivir	verbo
+respecta	respectar	verbo
+pare	parar	verbo
+cause	causar	verbo
+cambiaria	cambiario	adjetivo
+compete	competer	verbo
+televisora	televisora	sustantivo
+ene	-
+# "bebe" is he/she drinks; the baby is "bebé", which has its own form.
+bebe	beber	verbo
