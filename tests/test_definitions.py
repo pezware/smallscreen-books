@@ -247,6 +247,11 @@ class Merge(unittest.TestCase):
         merged = definitions.merge(HEADWORDS[:1], existing)
         self.assertEqual([e["lemma"] for e in merged], ["casa"])
 
+    def test_the_part_of_speech_follows_the_headwords(self):
+        existing = {"casa": {"lemma": "casa", "pos": "verbo", "definition": "x"}}
+        (casa,) = definitions.merge(HEADWORDS[:1], existing)
+        self.assertEqual(casa["pos"], "sustantivo")
+
     def test_rank_and_forms_follow_the_headwords(self):
         existing = {
             "casa": {"lemma": "casa", "rank": 9, "forms": [], "definition": "x"}

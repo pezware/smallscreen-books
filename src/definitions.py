@@ -346,7 +346,14 @@ def merge(headwords: list[dict], existing: dict[str, dict]) -> list[dict]:
         if old is None:
             out.append(dict(headword))
         else:
-            out.append({**old, "rank": headword["rank"], "forms": headword["forms"]})
+            out.append(
+                {
+                    **old,
+                    "pos": headword["pos"],
+                    "rank": headword["rank"],
+                    "forms": headword["forms"],
+                }
+            )
     return out
 
 
