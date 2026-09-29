@@ -76,6 +76,10 @@ run = ["uv run ruff format --check .", "uv run ruff check ."]
 description = "Apply formatting"
 run = "uv run ruff format ."
 
+[tasks.fit-book]
+description = "Pages per entry of the built book at each font size (needs `mise run book` and `mise run fit-entry`)"
+run = "uv run python tools/fit/fit_book.py"
+
 [tasks.fit]
 description = "Measure how many lines Spanish prose takes, using the device's own line breaker"
 run = """

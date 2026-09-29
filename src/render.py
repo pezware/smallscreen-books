@@ -134,6 +134,13 @@ def entry_xhtml(entry: Entry) -> str:
 
 SOURCES_FILE = "sources.xhtml"
 
+# The book's own licence (data/LICENSE). CC BY 4.0 is the most open licence the
+# sources allow: they are CC BY, so every copy must keep their credits anyway.
+BOOK_LICENCE = {
+    "name": "CC BY 4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+}
+
 
 def _attr(value: str) -> str:
     """Escape for a double-quoted attribute; escape() alone leaves `"` bare."""
@@ -146,8 +153,8 @@ def sources_xhtml(sources: list[dict]) -> str:
     CC BY asks for the work, its licence, a link to the material and a note
     of changes (issue #21), and each `*.source.json` records exactly those
     fields. Plain headings, paragraphs and links, so it reads with the
-    stylesheet off. It names no licence for the book itself: that is still
-    Andy's to choose (README, "Licences").
+    stylesheet off. It ends with the book's own licence, which the sources'
+    licences allow and do not replace.
     """
     parts = ["    <h1>Fuentes</h1>"]
     for source in sources:
@@ -164,6 +171,12 @@ def sources_xhtml(sources: list[dict]) -> str:
         if source.get("contributors"):
             names = ", ".join(escape(n) for n in source["contributors"])
             parts.append(f"    <p>Colaboradores: {names}.</p>")
+    parts += [
+        "    <h2>Este libro</h2>",
+        f'    <p>Licencia: <a href="{_attr(BOOK_LICENCE["url"])}">'
+        f"{escape(BOOK_LICENCE['name'])}</a>. Las frases de ejemplo conservan "
+        "la licencia de su fuente.</p>",
+    ]
     body = "\n".join(parts)
     return (
         '<?xml version="1.0" encoding="utf-8"?>\n'
@@ -243,6 +256,7 @@ def content_opf(
         f'    <dc:identifier id="pub-id">{escape(identifier)}</dc:identifier>\n'
         f"    <dc:title>{escape(title)}</dc:title>\n"
         "    <dc:language>es</dc:language>\n"
+        f"    <dc:rights>{escape(BOOK_LICENCE['name'])}</dc:rights>\n"
         f"{dc_sources}"
         '    <meta property="dcterms:modified">2026-01-01T00:00:00Z</meta>\n'
         "  </metadata>\n"

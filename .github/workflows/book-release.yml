@@ -1,0 +1,41 @@
+# Publishes the current book where anyone can download it: the `latest`
+# release, rebuilt from main on every change. The README links straight to its
+# EPUB, so the link never goes stale.
+name: publish the book
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: book-release
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-mise
+
+      - name: Build the book
+        run: mise run book
+
+      - name: Check the archive is a well-formed EPUB
+        run: uv run python tools/check_epub.py build/es-wordbook.epub
+
+      # The release is recreated rather than updated, so its tag always points
+      # at the commit the book was built from.
+      - name: Publish as the latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --cleanup-tag --yes || true
+          gh release create latest build/es-wordbook.epub \
+            --target "$GITHUB_SHA" \
+            --title "Latest book" \
+            --notes "Built from ${GITHUB_SHA::7} on main. Replaced on every change."

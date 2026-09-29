@@ -214,13 +214,25 @@ Each stage lands in the same branch and the same pull request.
 4. **Render.** One XHTML file per word, letter-level TOC, zip, run epubcheck.
    Read `device-constraints.md` first — the CSS subset binds here.
    Done when: epubcheck passes and the book opens on the device.
+   Status, 2026-09-30: rendered, and `tools/check_epub.py` passes (no JVM here,
+   so no epubcheck). CI publishes the book as the `latest` release on every
+   push to `main`. Opening it on the device waits for Andy's X4 Pro.
 
 5. **Measure fit.** Build the host-side page counter against the real layout
    engine. Report the spill rate.
    Done when: the tool prints how many of the 3,000 entries need two pages.
+   Status, 2026-09-30: done. `mise run fit-book` reports 0 at sizes 12-16, 2 at
+   size 18 and 61 (2.0%) at size 18 with margin 40
+   (`device-constraints.md`). The 90-character budget stands.
 
 Stage 5 comes last because it tunes the character budget rather than gating the
-build. Move it earlier if the spill rate turns out to matter.
+build.
+
+Licence, decided by Andy on 2026-09-30: the most open terms the sources allow,
+so anyone may reuse the corpus and code. Code is MIT (`LICENSE`); data and
+books are CC BY 4.0 (`data/LICENSE`), since Leipzig and Tatoeba are CC BY
+themselves. Tatoeba sentences keep their CC BY 2.0 FR. A share-alike input
+would force CC BY-SA, so none is used.
 
 ## Later
 

@@ -27,7 +27,7 @@ mise run headwords-check  # compare with Wiktionary -> build/headwords-review.ts
 mise run headwords-refresh  # after frequency.txt changes: map, build, check, sync words.jsonl
 mise run definitions      # write missing or stale definitions via the LLM -> data/es/words.jsonl
 mise run definitions-check  # re-validate, no LLM -> build/definitions-review.tsv
-mise run examples           # fill missing examples from Tatoeba (needs the export in data/es/raw/)
+mise run examples           # fill missing examples from Tatoeba, then the Leipzig corpus (data/es/raw/)
 mise run examples-report    # entries short of two examples -> build/examples-report.tsv
 uv run python tools/pilot_definitions.py  # measure a prompt change on 50 headwords first
 uv run python tools/check_epub.py build/es-wordbook.epub   # structural EPUB check
@@ -37,7 +37,9 @@ Without mise: `python3 -m unittest discover -s tests -t tests`. Run one test
 with `python3 -m unittest discover -s tests -t tests -p test_render.py`.
 
 `mise run fit` and `mise run fit-entry` build the C++ tools in `tools/fit/`.
-Both need `CROSSPOINT_ROOT` set to a crosspoint-reader checkout.
+Both need `CROSSPOINT_ROOT` set to a crosspoint-reader checkout. After
+`mise run book` and `mise run fit-entry`, `mise run fit-book` counts the
+entries that need a continuation page at each font size.
 
 ## Layout
 
@@ -47,12 +49,12 @@ src/headwords.py   forms -> lemmas (LLM) -> data/es/headwords.jsonl, the 3,000 e
 src/llm.py         the only way to call an LLM: xAI broker, Anthropic API or agent files
 src/wiktionary.py  Wiktionary lemma pairs, for checking only -> data/es/raw/ (local)
 src/definitions.py headwords -> definitions (LLM), repaired and cached -> words.jsonl
-src/examples.py    Tatoeba -> two examples per entry, credited -> words.jsonl
+src/examples.py    Tatoeba, then Leipzig -> two examples per entry, credited -> words.jsonl
 src/render.py      entries -> EPUB, one XHTML file per word
 src/validate.py    accept_definition: the rule a definition must pass
 tools/check_epub.py  structural EPUB checks (no JVM here, so no epubcheck)
 tools/pilot_definitions.py  a prompt change measured on 50 headwords, before 3,000
-tools/fit/         host build of the firmware's line breaker and parser
+tools/fit/         host build of the firmware's line breaker and parser; fit_book.py runs the whole book
 data/<lang>/       source of truth for book content
 tests/             one test file per module
 ```
@@ -99,7 +101,7 @@ the headwords, run `mise run headwords-check`: it stamps
 until the stamp matches.
 
 **Wiktionary data never enters the repository.** It is CC BY-SA, and
-share-alike would decide the book's licence. `wiktionary.py` writes it to the
+share-alike would turn the book's CC BY 4.0 into CC BY-SA. `wiktionary.py` writes it to the
 gitignored `data/**/raw/`, and the review report goes to `build/`. Only a
 reviewed decision, written as an override, is committed.
 
@@ -129,7 +131,8 @@ names where its definition and examples came from, and that attribution goes
 into the built book. `render.py` turns the `source` block of each
 `*.source.json` into the "Fuentes" page, and `check_epub.py` fails a book
 without it; a new licensed input needs its own `source` block there. Do not add data from a share-alike source (such as
-OpenSubtitles) without asking, because it would decide the book's licence.
+OpenSubtitles) without asking, because it would turn the book's CC BY 4.0
+(`data/LICENSE`) into CC BY-SA.
 
 **Spanish sorting is not ASCII sorting.** `ñ` is its own letter, filed after
 `n`. Accents do not change a word's alphabetical position. Use

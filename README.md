@@ -1,10 +1,20 @@
 # smallscreen-books
 
+[![ci](https://github.com/pezware/smallscreen-books/actions/workflows/ci.yml/badge.svg)](https://github.com/pezware/smallscreen-books/actions/workflows/ci.yml)
+[![book](https://github.com/pezware/smallscreen-books/actions/workflows/book-release.yml/badge.svg)](https://github.com/pezware/smallscreen-books/releases/tag/latest)
+[![code: MIT](https://img.shields.io/badge/code-MIT-blue)](LICENSE)
+[![book and data: CC BY 4.0](https://img.shields.io/badge/book%20%26%20data-CC%20BY%204.0-lightgrey)](data/LICENSE)
+
+**[Download the latest book: `es-wordbook.epub`](https://github.com/pezware/smallscreen-books/releases/download/latest/es-wordbook.epub)**,
+rebuilt from `main` on every change. Copy it to the reader over CrossPoint's
+web page or WebDAV, and open it.
+
 Build EPUB books that read well on a 4.3" e-ink screen.
 
-The first book is a Spanish wordbook: the top 3,000 words, each with a short
-Spanish definition and two example sentences. French and German follow from the
-same generator. Poetry and memory cards reuse the renderer with a different
+The first book is a Spanish wordbook: the 3,000 most used words, each on its
+own page with a short Spanish definition, written only in words the book itself
+defines, and two real example sentences. French and German follow from the same
+generator. Poetry and memory cards reuse the renderer with a different
 template.
 
 Target device: Xteink X4 Pro running
@@ -21,40 +31,40 @@ CrossPoint renders a small CSS subset and ignores the rest. `docs/device-constra
 records what it honours, read from the firmware source. Read that file before
 you write a template.
 
-## Layout
-
-```
-data/<lang>/     word lists, definitions and examples — the source of truth
-src/             the generator
-docs/            device constraints and the build plan
-```
-
 ## Status
 
-Early. Stages 1 and 1b have landed, and stage 2 is built. `src/frequency.py` ranks 20,000 word forms
-from the corpus into `data/es/frequency.txt`, and `src/headwords.py` merges
-them into 3,000 lemmas, ranked by the summed use of their forms, in `data/es/headwords.jsonl`: an LLM maps each form to
-its lemma, and Wiktionary checks the mapping. The renderer (`src/render.py`)
-builds a real EPUB from those headwords, one XHTML file per word, with a
-letter-level table of contents.
+The Spanish book is complete; opening it on the device is the one step left.
 
-`src/definitions.py` writes a definition for every headword into
-`data/es/words.jsonl`, in words the book itself defines, and lists the ones a
-person should read in `build/definitions-review.tsv`. Until it has run, entries
-read `(sin definición)`: the 3,000-item spine is the design's largest untested
-assumption, and it can be tested on the hardware before any content exists.
-`src/examples.py` gives each entry up to two example sentences from Tatoeba,
-or from the Leipzig corpus for news words Tatoeba lacks, credited to their
-sources; 2,935 entries have two.
+| Stage | What | State |
+|---|---|---|
+| 1 | Rank 20,000 word forms from the Leipzig news corpus | done |
+| 1b | Merge them into 3,000 headwords, ranked by the summed use of their forms | done |
+| 2 | A definition for every headword, in the book's own words | done: 3,000 of 3,000 accepted and reviewed |
+| 3 | Two example sentences per headword, from Tatoeba or the Leipzig corpus | done: 2,935 have two, 63 one, 2 none |
+| 4 | Render one XHTML page per word; open it on the device | rendered and checked; waiting for the device |
+| 5 | Measure fit through the firmware's own paginator | done: every entry fits one page at sizes 12-16; 2 spill at 18 |
+
+`docs/plan.md` records each decision and why; `data/es/review/` holds every
+review sheet that changed the data.
+
+## Build it
 
 ```sh
 curl -O https://downloads.wortschatz-leipzig.de/corpora/spa_news_2011_1M.tar.gz
 tar xzf spa_news_2011_1M.tar.gz -C data/es/raw/       # gitignored, 266 MB
-python3 src/frequency.py                              # writes data/es/frequency.txt
-mise run headwords                                    # LLM, cached; see below
-mise run definitions                                  # LLM, cached; writes data/es/words.jsonl
-mise run book                                         # writes build/es-wordbook.epub
-python3 -m unittest discover -s tests -t tests        # stdlib only, no venv
+mise run book                                         # build/es-wordbook.epub from the committed data
+mise run test                                         # stdlib unittest, no venv
+```
+
+The committed data is enough for `mise run book`; the corpus and the LLM are
+only needed to change it:
+
+```sh
+mise run build              # rank the forms again: data/es/frequency.txt
+mise run headwords-refresh  # map new forms to lemmas (LLM, cached), rebuild and check
+mise run definitions        # define new headwords (LLM, cached): data/es/words.jsonl
+mise run examples           # fill missing examples from Tatoeba and the corpus
+mise run fit-entry && mise run fit-book   # pages per entry, through the firmware's parser
 ```
 
 The LLM defaults to Grok through the devbox's xAI broker. Set
@@ -62,28 +72,37 @@ The LLM defaults to Grok through the devbox's xAI broker. Set
 Claude instead, or `SMALLSCREEN_LLM=agent` to let a coding agent answer request
 files with no network at all. AGENTS.md, "Choosing the LLM", has the details.
 
-`mise run build | test | lint | fmt` are the same commands with the pinned
-toolchain. CI runs lint and test on every change; a separate scheduled job
-rebuilds `frequency.txt` from the real corpus and fails if the committed
-artifact has drifted from what the generator produces.
+CI runs lint, the tests, and stage 2's gate (`definitions.py check --strict`)
+on every change, builds the book and publishes it as the `latest` release on
+every push to `main`. A weekly job rebuilds `frequency.txt` from the real corpus
+and fails if the committed file has drifted from what the generator produces.
 
-`src/validate.py:accept_definition` is strict on purpose, and review is the way
-past it. See `docs/plan.md`, "The definition rule".
+## Layout
+
+```
+data/<lang>/     word lists, definitions and examples — the source of truth
+src/             the generator
+tools/           EPUB checks, the pilot, and the fit measurement
+docs/            device constraints and the build plan
+```
 
 ## Licences
 
-The book data comes from sources that need attribution. Record the source of
-every definition and every sentence in the data file, and carry the attribution
-into each built book:
+- **Code**: [MIT](LICENSE).
+- **Book and data**: [CC BY 4.0](data/LICENSE). Anyone may use them for any
+  purpose, including commercially, with credit. That is the most open licence
+  the sources allow, since they are CC BY themselves; both licences disclaim
+  all warranty.
 
-- Frequency lists — Leipzig Corpora (CC BY 4.0), recorded per language in
-  `data/<lang>/frequency.source.json`. Spanish uses `spa_news_2011_1M`.
-  OpenSubtitles (CC BY-SA 4.0) was not used: share-alike would decide the
-  outgoing licence before Andy does
-- Example sentences — [Tatoeba](https://tatoeba.org), CC BY 2.0 FR
-- Definitions, and the lemma of each headword, checked against
-  [Wiktionary](https://kaikki.org) (CC BY-SA). It is only compared against,
-  locally; no Wiktionary data is committed or put in a book
+What the book is built from, each credited on its "Fuentes" page and in its
+data files:
 
-CC BY-SA and CC BY combine awkwardly in one redistributed book. Decide the
-outgoing licence before the first book leaves the device.
+- Word frequencies and some example sentences — Leipzig Corpora Collection,
+  `spa_news_2011_1M` (CC BY 4.0), recorded in `data/es/frequency.source.json`.
+- Example sentences — [Tatoeba](https://tatoeba.org) (CC BY 2.0 FR), each with
+  its id and contributor, recorded in `data/es/examples.source.json`. They keep
+  their own licence.
+- Definitions — written by an LLM and reviewed; released under CC BY 4.0 with
+  the rest of the data.
+- Headword lemmas were checked against [Wiktionary](https://kaikki.org)
+  (CC BY-SA) locally only; no Wiktionary data is committed or put in a book.

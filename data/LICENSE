@@ -1,0 +1,20 @@
+The data in this directory, and the books built from it, are licensed under
+the Creative Commons Attribution 4.0 International licence (CC BY 4.0):
+https://creativecommons.org/licenses/by/4.0/
+
+You may copy, share and adapt them for any purpose, including commercially,
+as long as you give appropriate credit, link to the licence, and say whether
+you made changes. They are provided as is, without warranty of any kind; see
+section 5 of the licence.
+
+They contain material from other sources, which keeps its own licence and
+must keep its credit:
+
+- Leipzig Corpora Collection, spa_news_2011_1M (CC BY 4.0): word frequencies
+  and a few example sentences. D. Goldhahn, T. Eckart, U. Quasthoff: Building
+  Large Monolingual Dictionaries at the Leipzig Corpora Collection, LREC 2012.
+  See es/frequency.source.json.
+- Tatoeba, https://tatoeba.org (CC BY 2.0 FR): example sentences, each recorded
+  with its Tatoeba id and contributor. See es/examples.source.json.
+
+Every built book carries these credits on its "Fuentes" page.

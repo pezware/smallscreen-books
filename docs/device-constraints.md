@@ -194,6 +194,18 @@ spills -- wrong, because "half a line per block" over-counted what paragraph
 spacing actually costs. The measurement above replaces both, and the lesson is
 that arithmetic over a line count is not a substitute for running the paginator.
 
+**Measured on the whole book, 2026-09-30.** `tools/fit/fit_book.py`
+(`mise run fit-book`) runs every entry of the built EPUB through `fit-entry`,
+firmware `6c83edd`, default settings otherwise:
+
+| setting | entries on two pages |
+|---|---|
+| size 12, 14, 16 | 0 of 3,000 |
+| size 18 | 2 (`bono`, `plantilla`: long examples) |
+| size 18 at margin 40 | 61 (2.0%) |
+
+No entry needs three pages at any setting.
+
 The screenshot is still unbuilt. It needs `GfxRenderer.cpp` compiled for the
 host and its framebuffer written out; `FontDecompressor` becomes necessary
 there, and it wants Arduino's `millis`/`micros`, which the metrics path does
