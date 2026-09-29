@@ -215,8 +215,9 @@ Each stage lands in the same branch and the same pull request.
    Read `device-constraints.md` first — the CSS subset binds here.
    Done when: epubcheck passes and the book opens on the device.
    Status, 2026-09-30: rendered, and `tools/check_epub.py` passes (no JVM here,
-   so no epubcheck). CI publishes the book as the `latest` release on every
-   push to `main`. Opening it on the device waits for Andy's X4 Pro.
+   so no epubcheck). CI publishes a development build (the `latest` tag) on
+   every push to `main`, and v1.0.1 is the first versioned edition. Opening it
+   on the device waits for Andy's X4 Pro.
 
 5. **Measure fit.** Build the host-side page counter against the real layout
    engine. Report the spill rate.

@@ -53,10 +53,12 @@ jobs:
           gh release create "$VERSION" "build/es-wordbook-$VERSION.epub" \
             --target "$GITHUB_SHA" \
             --title "Spanish wordbook $VERSION" \
+            --latest \
             --notes "The 3,000 most used Spanish words, one per page, each with a short definition in the book's own words and real example sentences. Made for a 4.3\" e-ink reader running CrossPoint. Built from ${GITHUB_SHA::7}. Book and data CC BY 4.0, code MIT."
 
       # The release is recreated rather than updated, so its tag always points
-      # at the commit the book was built from.
+      # at the commit the book was built from. It never takes GitHub's "Latest"
+      # mark, so /releases/latest always opens the newest versioned edition.
       - name: Publish as the latest release
         if: github.ref_type != 'tag' && inputs.version == ''
         env:
@@ -65,5 +67,6 @@ jobs:
           gh release delete latest --cleanup-tag --yes || true
           gh release create latest build/es-wordbook.epub \
             --target "$GITHUB_SHA" \
-            --title "Latest book" \
+            --title "Development build" \
+            --latest=false \
             --notes "Built from ${GITHUB_SHA::7} on main. Replaced on every change."

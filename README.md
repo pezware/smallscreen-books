@@ -1,14 +1,18 @@
 # smallscreen-books
 
 [![ci](https://github.com/pezware/smallscreen-books/actions/workflows/ci.yml/badge.svg)](https://github.com/pezware/smallscreen-books/actions/workflows/ci.yml)
-[![book](https://github.com/pezware/smallscreen-books/actions/workflows/book-release.yml/badge.svg)](https://github.com/pezware/smallscreen-books/releases/tag/latest)
+[![release](https://img.shields.io/github/v/release/pezware/smallscreen-books?sort=semver)](https://github.com/pezware/smallscreen-books/releases/latest)
+[![book](https://github.com/pezware/smallscreen-books/actions/workflows/book-release.yml/badge.svg)](https://github.com/pezware/smallscreen-books/actions/workflows/book-release.yml)
 [![code: MIT](https://img.shields.io/badge/code-MIT-blue)](LICENSE)
 [![book and data: CC BY 4.0](https://img.shields.io/badge/book%20%26%20data-CC%20BY%204.0-lightgrey)](data/LICENSE)
 
-**[Download the latest book: `es-wordbook.epub`](https://github.com/pezware/smallscreen-books/releases/download/latest/es-wordbook.epub)**,
-rebuilt from `main` on every change. Copy it to the reader over CrossPoint's
-web page or WebDAV, and open it. Each [versioned release](https://github.com/pezware/smallscreen-books/releases)
-keeps a fixed edition, such as `es-wordbook-v1.0.0.epub`.
+**[Download the latest release](https://github.com/pezware/smallscreen-books/releases/latest)**
+and take its `es-wordbook-<version>.epub`. Copy it to the reader over
+CrossPoint's web page or WebDAV, and open it. Older editions stay on the
+[releases page](https://github.com/pezware/smallscreen-books/releases). For the
+newest unreleased changes, the
+[development build](https://github.com/pezware/smallscreen-books/releases/download/latest/es-wordbook.epub)
+is rebuilt from `main` on every change.
 
 Build EPUB books that read well on a 4.3" e-ink screen.
 
@@ -76,10 +80,10 @@ In Claude Code, the `build-smallbook` skill (`.claude/skills/`) runs the whole
 build that way: ask it to build the book or change a word.
 
 CI runs lint, the tests, and stage 2's gate (`definitions.py check --strict`)
-on every change, builds the book and publishes it as the `latest` release on
-every push to `main`. Pushing a `v1.2.3` tag, or running "publish the book"
-by hand with a version, publishes that edition as its own release. A weekly
-job rebuilds `frequency.txt` from the real corpus and fails if the committed
+on every change, builds the book and publishes it as the development build
+(the `latest` tag) on every push to `main`. Pushing a `v1.2.3` tag, or running
+"publish the book" by hand with a version, publishes that edition as its own
+release and marks it the latest. A weekly job rebuilds `frequency.txt` from the real corpus and fails if the committed
 file has drifted from what the generator produces.
 
 ## Layout

@@ -23,9 +23,11 @@ the way it does.
 | more or different headwords, or a newer corpus | [Change the content](#change-the-content), whole stages |
 | a book in another language, or poems or cards | [Another kind of book](#another-kind-of-book) |
 
-If the person only wants the book, the published build may be enough:
-`https://github.com/pezware/smallscreen-books/releases/download/latest/es-wordbook.epub`
-is rebuilt from `main` on every change.
+If the person only wants the book, a published one may be enough. The
+newest edition is always at
+`https://github.com/pezware/smallscreen-books/releases/latest`, and the
+development build, rebuilt from `main` on every change, is at
+`https://github.com/pezware/smallscreen-books/releases/download/latest/es-wordbook.epub`.
 
 ## Tools
 
