@@ -328,7 +328,7 @@ def plan(
 
 
 def retired(headwords: list[dict], existing: dict[str, dict]) -> list[dict]:
-    """Defined entries whose headword is no longer in the list, by lemma."""
+    """Kept entries whose headword is no longer in the list, by lemma."""
     current = {h["lemma"] for h in headwords}
     return [existing[k] for k in sorted(existing) if k not in current]
 
@@ -377,9 +377,25 @@ def generate(
     current = dict(existing)
     for start in range(0, len(todo), CHUNK):
         chunk = todo[start : start + CHUNK]
-        current.update(define(chunk, chat, model, headwords, rounds))
+        for lemma, entry in define(chunk, chat, model, headwords, rounds).items():
+            current[lemma] = keep_examples(entry, current.get(lemma))
         save(merge(headwords, current))
     return merge(headwords, current), stale_checked
+
+
+def keep_examples(entry: dict, old: dict | None) -> dict:
+    """A new definition, with the examples the old entry already had.
+
+    Examples are stage 3's and may have been reviewed; regenerating a
+    definition must not throw them away.
+    """
+    if not old or "examples" not in old:
+        return entry
+    kept = {k: old[k] for k in ("examples", "examples_reviewed_by") if k in old}
+    source = dict(entry["source"])
+    if "examples" in old.get("source", {}):
+        source["examples"] = old["source"]["examples"]
+    return {**entry, **kept, "source": source}
 
 
 def review(entries: list[dict], known: set[str]) -> list[tuple[int, str, dict]]:
@@ -539,11 +555,13 @@ def main(argv: list[str] | None = None) -> int:
     headwords = read_jsonl(args.data / "headwords.jsonl")
     words_path = args.data / "words.jsonl"
     retired_path = args.data / "words.retired.jsonl"
+    # An entry that lost its definition still counts if it has examples, so
+    # they survive until the definition is regenerated.
     existing = {
         e["lemma"]: e
         for path in (retired_path, words_path)
         for e in read_jsonl(path)
-        if "definition" in e
+        if "definition" in e or "examples" in e
     }
     entries = merge(headwords, existing)
 
@@ -591,9 +609,14 @@ def main(argv: list[str] | None = None) -> int:
             return 3
         write_jsonl(words_path, entries)
         save_retired(existing)
-        for entry in stale:
+        if stale:
+            # A new model alone marks every reviewed entry stale, so name a few.
+            names = ", ".join(e["lemma"] for e in stale[:10])
+            more = f" and {len(stale) - 10} more" if len(stale) > 10 else ""
             print(
-                f"{entry['lemma']}: checked, but its inputs changed; left alone",
+                f"{len(stale)} checked entries were made from other inputs (a"
+                f" changed headword, model or prompt) and are left alone: {names}"
+                f"{more}",
                 file=sys.stderr,
             )
 
