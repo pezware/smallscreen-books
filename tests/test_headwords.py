@@ -120,6 +120,26 @@ class MapForms(unittest.TestCase):
         first = headwords.map_forms(["a", "b"], {}, chat, "m", batch=2)
         self.assertEqual(set(headwords.map_forms(["a"], first, chat, "m")), {"a"})
 
+    def test_a_batch_answered_one_short_is_mapped_in_halves(self):
+        calls = []
+
+        def chat(system, user, model):
+            forms = json.loads(user)
+            calls.append(forms)
+            items = [{"form": f, "lemma": f, "pos": "verbo"} for f in forms]
+            return {"forms": items[:-1] if len(forms) > 2 else items}
+
+        result = headwords.map_forms(["a", "b", "c", "d"], {}, chat, "m", batch=4)
+        self.assertEqual(set(result), {"a", "b", "c", "d"})
+        self.assertEqual(calls, [["a", "b", "c", "d"], ["a", "b"], ["c", "d"]])
+
+    def test_a_single_form_that_still_fails_stops_the_run(self):
+        def chat(system, user, model):
+            return {"forms": []}
+
+        with self.assertRaisesRegex(headwords.MappingError, "asked for 1"):
+            headwords.map_forms(["a", "b"], {}, chat, "m", batch=2)
+
     def test_saves_after_every_batch(self):
         chat, _ = self.fake()
         saved = []

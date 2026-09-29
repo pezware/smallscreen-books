@@ -164,14 +164,32 @@ def map_forms(
         if f not in result or result[f].input_hash != form_hash(f, model, PROMPT)
     ]
     for start in range(0, len(todo), batch):
-        chunk = todo[start : start + batch]
-        answer = chat(PROMPT, json.dumps(chunk, ensure_ascii=False), model)
-        for row in parse_answer(answer, chunk):
+        for row in _map_chunk(todo[start : start + batch], chat, model):
             result[row["form"]] = Mapping(
                 **row, input_hash=form_hash(row["form"], model, PROMPT), model=model
             )
         save(result)
     return result
+
+
+def _map_chunk(chunk: list[str], chat: Chat, model: str) -> list[dict]:
+    """Map one batch; if the answer is malformed, map each half instead.
+
+    A long batch sometimes comes back one item short, and at temperature 0
+    sending the same batch again gets the same answer. Halving changes the
+    input, and every half is still checked item by item, so nothing is
+    guessed. A single form that still fails stops the run.
+    """
+    try:
+        answer = chat(PROMPT, json.dumps(chunk, ensure_ascii=False), model)
+        return parse_answer(answer, chunk)
+    except MappingError:
+        if len(chunk) == 1:
+            raise
+    middle = len(chunk) // 2
+    return _map_chunk(chunk[:middle], chat, model) + _map_chunk(
+        chunk[middle:], chat, model
+    )
 
 
 def stale_forms(forms: list[str], mappings: dict[str, Mapping]) -> list[str]:
